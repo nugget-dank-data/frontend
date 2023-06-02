@@ -1,9 +1,8 @@
-"use client";
+"use client"
 import Sidepane from '@/components/Sidepane';
 import './globals.css';
 import { Inter } from 'next/font/google';
 import { useEffect, useState } from 'react';
-import compare from './compare/page';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,20 +17,15 @@ export default function RootLayout({ children }) {
     }
   };
 
-  useEffect(() => {
-    const path = window.location.pathname;
-    const tabName = path.split('/')[1];
-    setActiveTab(tabName || 'compare');
-  }, []);
-  
+  const isLoginPage = window.location.pathname === '/login';
 
   return (
     <html lang="en" className="">
-      <body>
-        <div className="flex flex-row">
-        <Sidepane activeTab={activeTab} handleTabClick={handleTabClick} />
-          <div className="">{children}</div>
-        </div>
+      <body className="flex">
+        {!isLoginPage && (
+          <Sidepane activeTab={activeTab} handleTabClick={handleTabClick} />
+        )}
+        <div className="w-full">{children}</div>
       </body>
     </html>
   );

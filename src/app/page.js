@@ -1,19 +1,33 @@
-import React from 'react'
-import Sidepane from '@/components/Sidepane'
+"use client"
+import React from 'react';
+import Sidepane from '@/components/Sidepane';
+import { useState } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Login from './login/page';
+import Compare from './compare/page';
+import CompetitiveSets from './competitive_sets/page';
+import TermsOfService from './docs/terms_of_service/page';
+import PrivacyPolicy from './docs/privacy_policy/page';
+import AdminLogin from './admin/login/page';
+import AdminOrganizations from './admin/organizations/page';
+import ResetPassword from './settings/reset_password/page';
 
 export default function Home() {
+  const [activeTab, setActiveTab] = useState('');
+
+  const handleTabClick = (tabName) => {
+    if (activeTab === tabName) {
+      setActiveTab('');
+    } else {
+      setActiveTab(tabName);
+    }
+  };
+
   return (
-    <div className='flex'>
-<div className='flex flex-col'>
-      <a href="admin/login">admin login</a>
-      <a href="compare">compare</a>
-      <a href="competitive_sets">competitive sets</a>
-      <a href="docs/terms_of_service">terms of service</a>
-      <a href="docs/privacy_policy">privacy_policy</a>
-      <a href="settings/reset_password">reseet password</a>
-      <a href="settings">settings</a>
-      <a href="login"></a>
-      </div>
+      
+    <div className="flex">
+       
     </div>
-  )
+      
+  );
 }

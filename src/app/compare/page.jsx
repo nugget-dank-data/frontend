@@ -1,9 +1,9 @@
 import React from 'react'
 
-const compare = () => {
+const Compare = () => {
   return (
-    <div>compare route working</div>
+    <div>Compare route working</div>
   )
 }
 
-export default compare
+export default Compare

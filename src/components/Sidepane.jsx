@@ -6,6 +6,7 @@ import compsets from '../images/compsets.svg'
 import managestores from '../images/managestores.svg'
 import settings from '../images/settings.svg';
 import logout from '../images/logout.svg'
+import Link from 'next/link';
 
 const Sidepane = ({ activeTab, handleTabClick }) => {
 
@@ -54,7 +55,8 @@ const Sidepane = ({ activeTab, handleTabClick }) => {
   };
 
   return (
-    <div className="bg-[#010716] text-white flex flex-col p-5">
+   
+    <div className="bg-[#010716e5] text-white flex flex-col p-5 min-h-screen w-[20em]">
         <div className='flex flex-row p-0 text-[2rem] align-middle items-center justify-center'>
             <Image src={nugget} alt="" className=' w-16' />
             <p className='p-2'>Nugget</p>
@@ -62,11 +64,11 @@ const Sidepane = ({ activeTab, handleTabClick }) => {
         <p className='text-[#b3b2b25e] text-[1em]'>menu</p>
       <ul className="list-none  font-semibold">
         <li className={`mb-4 p-4 font-medium rounded-lg shadow-xl  ${renderTabClassName('compare')}`}>
-        <a href="/compare" onClick={() => handleTabClick('compare')} className="flex items-center">
+        <Link href="/compare" onClick={() => handleTabClick('compare')} className="flex items-center">
 
             {getIcon('compare')}
             Compare
-          </a>
+          </Link>
         </li>
         <li className={`mb-4 p-4 font-medium rounded-lg shadow-xl ${renderTabClassName('compare-v2')}`}>
           <a
@@ -142,6 +144,7 @@ const Sidepane = ({ activeTab, handleTabClick }) => {
             </a>
       </div>
     </div>
+  
   );
 };
 
