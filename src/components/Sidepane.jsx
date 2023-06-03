@@ -209,8 +209,8 @@ const Sidepane = ({ activeTab, handleTabClick }) => {
           </ul>
           <p className="text-[#b3b2b25e] text-[1em]">Profile</p>
           <div className="justify-between flex text-[0.9em] mt-6">
-            <a href="docs/privacy_policy">Privacy policy</a>
-            <a href="docs/terms_of_use">Terms of Use</a>
+            <a href="privacy_policy">Privacy policy</a>
+            <a href="terms_of_use">Terms of Use</a>
           </div>
           <div className="m-auto w-3/4 flex flex-row bg-[#1a181863] rounded-lg mt-8">
             <a
