@@ -6,10 +6,10 @@ import compsets from "../images/compsets.svg";
 import managestores from "../images/managestores.svg";
 import settings from "../images/settings.svg";
 import logout from "../images/logout.svg";
-import Link from "next/link";
 
 const Sidepane = ({ activeTab, handleTabClick }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [currentPathname, setCurrentPathname] = useState("");
 
   const renderTabClassName = (tabName) => {
     return `mb-4 ${
@@ -56,7 +56,7 @@ const Sidepane = ({ activeTab, handleTabClick }) => {
         setIsMenuOpen(false); // Close menu on mobile
       }
     };
-    window.addEventListener("click", setIsMenuOpen(false));
+   
 
     window.addEventListener("resize", handleResize);
     handleResize(); // Initial check on component mount
@@ -95,26 +95,28 @@ const Sidepane = ({ activeTab, handleTabClick }) => {
           <p className="text-[#b3b2b25e] text-[1em]">menu</p>
           <ul className="list-none  font-semibold">
             <li
+            onClick={() => handleTabClick("compare")}
               className={`mb-4 p-4 font-medium rounded-lg shadow-xl  ${renderTabClassName(
                 "compare"
               )}`}
             >
-              <Link
+              <a
                 href="/compare"
                 onClick={() => handleTabClick("compare")}
                 className="flex items-center"
               >
                 {getIcon("compare")}
                 Compare
-              </Link>
+              </a>
             </li>
             <li
+            onClick={() => handleTabClick("compare-v2")}
               className={`mb-4 p-4 font-medium rounded-lg shadow-xl ${renderTabClassName(
                 "compare-v2"
               )}`}
             >
               <a
-                href="/compare"
+                href="/compare-v2"
                 onClick={() => handleTabClick("compare-v2")}
                 className="flex"
               >
