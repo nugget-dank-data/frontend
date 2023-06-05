@@ -22,7 +22,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className='p-5 justify-between flex'>
+    <div className='p-5 justify-between flex border-b'>
       <p className='text-[2em] font-medium'>{getPageTitle()}</p>
       <Image src={notification} alt='n' />
     </div>
