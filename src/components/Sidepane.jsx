@@ -6,20 +6,22 @@ import compsets from "../images/compsets.svg";
 import managestores from "../images/managestores.svg";
 import settings from "../images/settings.svg";
 import logout from "../images/logout.svg";
+import droped from "../images/dropdown2.svg";
+import notdroped from "../images/dropdown1.svg";
 
 const Sidepane = ({ activeTab, handleTabClick }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentPathname, setCurrentPathname] = useState("");
+  const [isManageStoresDropdownOpen, setIsManageStoresDropdownOpen] = useState(false);
+  const [isSettingsDropdownOpen, setIsSettingsDropdownOpen] = useState(false);
 
   const renderTabClassName = (tabName) => {
-    return `mb-4 ${
-      tabName === activeTab ? "active border-l-2 border-blue-500" : ""
-    }`;
+    return `mb-4 ${tabName === activeTab ? "active border-l-2 border-blue-500" : ""}`;
   };
 
-  const renderSubMenu = (parentTab, children) => {
+  const renderSubMenu = (parentTab, content) => {
     if (activeTab === parentTab) {
-      return <ul>{children}</ul>;
+      return <div className="ml-10">{content}</div>;
     }
     return null;
   };
@@ -34,9 +36,7 @@ const Sidepane = ({ activeTab, handleTabClick }) => {
       case "comp-sets":
         return <Image src={compsets} alt="Comp Sets Icon" className="mr-2" />;
       case "manage-stores":
-        return (
-          <Image src={managestores} alt="Manage Stores Icon" className="mr-2" />
-        );
+        return <Image src={managestores} alt="Manage Stores Icon" className="mr-2" />;
       case "settings":
         return <Image src={settings} alt="Settings Icon" className="mr-2" />;
       default:
@@ -48,6 +48,16 @@ const Sidepane = ({ activeTab, handleTabClick }) => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const toggleManageStoresDropdown = () => {
+    setIsManageStoresDropdownOpen(!isManageStoresDropdownOpen);
+    handleTabClick('manage-stores')
+  };
+
+  const toggleSettingsDropdown = () => {
+    setIsSettingsDropdownOpen(!isSettingsDropdownOpen);
+    handleTabClick('settings')
+  };
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth > 768) {
@@ -56,7 +66,6 @@ const Sidepane = ({ activeTab, handleTabClick }) => {
         setIsMenuOpen(false); // Close menu on mobile
       }
     };
-   
 
     window.addEventListener("resize", handleResize);
     handleResize(); // Initial check on component mount
@@ -69,7 +78,7 @@ const Sidepane = ({ activeTab, handleTabClick }) => {
   return (
     <div>
       {isMenuOpen ? (
-        <div className="bg-[#010716e5] text-white  flex flex-col z-50 p-5 min-h-screen w-[20em] bg-opacity-60 sm:bg-opacity-0 absolute sm:relative">
+        <div className="bg-[#232529] text-white  flex flex-col z-50 p-5 min-h-screen w-[20em]  absolute sm:relative">
           <div className="top-0 right-2 absolute text-white flex sm:hidden">
             <button className="" onClick={toggleMenu}>
               <svg
@@ -93,9 +102,9 @@ const Sidepane = ({ activeTab, handleTabClick }) => {
             <p className="p-2">Nugget</p>
           </div>
           <p className="text-[#b3b2b25e] text-[1em]">menu</p>
-          <ul className="list-none  font-semibold">
+          <ul className="list-none font-semibold">
             <li
-            onClick={() => handleTabClick("compare")}
+              onClick={() => handleTabClick("compare")}
               className={`mb-4 p-4 font-medium rounded-lg shadow-xl  ${renderTabClassName(
                 "compare"
               )}`}
@@ -110,7 +119,7 @@ const Sidepane = ({ activeTab, handleTabClick }) => {
               </a>
             </li>
             <li
-            onClick={() => handleTabClick("compare-v2")}
+              onClick={() => handleTabClick("compare-v2")}
               className={`mb-4 p-4 font-medium rounded-lg shadow-xl ${renderTabClassName(
                 "compare-v2"
               )}`}
@@ -143,67 +152,62 @@ const Sidepane = ({ activeTab, handleTabClick }) => {
                 "manage-stores"
               )}`}
             >
-              <a
-                onClick={() => handleTabClick("manage-stores")}
-                className="flex cursor-pointer"
-              >
+              <a className="flex cursor-pointer" onClick={toggleManageStoresDropdown}>
                 {getIcon("manage-stores")}
-                Manage Stores
+                <span className="ml-2">Manage Stores</span>
+                <Image src={isManageStoresDropdownOpen ? droped : notdroped} className="ml-auto" />
               </a>
-
               {renderSubMenu(
                 "manage-stores",
-                <div className="align-left ml-8">
-                  <ul className="list-disc">
-                    <li className="font-medium mt-3">
-                      <a
-                        href="/my-stores"
-                        onClick={() => handleTabClick("manage-stores")}
-                        className="font-medium mt-3"
-                      >
-                        My Stores
-                      </a>
-                    </li>
-                    <li className="font-medium mt-3">
-                      <a
-                        href="/stores-to-monitor"
-                        onClick={() => handleTabClick("manage-stores")}
-                        className="font-medium mt-3"
-                      >
-                        Stores to Monitor
-                      </a>
-                    </li>
-                    <li className="font-medium mt-3">
-                      <a
-                        href="/organization-stores"
-                        onClick={() => handleTabClick("manage-stores")}
-                      >
-                        Organization Stores
-                      </a>
-                    </li>
-                  </ul>
-                </div>
+                <ul className="list-disc">
+                  <li className="font-medium mt-3">
+                    <a
+                      href="/my-stores"
+                      onClick={() => handleTabClick("manage-stores")}
+                      className="font-medium mt-3"
+                    >
+                      My Stores
+                    </a>
+                  </li>
+                  <li className="font-medium mt-3">
+                    <a
+                      href="/stores-to-monitor"
+                      onClick={() => handleTabClick("manage-stores")}
+                      className="font-medium mt-3"
+                    >
+                      Stores to Monitor
+                    </a>
+                  </li>
+                  <li className="font-medium mt-3">
+                    <a
+                      href="/organization-stores"
+                      onClick={() => handleTabClick("manage-stores")}
+                    >
+                      Organization Stores
+                    </a>
+                  </li>
+                </ul>
               )}
             </li>
             <li className={`mb-4 p-4 ${renderTabClassName("settings")}`}>
-              <a
-                onClick={() => handleTabClick("settings")}
-                className="flex cursor-pointer"
-              >
+              <div className="flex cursor-pointer" onClick={toggleSettingsDropdown}>
                 {getIcon("settings")}
-                Settings
-              </a>
+                <span className="ml-2">Settings</span>
+                <Image src={isSettingsDropdownOpen ? droped : notdroped} className="ml-auto" />
+              </div>
               {renderSubMenu(
                 "settings",
-                <li className="mt-4 list-disc ml-10">
-                  <a
-                    href="/settings/reset_password"
-                    onClick={() => handleTabClick("reset-password")}
-                    className="ml-4"
-                  >
-                    Reset Password
-                  </a>
-                </li>
+                <ul className="list-disc ml-8">
+                  <li className="font-medium mt-3">
+                    <a
+                      href="/settings/reset_password"
+                      onClick={() => handleTabClick("reset-password")}
+                      className=""
+                    >
+                      Reset Password
+                    </a>
+                  </li>
+                </ul>
               )}
             </li>
           </ul>
