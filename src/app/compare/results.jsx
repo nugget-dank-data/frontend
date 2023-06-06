@@ -31,7 +31,7 @@ const Results = ({ storesData }) => {
   const sortedData = sortStores(storesData);
 
   return (
-    <div className="results flex p-4">
+    <div className="flex p-4 m-auto">
       <div className="data flex flex-col min-w-[40%]">
         <div className="flex">
           <h2 className="p-1 text-[1.3em]">Results</h2>
@@ -54,14 +54,14 @@ const Results = ({ storesData }) => {
             name=""
             placeholder="Keyword Search"
             id=""
-            className="p-2 border-none focus:outline-none flex-grow"
+            className="p-2 border-none focus:outline-none w-full flex-grow"
           />
         </div>
         <div className="check flex p-2">
           <div className="flex justify-center p-2">
             <input type="checkbox" name="" id="checkbox" />
             <label htmlFor="checkbox" className="ml-2">
-              On sale
+              <p>on sale</p>
             </label>
           </div>
           {/* A-Z filter */}

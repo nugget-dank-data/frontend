@@ -8,7 +8,7 @@ const Compsetprop = ({ closeFunction }) => {
         //implement submit logic
     }
   return (
-    <div className="bg-white rounded-xl flex flex-col justify-center w-1/4 border p-6 absolute top-[50%] z-50 left-[50%] transform -translate-x-1/2 -translate-y-1/2">
+    <div className="bg-white rounded-xl flex flex-col justify-center w-3/4 sm:w-1/4 border p-6 absolute top-[50%] z-50 left-[50%] transform -translate-x-1/2 -translate-y-1/2">
       <h2>Select a Comp-set</h2>
 
       <button

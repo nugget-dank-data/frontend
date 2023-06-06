@@ -100,7 +100,7 @@ const Filters = () => {
 
   return (
     <>
-      <div className="relative p-6 flex flex-col md:flex-row border-b">
+      <div className="relative flex flex-col md:flex-row border-b">
         <div className="store p-4 w-full">
           <h1 className="text-[1.5em]">Store</h1>
           <div
