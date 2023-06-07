@@ -31,45 +31,33 @@ const Results = ({ storesData }) => {
   const sortedData = sortStores(storesData);
 
   return (
-    <div className="flex p-4 m-auto">
-      <div className="data flex flex-col min-w-[40%]">
-        <div className="flex">
-          <h2 className="p-1 text-[1.3em]">Results</h2>
-          <p className="rounded-lg text-center items-center justify-center border w-10 flex h-10">
-            {sortedData.length || 0}
-          </p>
-        </div>
-        {sortedData.map((store) => (
-          <div key={store.id}>
-            <h2>{store.name}</h2>
-            {/* other details of the store */}
-          </div>
-        ))}
+    <div className="flex flex-col md:flex-row justify-between p-4 mx-auto">
+      <div className="flex md:mb-0 mb-4">
+        <h2 className="text-[1.4em] font-bold">Results</h2>
+        <p className="w-10 h-10 ml-3 flex items-center text-[1.4em] justify-center text-center bg-gray-200 rounded-lg">
+          {sortedData.length || 0}
+        </p>
       </div>
-      <div className="search flex flex-col w-full justify-between">
-        <div className=" w-full flex items-center border rounded-lg">
-          <Image src={search} alt="s" className="ml-4" />
+      <div className="flex flex-col md:flex-row md:space-x-4 items-center">
+        <div className="flex md:flex-grow-0 flex-grow justify-center md:mb-0 mb-3 md:mr-3 md:items-center bg-white p-0 rounded-lg">
+          <Image src={search} alt="search" className="ml-4" />
           <input
             type="search"
             name=""
             placeholder="Keyword Search"
             id=""
-            className="p-2 border-none focus:outline-none w-full flex-grow"
+            className="bg-transparent p-2 border-none focus:outline-none"
           />
         </div>
-        <div className="check flex p-2">
-          <div className="flex justify-center p-2">
-            <input type="checkbox" name="" id="checkbox" />
-            <label htmlFor="checkbox" className="ml-2">
-              <p>on sale</p>
-            </label>
-          </div>
-          {/* A-Z filter */}
+        <div className="flex items-center space-x-1 md:space-x-4">
+          <input type="checkbox" id="checkbox" />
+          <label htmlFor="checkbox">On Sale</label>
           <div className="relative">
+            <Image src={category} alt="category" className="absolute w-5 h-5 left-2 top-1/2 transform -translate-y-1/2" />
             <select
               name="az-selection"
               id="az-selection"
-              className="ml-4 border p-2 rounded-lg pl-10"
+              className="pl-10 pr-4 py-1 bg-white border rounded-lg"
               value={sortOption}
               onChange={handleSortChange}
             >
@@ -80,12 +68,15 @@ const Results = ({ storesData }) => {
               <option value="brand-asc">Brand (A-Z)</option>
               <option value="brand-desc">Brand (Z-A)</option>
             </select>
-            <div className="absolute left-5 top-2">
-              <Image src={category} alt="n" className="" />
-            </div>
           </div>
         </div>
       </div>
+      {sortedData.map((store) => (
+        <div key={store.id} className="mt-4">
+          <h2>{store.name}</h2>
+          {/* other details of the store */}
+        </div>
+      ))}
     </div>
   );
 };

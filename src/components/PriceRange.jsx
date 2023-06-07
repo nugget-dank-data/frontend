@@ -7,7 +7,7 @@ const PriceRange = ({ range, handlePriceChanges }) => {
   };
 
   return (
-    <div className="price w-3/4">
+    <div className="price">
       <p>Price</p>
       <Slider
         value={range}

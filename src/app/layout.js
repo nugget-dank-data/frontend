@@ -30,13 +30,13 @@ export default function RootLayout({ children }) {
   const isLoginPage = window.location.pathname === '/login';
 
   return (
-    <html lang="en" className="">
-      <body className="flex flex-col pb-0">
-        <div className="flex flex-row">
+    <html className="">
+      <div className="bg-[#d2d2f8f1] w-full h-full p-0 overflow-hidden">
+        <div className="flex flex-col md:flex-row">
         {!isLoginPage && (
           <Sidepane activeTab={activeTab} handleTabClick={handleTabClick} />
           )}
-        <div className="w-full">
+        <div className=" w-full">
           <Navbar />
           {children}
           </div>
@@ -44,7 +44,8 @@ export default function RootLayout({ children }) {
       <div className="w-full bg-slate-700 bottom-0">
       <Footer />
       </div>
-      </body>
-    </html>
+      </div>
+      </html>
+    
   );
 }

@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useState, useEffect, useRef } from "react";
 import store from "../../images/stores.svg";
 import Image from "next/image";
@@ -8,10 +8,11 @@ import category from "../../images/category.svg";
 import brand from "../../images/brand.svg";
 import Results from "./results";
 import PriceRange from "@/components/PriceRange";
-import Compsetprop from './compset'
+import Compsetprop from "./compset";
+// import axios from "axios";
 
 const Filters = () => {
-  const [range, setRange] = React.useState([0, 300]);
+  const [range, setRange] = useState([0, 300]);
   const [stores, setStores] = useState([]);
   const [storesData, setStoresData] = useState([]);
   const [selectedStore, setSelectedStore] = useState("");
@@ -23,35 +24,23 @@ const Filters = () => {
   const [showCompset, setShowCompset] = useState(false);
   const compsetRef = useRef(null);
 
+  const url =
+    "http://142.93.146.70:420/scraper/unique-products?bb_store_ids=1634398753441x245681641891824400,1669086638769x751534285670987000";
+
   useEffect(() => {
-    // Fetch stores from API
-    const fetchStores = async () => {
-      try {
-        const response = await fetch("your-api-url"); // replace with the actual API endpoint
-        const data = await response.json();
-        setStores(data); // Set the fetched stores in state
-      } catch (error) {
+    fetch(url, {
+        headers: {
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "http://127.0.0.1:3000",
+          "Content-Type": "application/json;charset=UTF-8",
+        },
+      })
+      .then(({ data }) => {
+        setStores(data);
+      })
+      .catch((error) => {
         console.error("Error fetching stores:", error);
-      }
-    };
-
-    fetchStores();
-  }, []);
-
-
-  useEffect(() => {
-    // Fetch stores from API
-    const fetchStoresData = async () => {
-      try {
-        const response = await fetch("your-api-url"); // replace with the actual API endpoint
-        const data = await response.json();
-        setStoresData(data); // Set the fetched stores in state
-      } catch (error) {
-        console.error("Error fetching stores data:", error);
-      }
-    };
-
-    fetchStoresData();
+      });
   }, []);
 
   const handleStoreChange = (store) => {
@@ -61,7 +50,7 @@ const Filters = () => {
 
   const handlecompset = () => {
     setShowCompset(!showCompset);
-  }
+  };
 
   function handlePriceChanges(event, newValue) {
     setRange(newValue);
@@ -90,8 +79,6 @@ const Filters = () => {
   };
 
   const applyFilters = () => {
-    // Apply filters to selected store details
-    // Example console log to display the selected filters
     console.log("Selected Store:", selectedStore);
     console.log("Selected Category:", selectedCategory);
     console.log("Selected Size:", selectedSize);
@@ -100,7 +87,7 @@ const Filters = () => {
 
   return (
     <>
-      <div className="relative flex flex-col md:flex-row border-b">
+      <div className="relative flex flex-col md:flex-row border-b w-full">
         <div className="store p-4 w-full">
           <h1 className="text-[1.5em]">Store</h1>
           <div
@@ -114,6 +101,7 @@ const Filters = () => {
             <Image
               src={isStoreDropdownOpen ? undroped : droped}
               className="w-4 ml-auto"
+              alt="k"
             />
           </div>
           {isStoreDropdownOpen && (
@@ -130,15 +118,17 @@ const Filters = () => {
             </div>
           )}
           <div className="compset mt-5">
-            <button onClick={handlecompset} className="text-[#9c0195fd]">populate with comp-set</button>
+            <button onClick={handlecompset} className="text-[#9c0195fd]">
+              populate with comp-set
+            </button>
           </div>
         </div>
         <div className="filters w-full p-4">
           <h1 className="text-[1.5em]">Filters</h1>
           <div className="flex flex-col md:flex-row">
-            <div className="flex-col flex w-full md:w-1/2">
+            {/* <div className="flex-col flex w-full">
               <div
-                className="flex mb-8 cursor-pointer mr-0 sm:mb-0 sm:mr-8 justify-between p-2 items-center border rounded-lg bg-[#57545431]"
+                className="flex mb-8 cursor-pointer mr-0 sm:mb-0 sm:mr-8 justify-between p-2 w-full items-center border rounded-lg bg-[#57545431]"
                 onClick={toggleCategoryDropdown}
               >
                 <Image src={category} alt="b" className="w-[1.4em]" />
@@ -148,6 +138,7 @@ const Filters = () => {
                 <Image
                   src={isCategoryDropdownOpen ? undroped : droped}
                   className="w-4 ml-auto"
+                  alt="kk"
                 />
               </div>
               {isCategoryDropdownOpen && (
@@ -163,10 +154,10 @@ const Filters = () => {
                   ))}
                 </div>
               )}
-            </div>
-            <div className="flex-col flex w-full md:w-1/2">
+            </div> */}
+            <div className="flex-col flex w-full md:w-1/2 mt-4 md:mt-0">
               <div
-                className="flex cursor-pointer ml-0 sm:mb-0 sm:ml-8 justify-between p-2 items-center border rounded-lg bg-[#57545431]"
+                className="flex cursor-pointer w-full justify-between p-2 items-center border rounded-lg bg-[#57545431]"
                 onClick={toggleSizeDropdown}
               >
                 <Image src={category} alt="b" className="w-[1.4em]" />
@@ -176,6 +167,7 @@ const Filters = () => {
                 <Image
                   src={isSizeDropdownOpen ? undroped : droped}
                   className="w-4 ml-auto"
+                  alt="kk"
                 />
               </div>
               {isSizeDropdownOpen && (
@@ -208,20 +200,20 @@ const Filters = () => {
             </div>
           </div>
 
-          <div className="price">
-            <PriceRange
-              range={range}
-              handlePriceChanges={handlePriceChanges}
-            />
+          <div className="price w-full">
+            <PriceRange range={range} handlePriceChanges={handlePriceChanges} />
           </div>
 
           <div className="m-auto flex items-center justify-center mt-4">
-            <button type="submit" className="bg-[#12335a] m-auto p-2 pl-4 pr-4 rounded-lg text-white" onClick={applyFilters}>
+            <button
+              type="submit"
+              className="bg-[#12335a] m-auto p-2 pl-4 pr-4 rounded-lg text-white"
+              onClick={applyFilters}
+            >
               Apply filters
             </button>
           </div>
         </div>
-
       </div>
       {showCompset && (
         <div ref={compsetRef}>
@@ -232,6 +224,5 @@ const Filters = () => {
     </>
   );
 };
-
 
 export default Filters;

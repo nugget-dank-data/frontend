@@ -76,7 +76,7 @@ const Sidepane = ({ activeTab, handleTabClick }) => {
   }, []);
 
   return (
-    <div>
+    <div className="bg-red-400 p-0 flex flex-col">
       {isMenuOpen ? (
         <div className="bg-[#232529] text-white  flex flex-col z-50 p-5 min-h-screen w-[20em]  absolute sm:relative">
           <div className="top-0 right-2 absolute text-white flex sm:hidden">
@@ -228,7 +228,7 @@ const Sidepane = ({ activeTab, handleTabClick }) => {
         </div>
       ) : (
         <button
-          className="mr-4 bg-[#131212] shadow-2xl text-white text-[2em] p-2 rounded-xl"
+          className="mr-4 bg-[#131212] w-[1.3em] shadow-2xl text-white text-[2em] p-2 rounded justify-center items-center absolute"
           onClick={toggleMenu}
         >
           <svg

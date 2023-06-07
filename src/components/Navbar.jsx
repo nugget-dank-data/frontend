@@ -22,8 +22,8 @@ const Navbar = () => {
   };
 
   return (
-    <div className='p-5 justify-between flex border-b'>
-      <p className='text-[2em] font-medium'>{getPageTitle()}</p>
+    <div className='p-5 justify-between flex border-b w-full'>
+      <p className='text-[2em] font-medium ml-8 md:ml-0'>{getPageTitle()}</p>
       <Image src={notification} alt='n' />
     </div>
   );
