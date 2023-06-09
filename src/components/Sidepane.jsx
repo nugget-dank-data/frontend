@@ -44,6 +44,28 @@ const Sidepane = ({ activeTab, handleTabClick }) => {
     }
   };
 
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     const sidepane = document.getElementById('sidepane');
+  //     const sidepaneRect = sidepane.getBoundingClientRect();
+  //     const viewportHeight = window.innerHeight;
+
+  //     if (sidepaneRect.top <= 0 && sidepaneRect.bottom > viewportHeight) {
+  //       sidepane.style.position = 'fixed';
+  //       sidepane.style.top = '0';
+  //       sidepane.style.bottom = '0';
+  //     } else {
+  //       sidepane.style.position = 'fixed';
+  //     }
+  //   };
+
+  //   window.addEventListener("scroll", handleScroll);
+
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, []);
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -76,9 +98,9 @@ const Sidepane = ({ activeTab, handleTabClick }) => {
   }, []);
 
   return (
-    <div className="bg-red-400 p-0 flex flex-col">
+    <div className="fixed bg-red-200">
       {isMenuOpen ? (
-        <div className="bg-[#232529] text-white  flex flex-col z-50 p-5 min-h-screen w-[20em]  absolute sm:relative">
+        <div  id="sidepane" className="bg-[#232529] min-h-screen text-white  flex flex-col z-50 p-5 absolute w-[20em] sm:relative">
           <div className="top-0 right-2 absolute text-white flex sm:hidden">
             <button className="" onClick={toggleMenu}>
               <svg

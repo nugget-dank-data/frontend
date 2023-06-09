@@ -31,21 +31,28 @@ export default function RootLayout({ children }) {
 
   return (
     <html className="">
-      <div className="bg-[#d2d2f8f1] w-full h-full p-0 overflow-hidden">
-        <div className="flex flex-col md:flex-row">
-        {!isLoginPage && (
-          <Sidepane activeTab={activeTab} handleTabClick={handleTabClick} />
-          )}
-        <div className=" w-full">
-          <Navbar />
-          {children}
+      <div className="w-full h-full p-0 overflow-hidden relative">
+        <div className="flex flex-col sm:flex-row relative m-auto">
+
+          {!isLoginPage && (
+          <div className="flex absolute md:relative sm:w-1/3 md:1/4">
+          
+              <Sidepane activeTab={activeTab} handleTabClick={handleTabClick} />
+              
+              </div>
+              )}
+
+          <div className="w-full">
+            <div className=" w-full">
+              <Navbar />
+            </div>
+            <div className="w-full">{children}</div>
           </div>
         </div>
-      <div className="w-full bg-slate-700 bottom-0">
-      <Footer />
+        <div className="w-full bottom-0">
+          <Footer />
+        </div>
       </div>
-      </div>
-      </html>
-    
+    </html>
   );
 }

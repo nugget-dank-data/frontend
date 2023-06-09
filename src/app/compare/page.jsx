@@ -3,7 +3,7 @@ import Filters from './filters'
 
 const Compare = () => {
   return (
-    <div className=''>
+    <div className='w-full'>
       <Filters />
 
       
