@@ -26,13 +26,13 @@ const Filters = () => {
   const [showCompset, setShowCompset] = useState(false);
   const compsetRef = useRef(null);
 
-  // useEffect(() => {
-  //   setStoresData(Mock);
-  //   const uniqueCategories = [...new Set(Mock.map((store) => store.Category))];
-  //   const uniqueSizes = [...new Set(Mock.map((store) => store.size))];
-  //   setSelectedCategory(uniqueCategories[0] || "");
-  //   setSelectedSize(uniqueSizes[0] || "");
-  // }, []);
+  useEffect(() => {
+    setStoresData(Mock);
+    const uniqueCategories = [...new Set(Mock.map((store) => store.Category))];
+    const uniqueSizes = [...new Set(Mock.map((store) => store.size))];
+    setSelectedCategory(uniqueCategories[0] || "");
+    setSelectedSize(uniqueSizes[0] || "");
+  }, []);
 
   const storeurl = 'http://142.93.146.70:420/scraper/unique-products?bb_store_ids=1634398753441x245681641891824400,1669086638769x751534285670987000'
 
@@ -130,7 +130,7 @@ const Filters = () => {
           </div>
           {isStoreDropdownOpen && (
             <div className="bg-white text-black border w-full flex flex-col max-h-[10em] rounded-lg overflow-scroll">
-              {stores.map((store) => (
+              {storesData.map((store) => (
                 <div
                   key={store.id}
                   className={`cursor-pointer text-black p-4 hover:bg-gray-200${
@@ -172,7 +172,7 @@ const Filters = () => {
               </div>
               {isCategoryDropdownOpen && (
                 <div className="bg-white text-black border w-full h-[10em] rounded-lg overflow-scroll">
-                  {stores.map((storeItem) => (
+                  {storesData.map((storeItem) => (
                     <div
                       key={storeItem.id}
                       className={`cursor-pointer text-black p-4 hover:bg-gray-200${
@@ -205,7 +205,7 @@ const Filters = () => {
               </div>
               {isSizeDropdownOpen && (
                 <div className="bg-white text-black border w-full h-[10em] rounded-lg overscroll-x-none overflow-scroll">
-                  {stores.map((storeItem) => (
+                  {storesData.map((storeItem) => (
                     <div
                       key={storeItem.id}
                       className={`cursor-pointer text-black p-4 hover:bg-gray-200 ${
@@ -255,7 +255,7 @@ const Filters = () => {
           <Compsetprop closeFunction={handlecompset} />
         </div>
       )}
-      <Results storesData={stores} />
+      <Results storesData={storesData} />
     </div>
   );
 };

@@ -2,48 +2,67 @@ import React, { useState } from "react";
 import search from "../../images/brand.svg";
 import Image from "next/image";
 import category from "../../images/category.svg";
+import expand from "../../images/expand.svg";
+import Pricehistory from './pricehistory';
 
 const Results = ({ storesData }) => {
   const [sortOption, setSortOption] = useState("");
+  const [showHistory, setShowHistory] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const handleSortChange = (event) => {
     setSortOption(event.target.value);
   };
 
+  const handleToggleHistory = () => {
+    setShowHistory(!showHistory);
+  };
+
+  const handleSelectProduct = (product) => {
+    setSelectedProduct(product);
+  };
+
   const sortStores = (data) => {
     if (sortOption === "name-asc") {
-      return data.sort((a, b) => a.name.localeCompare(b.name));
+      return data.sort((a, b) => a.Name.localeCompare(b.Name));
     } else if (sortOption === "name-desc") {
-      return data.sort((a, b) => b.name.localeCompare(a.name));
+      return data.sort((a, b) => b.Name.localeCompare(a.Name));
     } else if (sortOption === "category-asc") {
-      return data.sort((a, b) => a.category.localeCompare(b.category));
+      return data.sort((a, b) => a.Category.localeCompare(b.Category));
     } else if (sortOption === "category-desc") {
-      return data.sort((a, b) => b.category.localeCompare(a.category));
+      return data.sort((a, b) => b.Category.localeCompare(a.Category));
     } else if (sortOption === "brand-asc") {
-      return data.sort((a, b) => a.brand.localeCompare(b.brand));
+      return data.sort((a, b) => a.Brand.localeCompare(b.Brand));
     } else if (sortOption === "brand-desc") {
-      return data.sort((a, b) => b.brand.localeCompare(a.brand));
+      return data.sort((a, b) => b.Brand.localeCompare(a.Brand));
     } else {
       return data;
     }
   };
 
-  const sortedData = sortStores(storesData);
+  const sortedData = Array.isArray(sortStores(storesData))
+    ? sortStores(storesData)
+    : [];
 
   const uniqueStoreNames = Array.from(
     new Set(sortedData.map((store) => store.Name))
   );
-
   const countByName = (name) => {
     return sortedData.filter((store) => store.Name === name).length;
   };
 
   return (
     <div className="flex flex-col">
+      {showHistory && selectedProduct && (
+        <Pricehistory
+          priceData={selectedProduct.inv}
+          onClose={() => setShowHistory(false)}
+        />
+      )}
       <div className="flex flex-col md:flex-row justify-between p-4 mx-auto">
         <div className="flex md:mb-0 mb-4">
           <h2 className="text-[1.4em] font-bold">Results</h2>
-          <p className="w-10 h-10 ml-3 flex items-center text-[1.4em] justify-center text-center bg-gray-200 rounded-lg">
+          <p className="w-10 h-10 ml-3 flex items-center text-[1.4em] justify-center text-center border shadow-lg rounded-lg">
             {uniqueStoreNames.length || 0}
           </p>
         </div>
@@ -86,29 +105,54 @@ const Results = ({ storesData }) => {
         </div>
       </div>
       <div className="flex">
-        <div className="w-[50%] bg-slate-300 rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em] "><h1>Product</h1></div>
-        <div className="w-[50%]"><h1>{'' || 'storename'}</h1></div>
+        <div className="w-[50%] bg-slate-300 rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em] ">
+          <h1>Product</h1>
+        </div>
+        <div className="w-[50%]">
+          <h1>{"" || "storename"}</h1>
+        </div>
       </div>
       {uniqueStoreNames.map((name) => {
-        const store = sortedData.find((store) => store.Name === name);
+        const stores = sortedData.filter((store) => store.Name === name);
         const count = countByName(name);
         return (
-         
-          <div key={store.id} className="mt-4 flex justify-between p-[1em]">
+          <div key={name} className="mt-4 flex p-[1em]">
             <div className="max-w-[40%] min-w-[40%]">
               <div className="">
-                <p className="pb-[2%]">{store.Name}</p>
-                <p className="pb-[2%]"><span className="font-bold">Producer: </span>{store.lowercase_brand}</p>
+                <p className="pb-[2%]">{name}</p>
+                <p className="pb-[2%]">
+                  <span className="font-bold">Producer: </span>
+                  {stores[0].lowercase_brand}
+                </p>
               </div>
               <div className="flex justify-between w-[85 %]">
-                <p><span className="font-bold">Category: </span> {store.Category}</p>
-                <p><span className="font-bold">Size: </span>{store.size_concat}</p>
+                <p>
+                  <span className="font-bold">Category: </span> {stores[0].Category}
+                </p>
+                <p>
+                  <span className="font-bold">Size: </span>
+                  {stores[0].size_concat}
+                </p>
               </div>
             </div>
-            <div className="bg-blue-500 w-[50%]">
-                dedew
+            <div className=" w-[25%] justify-between flex flex-col p-6 relative ml-4">
+              <a
+                href={stores[0].inv[0].url}
+                className=" w-[1.3em] top-0 absolute right-0"
+              >
+                <Image src={expand} alt="ee" />
+              </a>
+              <div
+                className="hover:bg-[#8b8b8b79] justify-between flex flex-col"
+                onClick={() => {
+                  handleSelectProduct(stores[0]);
+                  handleToggleHistory();
+                }}
+              >
+                <p className="mb-4">${stores[0].inv[0].price}</p>
+                <p className="mt-8">{stores[0].inv[0].raw_stock} in stock</p>
+              </div>
             </div>
-
           </div>
         );
       })}
