@@ -7,6 +7,7 @@ module.exports = {
   ],
   theme: {
     extend: {
+      scrollbar: ['rounded-lg'],
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
@@ -14,5 +15,7 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwind-scrollbar'),
+  ],
 }

@@ -55,7 +55,7 @@ const Results = ({ storesData }) => {
     <div className="flex flex-col">
       {showHistory && selectedProduct && (
         <Pricehistory
-          priceData={selectedProduct.inv}
+          priceData={selectedProduct}
           onClose={() => setShowHistory(false)}
         />
       )}
@@ -112,13 +112,14 @@ const Results = ({ storesData }) => {
           <h1>{"" || "storename"}</h1>
         </div>
       </div>
+      <div className=" overflow-y-scroll rounded-2xl border-b shadow-xl h-[30em] w-[90%] scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-100 mb-80">
       {uniqueStoreNames.map((name) => {
         const stores = sortedData.filter((store) => store.Name === name);
         const count = countByName(name);
         return (
-          <div key={name} className="mt-4 flex p-[1em]">
-            <div className="max-w-[40%] min-w-[40%]">
-              <div className="">
+          <div key={name} className="flex border-b">
+            <div className="max-w-[40%] min-w-[40%] p-3">
+              <div className="text-[0.9em]">
                 <p className="pb-[2%]">{name}</p>
                 <p className="pb-[2%]">
                   <span className="font-bold">Producer: </span>
@@ -135,15 +136,17 @@ const Results = ({ storesData }) => {
                 </p>
               </div>
             </div>
-            <div className=" w-[25%] justify-between flex flex-col p-6 relative ml-4">
+            <div className=" w-1/6 flex flex-col relative ml-4">
+              <div className="w-full justify-end items-end">
               <a
                 href={stores[0].inv[0].url}
-                className=" w-[1.3em] top-0 absolute right-0"
+                className=" items-end text-right"
               >
-                <Image src={expand} alt="ee" />
+                <Image src={expand} alt="ee" className="w-[1.3em] float-right" />
               </a>
+              </div>
               <div
-                className="hover:bg-[#8b8b8b79] justify-between flex flex-col"
+                className="hover:bg-[#8b8b8b79] justify-between flex flex-col p-[0.5em]"
                 onClick={() => {
                   handleSelectProduct(stores[0]);
                   handleToggleHistory();
@@ -156,6 +159,7 @@ const Results = ({ storesData }) => {
           </div>
         );
       })}
+      </div>
     </div>
   );
 };
