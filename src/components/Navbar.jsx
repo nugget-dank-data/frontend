@@ -13,8 +13,8 @@ const Navbar = () => {
         return '';
       case '/compare':
         return 'Compare Products';
-      case '/':
-            return 'Compare Products';
+      case '/competitive_sets':
+            return 'Competitive Sets';
       
       default:
         return 'Unknown Page';

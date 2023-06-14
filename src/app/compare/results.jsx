@@ -79,7 +79,7 @@ const Results = ({ storesData, allstores, selectedFilters }) => {
     setFilteredData(filteredData);
   }, [storesData, selectedFilters]);
 
-  console.log(first)
+  console.log(filteredData)
   
 
   return (
