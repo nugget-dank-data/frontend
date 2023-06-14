@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import search from "../../images/brand.svg";
 import Image from "next/image";
 import category from "../../images/category.svg";
 import expand from "../../images/expand.svg";
-import Pricehistory from './pricehistory';
+import Pricehistory from "./pricehistory";
 
-const Results = ({ storesData }) => {
+const Results = ({ storesData, allstores, selectedFilters }) => {
   const [sortOption, setSortOption] = useState("");
   const [showHistory, setShowHistory] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const { selectedStore, selectedCategory, selectedSize, range } = selectedFilters;
+  const [filteredData, setFilteredData] = useState([]); 
 
   const handleSortChange = (event) => {
     setSortOption(event.target.value);
@@ -40,29 +42,60 @@ const Results = ({ storesData }) => {
     }
   };
 
-  const sortedData = Array.isArray(sortStores(storesData))
-    ? sortStores(storesData)
-    : [];
+  const sortedData = Array.isArray(sortStores(storesData)) ? sortStores(storesData) : [];
 
-  const uniqueStoreNames = Array.from(
-    new Set(sortedData.map((store) => store.Name))
-  );
+  const uniqueStoreNames = Array.from(new Set(sortedData.map((store) => store.Name)));
+
   const countByName = (name) => {
     return sortedData.filter((store) => store.Name === name).length;
   };
+
+  useEffect(() => {
+    // Filter the data based on the selected filters
+    let filteredData = storesData;
+  
+    if (selectedFilters.selectedStore && selectedFilters.selectedStore.length > 0) {
+      const storeIds = selectedFilters.selectedStore.map((store) => store.bb_id);
+      filteredData = filteredData.filter((item) => storeIds.includes(item.bb_store_id));
+    }
+  
+    if (selectedFilters.selectedCategory !== "") {
+      filteredData = filteredData.filter((item) => item.Category === selectedFilters.selectedCategory);
+    }
+  
+    if (selectedFilters.selectedSize !== "") {
+      filteredData = filteredData.filter((item) => item.size === selectedFilters.selectedSize);
+    }
+  
+    // Apply price range filter
+    let minPrice, maxPrice;
+  
+    if (Array.isArray(selectedFilters.range) && selectedFilters.range.length === 2) {
+      [minPrice, maxPrice] = selectedFilters.range;
+      filteredData = filteredData.filter((item) => item.price >= minPrice && item.price <= maxPrice);
+    }
+  
+    // Update the filtered data
+    setFilteredData(filteredData);
+  }, [storesData, selectedFilters]);
+
+  console.log(first)
+  
 
   return (
     <div className="flex flex-col">
       {showHistory && selectedProduct && (
         <Pricehistory
           priceData={selectedProduct}
+          stores={allstores}
+          handleclose={() => setShowHistory(false)}
           onClose={() => setShowHistory(false)}
         />
       )}
       <div className="flex flex-col md:flex-row justify-between p-4 mx-auto">
         <div className="flex md:mb-0 mb-4">
           <h2 className="text-[1.4em] font-bold">Results</h2>
-          <p className="w-10 h-10 ml-3 flex items-center text-[1.4em] justify-center text-center border shadow-lg rounded-lg">
+          <p className="h-10 min-w-[2em] ml-3 flex items-center text-[1.4em] justify-center text-center border shadow-lg rounded-lg">
             {uniqueStoreNames.length || 0}
           </p>
         </div>
@@ -105,60 +138,65 @@ const Results = ({ storesData }) => {
         </div>
       </div>
       <div className="flex">
-        <div className="w-[50%] bg-slate-300 rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em] ">
+        <div className="w-[50%] bg-slate-300 rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em]">
           <h1>Product</h1>
         </div>
         <div className="w-[50%]">
           <h1>{"" || "storename"}</h1>
         </div>
       </div>
-      <div className=" overflow-y-scroll rounded-2xl border-b shadow-xl h-[30em] w-[90%] scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-100 mb-80">
-      {uniqueStoreNames.map((name) => {
-        const stores = sortedData.filter((store) => store.Name === name);
-        const count = countByName(name);
-        return (
-          <div key={name} className="flex border-b">
-            <div className="max-w-[40%] min-w-[40%] p-3">
-              <div className="text-[0.9em]">
-                <p className="pb-[2%]">{name}</p>
-                <p className="pb-[2%]">
-                  <span className="font-bold">Producer: </span>
-                  {stores[0].lowercase_brand}
-                </p>
+      <div className="overflow-y-scroll rounded-2xl border-b shadow-xl h-[30em] w-[90%] scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-100 mb-80">
+        {uniqueStoreNames.map((name) => {
+          const stores = sortedData.filter((store) => store.Name === name);
+          const count = countByName(name);
+          return (
+            <div key={name} className="flex border-b">
+              <div className="max-w-[40%] min-w-[40%] p-3">
+                <div className="text-[0.9em]">
+                  <p className="pb-[2%]">{name}</p>
+                  <p className="pb-[2%]">
+                    <span className="font-bold">Producer: </span>
+                    {stores[0].lowercase_brand}
+                  </p>
+                </div>
+                <div className="flex justify-between w-[85 %]">
+                  <p>
+                    <span className="font-bold">Category: </span>{" "}
+                    {stores[0].Category}
+                  </p>
+                  <p>
+                    <span className="font-bold">Size: </span>
+                    {stores[0].size_concat}
+                  </p>
+                </div>
               </div>
-              <div className="flex justify-between w-[85 %]">
-                <p>
-                  <span className="font-bold">Category: </span> {stores[0].Category}
-                </p>
-                <p>
-                  <span className="font-bold">Size: </span>
-                  {stores[0].size_concat}
-                </p>
+              <div className=" w-1/6 flex flex-col relative ml-4">
+                <div className="w-full justify-end items-end">
+                  <a
+                    href={stores[0].inv[0].url}
+                    className=" items-end text-right"
+                  >
+                    <Image
+                      src={expand}
+                      alt="ee"
+                      className="w-[1.3em] float-right"
+                    />
+                  </a>
+                </div>
+                <div
+                  className="hover:bg-[#8b8b8b79] justify-between flex flex-col p-[0.5em]"
+                  onClick={() => {
+                    handleSelectProduct(stores[0]);
+                    handleToggleHistory();
+                  }}
+                >
+                  <p className="mb-4">${stores[0].inv[0].price}</p>
+                  <p className="mt-8">{stores[0].inv[0].raw_stock} in stock</p>
+                </div>
               </div>
             </div>
-            <div className=" w-1/6 flex flex-col relative ml-4">
-              <div className="w-full justify-end items-end">
-              <a
-                href={stores[0].inv[0].url}
-                className=" items-end text-right"
-              >
-                <Image src={expand} alt="ee" className="w-[1.3em] float-right" />
-              </a>
-              </div>
-              <div
-                className="hover:bg-[#8b8b8b79] justify-between flex flex-col p-[0.5em]"
-                onClick={() => {
-                  handleSelectProduct(stores[0]);
-                  handleToggleHistory();
-                }}
-              >
-                <p className="mb-4">${stores[0].inv[0].price}</p>
-                <p className="mt-8">{stores[0].inv[0].raw_stock} in stock</p>
-              </div>
-            </div>
-          </div>
-        );
-      })}
+          );
+        })}
       </div>
     </div>
   );

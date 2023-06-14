@@ -8,49 +8,79 @@ import category from "../../images/category.svg";
 import brand from "../../images/brand.svg";
 import Results from "./results";
 import PriceRange from "@/components/PriceRange";
-import { Mock } from "../../utils/mockdata";
 import Compsetprop from "./compset";
-import axios from "axios";
-import  Axios  from "../api/axios";
+import Axios from "../api/axios";
 
 const Filters = () => {
   const [range, setRange] = useState([0, 300]);
-  const [stores, setStores] = useState([]);
+  const [allstores, setStores] = useState([]);
   const [storesData, setStoresData] = useState([]);
-  const [selectedStore, setSelectedStore] = useState("");
+  const [selectedStore, setSelectedStore] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [sizes, setSizes] = useState([]);
   const [isStoreDropdownOpen, setIsStoreDropdownOpen] = useState(false);
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
   const [isSizeDropdownOpen, setIsSizeDropdownOpen] = useState(false);
   const [showCompset, setShowCompset] = useState(false);
   const compsetRef = useRef(null);
+  const [selectedFilters, setSelectedFilters] = useState({});
+
+  const allstoresurl = "http://142.93.146.70:420/scraper/get-all-stores";
 
   useEffect(() => {
-    setStoresData(Mock);
-    const uniqueCategories = [...new Set(Mock.map((store) => store.Category))];
-    const uniqueSizes = [...new Set(Mock.map((store) => store.size))];
-    setSelectedCategory(uniqueCategories[0] || "");
-    setSelectedSize(uniqueSizes[0] || "");
-  }, []);
+    if (selectedStore.length > 0) {
+      const storeIds = selectedStore.map((store) => store.bb_id).join(",");
+      const url = `http://142.93.146.70:420/scraper/unique-products?bb_store_ids=${storeIds}`;
+      Axios.get(url)
+        .then(({ data }) => {
+          setStoresData(data);
+          console.log("data", data);
+        })
+        .catch((error) => {
+          console.error("Error fetching store data:", error);
+        });
+    }
+  }, [selectedStore]);
 
-  const storeurl = 'http://142.93.146.70:420/scraper/unique-products?bb_store_ids=1634398753441x245681641891824400,1669086638769x751534285670987000'
-
+  // FETCH ALL STORES
   useEffect(() => {
-    // fetch all stores
-  Axios.get(storeurl
-        ).then(({ data }) => {
-        setStores(data);
-        console.log("data", data);
+    Axios.get(allstoresurl)
+      .then(({ data }) => {
+        setStores(data.data);
+        console.log("allstores:", data.data);
       })
       .catch((error) => {
         console.error("Error fetching stores:", error);
       });
   }, []);
 
-  const handleStoreChange = (selectedStore) => {
-    setSelectedStore(selectedStore);
-    setIsStoreDropdownOpen(false);
+  const applyFilters = () => {
+    setSelectedFilters({
+      selectedStore,
+      selectedCategory,
+      selectedSize,
+      range
+    });
+  };
+
+  const handleStoreChange = (store) => {
+    // Check if the selected store is already in the array
+    const isSelected = selectedStore.some(
+      (selectedStore) => selectedStore.id === store.id
+    );
+
+    if (isSelected) {
+      // Remove the store from the selected stores array
+      setSelectedStore(
+        selectedStore.filter((selectedStore) => selectedStore.id !== store.id)
+      );
+    } else {
+      // Add the store to the selected stores array
+      setSelectedStore([...selectedStore, store]);
+    }
+    setIsStoreDropdownOpen(!isStoreDropdownOpen);
   };
 
   const handlecompset = () => {
@@ -89,13 +119,6 @@ const Filters = () => {
     setIsCategoryDropdownOpen(false);
   };
 
-  const applyFilters = () => {
-    console.log("Selected Store:", selectedStore);
-    console.log("Selected Category:", selectedCategory);
-    console.log("Selected Size:", selectedSize);
-    console.log("Selected Price Range:", range);
-  };
-
   const handleOutsideClick = (event) => {
     if (compsetRef.current && !compsetRef.current.contains(event.target)) {
       setShowCompset(false);
@@ -109,19 +132,58 @@ const Filters = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (selectedStore.length > 0) {
+      const storeIds = selectedStore.map((store) => store.bb_id).join(",");
+      const url = `http://142.93.146.70:420/scraper/unique-products?bb_store_ids=${storeIds}`;
+      Axios.get(url)
+        .then(({ data }) => {
+          setStoresData(data);
+          console.log("data", data);
+
+          // Extract unique categories and sizes from the data
+          const uniqueCategories = [
+            ...new Set(data.map((item) => item.Category)),
+          ];
+          const uniqueSizes = [...new Set(data.map((item) => item.size))];
+          setCategories(uniqueCategories);
+          setSizes(uniqueSizes);
+        })
+        .catch((error) => {
+          console.error("Error fetching store data:", error);
+        });
+    }
+  }, [selectedStore]);
+
   return (
     <div className="w-full">
       <div className="relative flex flex-col md:flex-row border-b w-full">
         <div className="store p-4 w-full">
-          <h1 className="text-[1.5em]">Store</h1>
+          <h1 className="text-[1.5em]">Stores</h1>
+
+          <div className="selected-stores p-4">
+            {selectedStore.map((store) => (
+              <div
+                key={store.id}
+                className="flex items-center w-3/4 justify-between p-2 bg-gray-200 mb-2 rounded-lg"
+              >
+                <span>{store.name}</span>
+                <button
+                  className="text-red-500"
+                  onClick={() => handleStoreChange(store)}
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
+
           <div
             className="flex cursor-pointer justify-between w-3/4 p-2 items-center border rounded-lg bg-[#57545411] "
             onClick={toggleStoreDropdown}
           >
             <Image src={store} alt="b" className="w-[1.4em]" />
-            <span className="ml-6 text-[#05050585]">
-              {selectedStore.Name || "Search store ..."}
-            </span>
+            <span className="ml-6 text-[#05050585]">Search store ...</span>
             <Image
               src={isStoreDropdownOpen ? undroped : droped}
               className="w-4 ml-auto"
@@ -129,29 +191,33 @@ const Filters = () => {
             />
           </div>
           {isStoreDropdownOpen && (
-            <div className="bg-white text-black border w-full flex flex-col max-h-[10em] rounded-lg overflow-scroll">
-              {storesData.map((store) => (
+            <div className="flex cursor-pointer h-[7em] text-left flex-col overflow-y-scroll justify-between w-3/4 border rounded-lg bg-[#57545411] scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-100">
+              {allstores.map((store) => (
                 <div
                   key={store.id}
-                  className={`cursor-pointer text-black p-4 hover:bg-gray-200${
-                    selectedStore && selectedStore.id === store.id
+                  className={`cursor-pointer  text-left justify-start text-black py-4 px-1 hover:bg-gray-200 ${
+                    selectedStore.some(
+                      (selectedStore) => selectedStore.id === store.id
+                    )
                       ? " bg-gray-200"
                       : ""
                   }`}
                   onClick={() => handleStoreChange(store)}
                 >
-                  {store.Name}
+                  {store.name}
                 </div>
               ))}
             </div>
           )}
-
           <div className="compset mt-5">
             <button onClick={handlecompset} className="text-[#9c0195fd]">
               populate with comp-set
             </button>
           </div>
         </div>
+
+        {/* Display selected stores */}
+
         <div className="filters w-full p-4">
           <h1 className="text-[1.5em]">Filters</h1>
           <div className="flex flex-col md:flex-row">
@@ -172,17 +238,15 @@ const Filters = () => {
               </div>
               {isCategoryDropdownOpen && (
                 <div className="bg-white text-black border w-full h-[10em] rounded-lg overflow-scroll">
-                  {storesData.map((storeItem) => (
+                  {categories.sort().map((category) => (
                     <div
-                      key={storeItem.id}
-                      className={`cursor-pointer text-black p-4 hover:bg-gray-200${
-                        selectedCategory === storeItem.Category
-                          ? " bg-gray-200"
-                          : ""
+                      key={category}
+                      className={`cursor-pointer text-black p-4 hover:bg-gray-200 ${
+                        selectedCategory === category ? " bg-gray-200" : ""
                       }`}
-                      onClick={() => handleCategoryChange(storeItem.Category)}
+                      onClick={() => handleCategoryChange(category)}
                     >
-                      {storeItem.Category}
+                      {category}
                     </div>
                   ))}
                 </div>
@@ -205,15 +269,15 @@ const Filters = () => {
               </div>
               {isSizeDropdownOpen && (
                 <div className="bg-white text-black border w-full h-[10em] rounded-lg overscroll-x-none overflow-scroll">
-                  {storesData.map((storeItem) => (
+                  {sizes.sort((a, b) => a - b).map((size) => (
                     <div
-                      key={storeItem.id}
+                      key={size}
                       className={`cursor-pointer text-black p-4 hover:bg-gray-200 ${
-                        selectedSize === storeItem.size ? " bg-gray-200" : ""
+                        selectedSize === size ? " bg-gray-200" : ""
                       }`}
-                      onClick={() => handleSizeChange(storeItem.size)}
+                      onClick={() => handleSizeChange(size)}
                     >
-                      {storeItem.size}
+                      {size}
                     </div>
                   ))}
                 </div>
@@ -251,11 +315,14 @@ const Filters = () => {
         </div>
       </div>
       {showCompset && (
-        <div ref={compsetRef}>
-          <Compsetprop closeFunction={handlecompset} />
+        <div
+          ref={compsetRef}
+          className="absolute top-0 right-0 bg-white w-80 mt-12 rounded-lg shadow-md"
+        >
+          <Compsetprop />
         </div>
       )}
-      <Results storesData={storesData} />
+      <Results storesData={storesData} selectedFilters={selectedFilters} />
     </div>
   );
 };
