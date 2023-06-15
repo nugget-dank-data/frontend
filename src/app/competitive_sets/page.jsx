@@ -76,29 +76,35 @@ const Competitivesets = () => {
               Create New Compset</button>
           </div>
           <div className="container">
-          <div className="compset-item">
-            <div className="compsores flex w-1/2 justify-between">
-              <div className="rounded-lg flex bg-[#686767dd] p-2">
-                <Image src={storesblue} alt="nn" />
-                <p>Number of Competitive stores</p>
-              </div>
-              <div className="rounded-lg flex bg-[#686767dd] p-2">
-                <p>Org-wide</p>
-              </div>
+          
+           
             </div>
             {compsets.map((compset, index) => (
-              <div key={compset.id} className="compset-item">
+              <div key={compset.id} className="compset-item border p-4 flex flex-col">
+                 <div className="compsores flex w-1/2 justify-around items-start">
+                 <div className="rounded-lg flex bg-[#a49d9d43] p-2">
+                <Image src={storesblue} alt="nn" />
+                <p className="ml-2 text-[0.9em]">Number of Competitive stores</p>
+              </div>
+              <div className="rounded-lg flex bg-[#a49d9d43] p-2">
+                <p>Org-wide</p>
+              </div>
+              </div>
+             
+                <div className="flex">
+                <Image src={storesblue} alt="nn" />
                 <p>{compset.name}</p>
+                </div>
                 <button onClick={() => handleEditCompset(index)}>Edit</button>
                 <button onClick={() => handleDeleteCompset(index)}>
                   Delete
                 </button>
               </div>
+          
             ))}
           </div>
-          </div>
         </div>
-      </div>
+      
     </div>
   );
 };
