@@ -13,7 +13,7 @@ const Navbar = () => {
     switch (activePage) {
       case '/':
         return '';
-      case '/login':
+      case 'accounts/login':
         return '';
       case '/compare':
         return 'Compare Products';

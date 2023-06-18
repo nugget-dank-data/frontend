@@ -240,7 +240,7 @@ const Sidepane = ({ activeTab, handleTabClick }) => {
           </div>
           <div className="m-auto w-3/4 flex flex-row bg-[#1a181863] rounded-lg mt-8">
             <a
-              href="/login"
+              href="accounts/login"
               className="flex w-full align-middle items-center text-center justify-center"
             >
               <Image src={logout} alt="" />

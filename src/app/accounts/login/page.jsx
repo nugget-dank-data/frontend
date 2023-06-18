@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import nugget from "../../../images/logo.png";
-// import { login } from "../../api";
+import axios from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -10,16 +10,30 @@ const Login = () => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
+  const url = 'http://159.203.36.109:420/users/login/';
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(error);
-    setMessage(message);
+    setError("");
+    setMessage("");
 
     try {
-      const response = await login(email, password);
-      setMessage(response.message);
+      const response = await axios.post(url, {
+        email,
+        password,
+        username: email // Assuming the username is the same as the email
+      });
+
+      const token = response.data.key;
+      // Do something with the token (e.g., store it in local storage, set it in a global state)
+
+      setMessage("Login successful!");
     } catch (error) {
-      setError(error.response.data.message);
+      if (error.response) {
+        setError(error.response.data.message);
+      } else {
+        setError("An error occurred. Please try again.");
+      }
     }
   };
 

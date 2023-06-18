@@ -1,9 +1,12 @@
 "use client";
 import Sidepane from "@/components/Sidepane";
 import './globals.css';
+import { Inter } from 'next/font/google';
 import { useEffect, useState } from 'react';
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+
+const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({ children }) {
   const [activeTab, setActiveTab] = useState('');
@@ -24,13 +27,10 @@ export default function RootLayout({ children }) {
     setActiveTab(tabName);
   }, []);
 
-
-  const isLoginPage = window.location.pathname === '/login';
-
+  const isLoginPage = window.location.pathname === '/accounts/login';
 
   return (
     <html className="">
-      <body>
       <div className="w-full h-full p-0 overflow-hidden relative">
         <div className="flex flex-col sm:flex-row relative m-auto">
 
@@ -43,8 +43,10 @@ export default function RootLayout({ children }) {
               )}
 
           <div className="w-full">
-            <div className=" w-full ">
+            <div className=" w-full">
+            {!isLoginPage && (
               <Navbar />
+              )}
             </div>
             <div className="w-full">{children}</div>
           </div>
@@ -53,7 +55,6 @@ export default function RootLayout({ children }) {
           <Footer />
         </div>
       </div>
-      </body>
     </html>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {
@@ -16,14 +16,34 @@ import close from "../../images/close.svg";
 import storeimg from "../../images/stores.svg";
 import droped from "../../images/g.svg";
 import undroped from "../../images/2.svg";
+import axios from "axios";
 
 const Pricehistory = ({ priceData, handleclose, stores }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [selectedStore, setSelectedStore] = useState([]);
   const [isStoreDropdownOpen, setIsStoreDropdownOpen] = useState(false);
+  const [priceHistory, setPriceHistory] = useState([]);
 
-  console.log(priceData);
+  useEffect(() => {
+    if (priceData.inv && priceData.inv.length > 0) {
+      const storeId = priceData.inv[0].storeid;
+      const productId = priceData.inv[0].product_id;
+      fetchPriceHistory(storeId, productId);
+    }
+  }, [priceData]);
+
+  const fetchPriceHistory = async (storeId, productId) => {
+    try {
+      const response = await axios.get(
+        `http://142.93.146.70:420/scraper/product-history-api?store_bb_id=${storeId}&product_id=${productId}`
+      );
+      setPriceHistory(response.data);
+      console.log(response)
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const toggleStoreDropdown = () => {
     setIsStoreDropdownOpen(!isStoreDropdownOpen);

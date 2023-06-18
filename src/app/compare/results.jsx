@@ -165,8 +165,8 @@ const Results = ({
       <div className="flex">
         <div className="overflow-y-scroll relative rounded-2xl border-b shadow-xl h-[30em] w-[90%] flex scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-100 mb-80">
           <div className="flex flex-col w-full">
-            <div className="flex w-full">
-              <div className="w-[50%] bg-slate-300 sticky z-50 top-0 rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em]">
+            <div className="flex w-full justify-between">
+              <div className="w-full bg-slate-300 sticky z-50 top-0 rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em]">
                 <h1>Product</h1>
               </div>
 
@@ -174,7 +174,7 @@ const Results = ({
                 selectedstores.map((selectedStore) => (
                   <div
                     key={selectedStore.bb_id}
-                    className="w-[50%] bg-blue-400 sticky z-50 top-0 rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em]"
+                    className="w-full sticky z-50 top-0 rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em]"
                   >
                     <h1>{selectedStore.name}</h1>
                   </div>
@@ -182,8 +182,8 @@ const Results = ({
             </div>
             {filteredData.map((product) => {
               return (
-                <div key={product.id} className="flex border-b">
-                  <div className="max-w-[40%] min-w-[40%] p-3">
+                <div key={product.id} className="flex border-b justify-between">
+                  <div className="w-full p-3">
                     <div className="text-[0.9em]">
                       <p className="pb-[2%]">{product.Name}</p>
                       <p className="pb-[2%]">
@@ -203,19 +203,18 @@ const Results = ({
                     </div>
                   </div>
                   {Array.isArray(selectedstores) &&
-              selectedstores.map((selectedStore) => (
-                <div key={selectedStore.bb_id} className="bg-blue-400">
-                  {filteredData
-                    .filter()
-                    .map((filteredProduct) => (
+                    selectedstores.map((selectedStore) => (
                       <div
-                        key={filteredProduct.id}
-                        className="flex border-b bg-red-400 w-full flex-col"
+                        key={selectedStore.id}
+                        className="w-full justify-between"
                       >
-                            <div className="max-w-[40%] min-w-[40%] p-3">
+                        {product.inv[0].store_id == selectedStore.bb_id ? (
+                          <div className="flex w-full flex-col m-3">
+                            <div className="p-3">
                               <div className="w-full justify-end items-end">
+                              <div className="w-3 rounded-full min-h-3 bg-green-500"></div>
                                 <a
-                                  href={filteredProduct.inv[0].url}
+                                  href={product.inv[0].url}
                                   className="items-end text-right"
                                 >
                                   <Image
@@ -226,20 +225,48 @@ const Results = ({
                                 </a>
                               </div>
                               <div
-                                className="hover:bg-[#8b8b8b79] bg-red-400 w-full justify-between flex flex-col p-[0.5em]"
+                                className="hover:bg-[#8b8b8b79] w-full justify-between flex flex-col p-[0.5em]"
                                 onClick={() => {
                                   handleSelectProduct(product);
                                   handleToggleHistory();
                                 }}
                               >
-                                <p className="mb-4">${filteredProduct.inv[0].price}</p>
+                                <p className="mb-4">${product.inv[0].price}</p>
                                 <p className="mt-8">
-                                  {filteredProduct.inv[0].raw_stock} in stock
+                                  {product.inv[0].raw_stock} in stock
                                 </p>
                               </div>
                             </div>
                           </div>
-                        ))}
+                        ) : (
+                          <div className="flex w-full flex-col m-3">
+                            <div className="max-w-[40%] min-w-[40%] p-3">
+                              <div className="w-full justify-end items-end">
+                                <span className="min-w-3 rounded-full min-h-3 bg-red-500"></span>
+                                <a
+                                  // href={product.inv[0].url}
+                                  className="items-end text-right"
+                                >
+                                
+                                </a>
+                              </div>
+                              <div
+                                className="hover:bg-[#8b8b8b79] w-full justify-between flex flex-col p-[0.5em]"
+                                onClick={() => {
+                                  handleSelectProduct(product);
+                                  handleToggleHistory();
+                                }}
+                              >
+                                <p className="mb-4">
+                                  {/* ${product.inv[0].price} */}
+                                </p>
+                                <p className="mt-8">
+                                  {/* {product.inv[0].raw_stock} in stock */}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     ))}
                 </div>
