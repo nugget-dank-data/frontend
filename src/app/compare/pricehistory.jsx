@@ -21,7 +21,7 @@ import axios from "axios";
 const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const [selectedstore, setSelectedStore] = useState([]);
+  const [selectedstore, setSelectedStore] = useState({});
   const [isStoreDropdownOpen, setIsStoreDropdownOpen] = useState(false);
   const [priceHistory, setPriceHistory] = useState([]);
 
@@ -29,10 +29,11 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
     if (priceData.inv && priceData.inv.length > 0) {
       const storeId = priceData.inv[0].store_id;
       const productId = priceData.inv[0].product_id;
-      setSelectedStore(selectedStore)
+      setSelectedStore(selectedStore); // <- Change this line
       fetchPriceHistory(storeId, productId);
     }
   }, [priceData]);
+  console.log(selectedStore)
 
   const fetchPriceHistory = async (storeId, productId) => {
     try {
@@ -82,7 +83,7 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
           >
             <Image src={storeimg} alt="b" className="w-[1.4em]" />
             <span className="ml-6 text-[#05050585]">
-              {selectedstore.name || "choose a store"}
+            {/* {selectedstore.name ? selectedstore.name : "Choose a store"} */}
             </span>
             <Image
               src={isStoreDropdownOpen ? undroped : droped}
@@ -129,25 +130,27 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
         </div>
 
         {/* Price Trends */}
-        <div className="price-trends min-h-[300px] rounded-sm">
+        <div className="price-trends min-h-[300px] rounded-sm flex-grow">
           <h3>Price Trends</h3>
           <LineChart
-            width={500}
-            height={300}
+            width="100%"
+            height="100%"
             data={priceHistory}
             margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
           >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="price"
-              name="Price"
-              stroke="#8884d8"
-            />
+            {/* ... */}
+          </LineChart>
+        </div>
+
+        <div className="inventory-history min-h-[300px] rounded-sm shadow-sm flex-grow">
+          <h3>Inventory History</h3>
+          <LineChart
+            width="100%"
+            height="100%"
+            data={priceHistory}
+            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+          >
+            {/* ... */}
           </LineChart>
         </div>
 
@@ -155,7 +158,7 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
         <div className="inventory-history min-h-[300px] rounded-sm shadow-sm">
           <h3>Inventory History</h3>
           <LineChart
-            width={500}
+            width="100%"
             height={300}
             data={priceHistory}
             margin={{ top: 20, right: 30, left: 20, bottom: 5 }}

@@ -109,7 +109,15 @@ const Results = ({
 
   return (
     <div className="flex flex-col">
-     
+       {showHistory && selectedProduct && (
+                      <Pricehistory
+                        priceData={selectedProduct}
+                        stores={allstores}
+                        handleclose={() => setShowHistory(false)}
+                        onClose={() => setShowHistory(false)}
+                        selectedStore={selectedStore}
+                      />
+                    )}
       <div className="flex flex-col md:flex-row justify-between p-4 mx-auto">
         <div className="flex md:mb-0 mb-4">
           <h2 className="text-[1.4em] font-bold">Results</h2>
@@ -169,15 +177,7 @@ const Results = ({
                   key={selectedStore.bb_id}
                   className="w-full sticky top-0 rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em]"
                   >
-                    {showHistory && selectedProduct && (
-                      <Pricehistory
-                        priceData={selectedProduct}
-                        stores={allstores}
-                        handleclose={() => setShowHistory(false)}
-                        onClose={() => setShowHistory(false)}
-                        selectedStore={selectedStore}
-                      />
-                    )}
+                  
                     <h1>{selectedStore.name}</h1>
                   </div>
                 ))}
