@@ -96,7 +96,7 @@ const Results = ({
     setFilteredData(updatedFilteredData);
   }, [storesData, selectedFilters]);
 
-  console.log("filtered data:", filteredData);
+  
 
   const uniqueproducts = Array.from(
     new Set(filteredData.map((product) => product.Name))
@@ -109,14 +109,7 @@ const Results = ({
 
   return (
     <div className="flex flex-col">
-      {showHistory && selectedProduct && (
-        <Pricehistory
-          priceData={selectedProduct}
-          stores={allstores}
-          handleclose={() => setShowHistory(false)}
-          onClose={() => setShowHistory(false)}
-        />
-      )}
+     
       <div className="flex flex-col md:flex-row justify-between p-4 mx-auto">
         <div className="flex md:mb-0 mb-4">
           <h2 className="text-[1.4em] font-bold">Results</h2>
@@ -166,16 +159,25 @@ const Results = ({
         <div className="overflow-y-scroll relative rounded-2xl border-b shadow-xl h-[30em] w-[90%] flex scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-100 mb-80">
           <div className="flex flex-col w-full">
             <div className="flex w-full justify-between">
-              <div className="w-full bg-slate-300 sticky z-50 top-0 rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em]">
+              <div className="w-full bg-slate-300 sticky top-0 rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em]">
                 <h1>Product</h1>
               </div>
 
               {Array.isArray(selectedstores) &&
                 selectedstores.map((selectedStore) => (
                   <div
-                    key={selectedStore.bb_id}
-                    className="w-full sticky z-50 top-0 rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em]"
+                  key={selectedStore.bb_id}
+                  className="w-full sticky top-0 rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em]"
                   >
+                    {showHistory && selectedProduct && (
+                      <Pricehistory
+                        priceData={selectedProduct}
+                        stores={allstores}
+                        handleclose={() => setShowHistory(false)}
+                        onClose={() => setShowHistory(false)}
+                        selectedStore={selectedStore}
+                      />
+                    )}
                     <h1>{selectedStore.name}</h1>
                   </div>
                 ))}
@@ -208,6 +210,7 @@ const Results = ({
                         key={selectedStore.id}
                         className="w-full justify-between"
                       >
+                     
                         {product.inv[0].store_id == selectedStore.bb_id ? (
                           <div className="flex w-full flex-col m-3">
                             <div className="p-3">

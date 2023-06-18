@@ -18,17 +18,18 @@ import droped from "../../images/g.svg";
 import undroped from "../../images/2.svg";
 import axios from "axios";
 
-const Pricehistory = ({ priceData, handleclose, stores }) => {
+const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const [selectedStore, setSelectedStore] = useState([]);
+  const [selectedstore, setSelectedStore] = useState([]);
   const [isStoreDropdownOpen, setIsStoreDropdownOpen] = useState(false);
   const [priceHistory, setPriceHistory] = useState([]);
 
   useEffect(() => {
     if (priceData.inv && priceData.inv.length > 0) {
-      const storeId = priceData.inv[0].storeid;
+      const storeId = priceData.inv[0].store_id;
       const productId = priceData.inv[0].product_id;
+      setSelectedStore(selectedStore)
       fetchPriceHistory(storeId, productId);
     }
   }, [priceData]);
@@ -39,7 +40,6 @@ const Pricehistory = ({ priceData, handleclose, stores }) => {
         `http://142.93.146.70:420/scraper/product-history-api?store_bb_id=${storeId}&product_id=${productId}`
       );
       setPriceHistory(response.data);
-      console.log(response)
     } catch (error) {
       console.log(error);
     }
@@ -49,8 +49,8 @@ const Pricehistory = ({ priceData, handleclose, stores }) => {
     setIsStoreDropdownOpen(!isStoreDropdownOpen);
   };
 
-  const handleStoreChange = (selectedStore) => {
-    setSelectedStore(selectedStore);
+  const handleStoreChange = (selectedstore) => {
+    setSelectedStore(selectedstore);
     setIsStoreDropdownOpen(false);
   };
 
@@ -82,7 +82,7 @@ const Pricehistory = ({ priceData, handleclose, stores }) => {
           >
             <Image src={storeimg} alt="b" className="w-[1.4em]" />
             <span className="ml-6 text-[#05050585]">
-              {selectedStore.name || "choose a store"}
+              {selectedstore.name || "choose a store"}
             </span>
             <Image
               src={isStoreDropdownOpen ? undroped : droped}
@@ -96,7 +96,7 @@ const Pricehistory = ({ priceData, handleclose, stores }) => {
                 <div
                   key={store.id}
                   className={`cursor-pointer text-black p-4 hover:bg-gray-200${
-                    selectedStore && selectedStore.id === store.id
+                    selectedstore && selectedstore.id === store.id
                       ? " bg-gray-200"
                       : ""
                   }`}
@@ -128,13 +128,51 @@ const Pricehistory = ({ priceData, handleclose, stores }) => {
           />
         </div>
 
+        {/* Price Trends */}
+        <div className="price-trends min-h-[300px] rounded-sm">
+          <h3>Price Trends</h3>
+          <LineChart
+            width={500}
+            height={300}
+            data={priceHistory}
+            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line
+              type="monotone"
+              dataKey="price"
+              name="Price"
+              stroke="#8884d8"
+            />
+          </LineChart>
+        </div>
+
         {/* Inventory History */}
-
-        <div className="price-trends min-h-[3em] rounded-sm"></div>
-
-        <div className="inventory min-h-[3em] rounded-sm shadow-sm"></div>
-
-        <div className="inventory-history min-h-[3em] rounded-sm shadow-sm"></div>
+        <div className="inventory-history min-h-[300px] rounded-sm shadow-sm">
+          <h3>Inventory History</h3>
+          <LineChart
+            width={500}
+            height={300}
+            data={priceHistory}
+            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line
+              type="monotone"
+              dataKey="inventory"
+              name="Inventory"
+              stroke="#82ca9d"
+            />
+          </LineChart>
+        </div>
       </div>
     </div>
   );
