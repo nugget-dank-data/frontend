@@ -3,7 +3,7 @@ import React from 'react';
 import Sidepane from '@/components/Sidepane';
 import { useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Login from './login/page';
+import Login from './accounts/login/page';
 import Compare from './compare/page';
 import CompetitiveSets from './competitive_sets/page';
 import TermsOfService from './(docs)/terms_of_use/page';

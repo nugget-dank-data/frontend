@@ -237,7 +237,7 @@ const Filters = () => {
                 />
               </div>
               {isCategoryDropdownOpen && (
-                <div className="bg-white text-black border w-full h-[10em] rounded-lg overflow-scroll">
+                <div className="flex cursor-pointer h-[7em] text-left flex-col overflow-y-scroll justify-between w-3/4 border rounded-lg bg-[#57545411] scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-100">
                   {categories.sort().map((category) => (
                     <div
                       key={category}
@@ -268,7 +268,7 @@ const Filters = () => {
                 />
               </div>
               {isSizeDropdownOpen && (
-                <div className="bg-white text-black border w-full h-[10em] rounded-lg overscroll-x-none overflow-scroll">
+                <div className="flex cursor-pointer h-[7em] md:w-1/2 mt-4 md:mt-0 text-left flex-col overflow-y-scroll justify-between w-3/4 border rounded-lg bg-[#57545411] scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-100">
                   {sizes.sort((a, b) => a - b).map((size) => (
                     <div
                       key={size}
@@ -322,7 +322,7 @@ const Filters = () => {
           <Compsetprop />
         </div>
       )}
-      <Results storesData={storesData} selectedFilters={selectedFilters} />
+      <Results storesData={storesData} allstores={allstores} selectedFilters={selectedFilters} selectedstores={selectedStore} />
     </div>
   );
 };

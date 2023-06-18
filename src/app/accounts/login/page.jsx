@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from "react";
 import Image from "next/image";
-import nugget from "../../images/logo.png";
+import nugget from "../../../images/logo.png";
 // import { login } from "../../api";
 
 const Login = () => {

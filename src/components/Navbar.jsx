@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import notification from '../images/notification.svg';
 
 const Navbar = () => {
-  const activePage = window.location.pathname;
+  const [activePage, setActivePage] = useState('');
+
+  useEffect(() => {
+    setActivePage(window.location.pathname);
+  }, []);
 
   const getPageTitle = () => {
     switch (activePage) {
@@ -14,8 +18,7 @@ const Navbar = () => {
       case '/compare':
         return 'Compare Products';
       case '/competitive_sets':
-            return 'Competitive Sets';
-      
+        return 'Competitive Sets';
       default:
         return 'Unknown Page';
     }
