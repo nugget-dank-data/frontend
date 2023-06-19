@@ -17,6 +17,7 @@ import storeimg from "../../images/stores.svg";
 import droped from "../../images/g.svg";
 import undroped from "../../images/2.svg";
 import axios from "axios";
+import PriceInventoryGraph from "./pricegraph";
 
 const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
   const [startDate, setStartDate] = useState(new Date());
@@ -33,7 +34,7 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
       fetchPriceHistory(storeId, productId);
     }
   }, [priceData]);
-  console.log(selectedStore)
+  console.log(selectedStore);
 
   const fetchPriceHistory = async (storeId, productId) => {
     try {
@@ -56,43 +57,47 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
   };
 
   return (
-    <div className="absolute right-0 flex top-0 z-50 w-full h-full bg-[#00000041]">
-      <div className=" bg-[#f7f2f2] m-auto rounded-lg z-50 flex flex-col p-10 justify-evenly">
+    <div className="absolute z-50 flex top-0 p-10 bg-[#00000041] flex-col scrollbar-thin bottom-0 w-full overflow-y-scroll scrollbar-thumb-blue-500 scrollbar-track-gray-100"
+    
+    >
+      <div className="bg-white m-auto rounded-lg flex flex-col items-center justify-center relative p-4">
         {/* Price History */}
-        <div className="relative justify-between p-5">
-          <h2 className="text-bold">Price History</h2>
+        <div className="flex justify-between w-full">
+          <h2 className="font-bold text-2xl">Price History</h2>
           <button onClick={handleclose}>
             <Image
               src={close}
-              alt="ss"
-              className="top-0 absolute right-0 w-[1.5em]"
+              alt="Close"
+              className="w-6 h-6 absolute top-0 right-0"
             />
           </button>
         </div>
-        <div className="first">
-          <div className="w-full border pr-2  rounded-lg bg-white flex mb-6">
-            <Image src={search} alt="ss" className="top-0 w-6" />
+        <div className="first mt-4 w-full">
+          <div className="w-full border pr-2 rounded-lg bg-white flex mb-6">
+            <Image src={search} alt="Search" className="w-6 h-6" />
             <input
               type="search"
-              className="border-none rounded-lg bg-inherit p-2 w-full focus:outline-none"
+              className="border-none rounded-lg bg-transparent p-2 w-full focus:outline-none text-sm"
             />
           </div>
           <div
-            className="flex cursor-pointer justify-between w-full p-2 items-center border rounded-lg bg-[#57545411] "
+            className="flex cursor-pointer justify-between w-full p-2 items-center border rounded-lg bg-[#57545411]"
             onClick={toggleStoreDropdown}
           >
-            <Image src={storeimg} alt="b" className="w-[1.4em]" />
-            <span className="ml-6 text-[#05050585]">
-            {/* {selectedstore.name ? selectedstore.name : "Choose a store"} */}
+            <Image src={storeimg} alt="Store" className="w-6 h-6" />
+            <span className="ml-6 text-sm text-[#05050585]">
+              {selectedstore && selectedstore.name
+                ? selectedstore.name
+                : "Choose a store"}
             </span>
             <Image
               src={isStoreDropdownOpen ? undroped : droped}
               className="w-4 ml-auto"
-              alt="k"
+              alt="Dropdown"
             />
           </div>
           {isStoreDropdownOpen && (
-            <div className="bg-white text-black border flex flex-col max-h-[10em] rounded-lg overflow-scroll">
+            <div className="bg-white text-black border flex flex-col max-h-[10em] rounded-lg overflow-scroll mt-1">
               {stores.map((store) => (
                 <div
                   key={store.id}
@@ -111,72 +116,53 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
         </div>
 
         {/* Filters */}
-        <div className="flex justify-between">
-          <input type="checkbox" name="all data points" id="all data points" />
-
-          <DatePicker
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            dateFormat="dd MMMM yyyy"
-            className="text-center border rounded-lg"
+        <div className="flex flex-wrap justify-between items-center my-4">
+          <label htmlFor="all-data-points" className="text-sm">
+            All Data Points
+          </label>
+          <input
+            type="checkbox"
+            name="all-data-points"
+            id="all-data-points"
+            className="mr-1"
           />
 
-          <DatePicker
-            selected={endDate}
-            onChange={(date) => setEndDate(date)}
-            dateFormat="dd MMMM yyyy"
-            className="text-center border rounded-lg"
-          />
+          <div className="w-full sm:w-auto my-2 sm:my-0">
+            <DatePicker
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              dateFormat="dd MMMM yyyy"
+              className="text-center border rounded-lg text-sm w-full sm:w-auto"
+              wrapperClassName="mr-2"
+            />
+          </div>
+
+          <div className="w-full sm:w-auto">
+            <DatePicker
+              selected={endDate}
+              onChange={(date) => setEndDate(date)}
+              dateFormat="dd MMMM yyyy"
+              className="text-center border rounded-lg text-sm w-full sm:w-auto"
+              wrapperClassName="ml-2"
+            />
+          </div>
         </div>
 
-        {/* Price Trends */}
-        <div className="price-trends min-h-[300px] rounded-sm flex-grow">
-          <h3>Price Trends</h3>
-          <LineChart
-            width="100%"
-            height="100%"
-            data={priceHistory}
-            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-          >
-            {/* ... */}
-          </LineChart>
-        </div>
-
-        <div className="inventory-history min-h-[300px] rounded-sm shadow-sm flex-grow">
-          <h3>Inventory History</h3>
-          <LineChart
-            width="100%"
-            height="100%"
-            data={priceHistory}
-            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-          >
-            {/* ... */}
-          </LineChart>
-        </div>
+        <PriceInventoryGraph priceData={priceHistory} />
 
         {/* Inventory History */}
-        <div className="inventory-history min-h-[300px] rounded-sm shadow-sm">
-          <h3>Inventory History</h3>
-          <LineChart
-            width="100%"
-            height={300}
-            data={priceHistory}
-            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="inventory"
-              name="Inventory"
-              stroke="#82ca9d"
-            />
-          </LineChart>
+        <div className="inventory-history mt-8 shadow-lg border m-auto flex w-[70%] flex-col rounded-lg p-4">
+          <h3 className="font-bold text-2xl">Inventory History</h3>
+          {priceHistory.map((item) => (
+            <div key={item.id} className="flex justify-between mt-2 text-sm p-4">
+              <p>{new Date(item.created_at).toLocaleDateString()}</p>
+              <p>${item.price}</p>
+              <p>{item.stock} in stock</p>
+            </div>
+          ))}
         </div>
       </div>
+
     </div>
   );
 };

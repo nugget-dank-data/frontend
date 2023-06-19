@@ -322,7 +322,9 @@ const Filters = () => {
           <Compsetprop />
         </div>
       )}
+      <div>
       <Results storesData={storesData} allstores={allstores} selectedFilters={selectedFilters} selectedstores={selectedStore} />
+      </div>
     </div>
   );
 };

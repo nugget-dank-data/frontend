@@ -31,7 +31,6 @@ const Results = ({
     setSelectedProduct(product);
   };
 
-  console.log(selectedstores);
   const sortStores = (data) => {
     if (sortOption === "name-asc") {
       return data.sort((a, b) => a.Name.localeCompare(b.Name));
@@ -212,8 +211,8 @@ const Results = ({
                       >
                      
                         {product.inv[0].store_id == selectedStore.bb_id ? (
-                          <div className="flex w-full flex-col m-3">
-                            <div className="p-3">
+                          <div className="flex w-full flex-col m-auto">
+                            <div className="p-3 w-[50%]">
                               <div className="w-full justify-end items-end">
                               <div className="w-3 rounded-full min-h-3 bg-green-500"></div>
                                 <a
