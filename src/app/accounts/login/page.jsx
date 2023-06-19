@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import nugget from "../../../images/logo.png";
 import axios from "axios";
+import Link from "next/link";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -80,7 +81,7 @@ const Login = () => {
         {message && <p className="text-green-500">{message}</p>}
         <div className="text-white justify-center items-center text-center mt-4 text-[1.1em]">
           <p>
-            Not registered yet? <a href="accounts/register" className="text-right underline text-[#cb44f5] ml-3">Request access</a>
+            Not registered yet? <Link href="accounts/register" className="text-right underline text-[#cb44f5] ml-3">Request access</Link>
           </p>
         </div>
       </div>

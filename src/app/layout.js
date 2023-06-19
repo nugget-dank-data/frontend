@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
     setActiveTab(tabName);
   }, []);
 
-  const isLoginPage = window.location.pathname === '/accounts/login';
+  const isLoginPage = window.location.pathname === '/accounts/login' || window.location.pathname === '/accounts/register';
 
   return (
     <html className="">
