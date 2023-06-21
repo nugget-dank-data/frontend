@@ -7,6 +7,7 @@ import eyedark from "../../../images/eyedark.png";
 import eye from "../../../images/eye.png";
 import eyecloseddark from "../../../images/eyecloseddark.png";
 import eyeclosed from "../../../images/eyeclosed.png";
+import Link from "next/link";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -166,9 +167,9 @@ const Register = () => {
         <div className="text-white justify-center items-center text-center mt-4 text-[1.1em]">
           <p>
             Already registered?{" "}
-            <a href="#" className="text-right underline text-[#cb44f5] ml-3">
+            <Link href="accounts/login" className="text-right underline text-[#cb44f5] ml-3">
               Login
-            </a>
+            </Link>
           </p>
         </div>
       </div>
