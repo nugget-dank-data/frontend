@@ -8,6 +8,7 @@ import settings from "../images/settings.svg";
 import logout from "../images/logout.svg";
 import droped from "../images/dropdown2.svg";
 import notdroped from "../images/dropdown1.svg";
+import Link from "next/link";
 
 const Sidepane = ({ activeTab, handleTabClick }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -239,13 +240,13 @@ const Sidepane = ({ activeTab, handleTabClick }) => {
             <a href="terms_of_use">Terms of Use</a>
           </div>
           <div className="m-auto w-3/4 flex flex-row bg-[#1a181863] rounded-lg mt-8">
-            <a
+            <Link
               href="accounts/login"
               className="flex w-full align-middle items-center text-center justify-center"
             >
               <Image src={logout} alt="" />
               <p className="p-2 text-[1em]"> Logout</p>
-            </a>
+            </Link>
           </div>
         </div>
       ) : (

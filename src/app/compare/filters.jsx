@@ -161,7 +161,7 @@ const Filters = () => {
         <div className="store p-4 w-full">
           <h1 className="text-[1.5em]">Stores</h1>
 
-          <div className="selected-stores p-4">
+          <div className="selected-stores w-full">
             {selectedStore.map((store) => (
               <div
                 key={store.id}
@@ -191,7 +191,7 @@ const Filters = () => {
             />
           </div>
           {isStoreDropdownOpen && (
-            <div className="flex cursor-pointer h-[7em] text-left flex-col overflow-y-scroll justify-between w-3/4 border rounded-lg bg-[#57545411] scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-100">
+            <div className="flex cursor-pointer h-[7em] text-left flex-col overflow-y-scroll justify-between w-3/4 border rounded-lg bg-[#57545411] scrollbar-thin scrollbar-thumb-blue-[#7F56D9] scrollbar-track-gray-100">
               {allstores.map((store) => (
                 <div
                   key={store.id}
@@ -210,7 +210,7 @@ const Filters = () => {
             </div>
           )}
           <div className="compset mt-5">
-            <button onClick={handlecompset} className="text-[#9c0195fd]">
+            <button onClick={handlecompset} className="text-[#7F56D9]">
               populate with comp-set
             </button>
           </div>
@@ -268,7 +268,7 @@ const Filters = () => {
                 />
               </div>
               {isSizeDropdownOpen && (
-                <div className="flex cursor-pointer h-[7em] md:w-1/2 mt-4 md:mt-0 text-left flex-col overflow-y-scroll justify-between w-3/4 border rounded-lg bg-[#57545411] scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-100">
+                <div className="flex cursor-pointer h-[7em] md:w-1/2 mt-4 md:mt-0 text-left flex-col overflow-y-scroll justify-between w-3/4 border rounded-lg bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
                   {sizes.sort((a, b) => a - b).map((size) => (
                     <div
                       key={size}
@@ -306,7 +306,7 @@ const Filters = () => {
           <div className="m-auto flex items-center justify-center mt-4">
             <button
               type="submit"
-              className="bg-[#12335a] m-auto p-2 pl-4 pr-4 rounded-lg text-white"
+              className="bg-[#7F56D9] m-auto p-2 pl-4 pr-4 rounded-lg text-white"
               onClick={applyFilters}
             >
               Apply filters

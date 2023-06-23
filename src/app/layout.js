@@ -52,7 +52,7 @@ export default function RootLayout({ children }) {
           </div>
         </div>
         <div className="w-full bottom-0">
-          <Footer />
+          {/* <Footer /> */}
         </div>
       </div>
     </html>

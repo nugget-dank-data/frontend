@@ -10,7 +10,7 @@ import TermsOfService from './(docs)/terms_of_use/page';
 import PrivacyPolicy from './(docs)/privacy_policy/page';
 import AdminLogin from './admin/login/page';
 import AdminOrganizations from './admin/organizations/page';
-import ResetPassword from './settings/reset_password/page';
+import ResetPassword from './accounts/reset_password/page';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('');

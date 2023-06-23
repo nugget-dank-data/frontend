@@ -13,7 +13,7 @@ const Navbar = () => {
     switch (activePage) {
       case '/':
         return '';
-      case 'accounts/login':
+      case 'settings/reset_password':
         return '';
       case '/compare':
         return 'Compare Products';

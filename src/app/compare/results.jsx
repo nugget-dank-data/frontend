@@ -20,6 +20,7 @@ const Results = ({
 
   const handleSortChange = (event) => {
     setSortOption(event.target.value);
+    sortStores();
   };
 
   const handleToggleHistory = () => {
@@ -31,7 +32,22 @@ const Results = ({
     setSelectedProduct(product);
   };
 
-  const sortStores = (data) => {
+  useEffect(() => {
+    // Filter the data based on the selected filters
+    let updatedFilteredData = storesData || [];
+
+    // Apply filters...
+
+    // Sort the filtered data
+    const sortedData = sortStores(updatedFilteredData);
+
+    // Update the filtered data
+    setFilteredData(sortedData);
+  }, [storesData, selectedFilters]);
+
+  const sortStores = () => {
+    let data = filteredData.slice(); // Create a copy of the array before sorting
+
     if (sortOption === "name-asc") {
       return data.sort((a, b) => a.Name.localeCompare(b.Name));
     } else if (sortOption === "name-desc") {
@@ -48,63 +64,12 @@ const Results = ({
       return data;
     }
   };
-
-  useEffect(() => {
-    // Filter the data based on the selected filters
-    let updatedFilteredData = storesData || [];
-
-    // if (
-    //   selectedFilters.selectedStore &&
-    //   selectedFilters.selectedStore.length > 0
-    // ) {
-    //   const storeIds = selectedFilters.selectedStore.map(
-    //     (store) => store.bb_id
-    //   );
-    //   updatedFilteredData = updatedFilteredData.filter((item) =>
-    //     storeIds.includes(item.bb_store_id)
-    //   );
-    // }
-
-    // if (selectedFilters.selectedCategory !== "") {
-    //   updatedFilteredData = updatedFilteredData.filter(
-    //     (item) => item.Category === selectedFilters.selectedCategory
-    //   );
-    // }
-
-    // if (selectedFilters.selectedSize !== "") {
-    //   updatedFilteredData = updatedFilteredData.filter(
-    //     (item) => item.size === selectedFilters.selectedSize
-    //   );
-    // }
-
-    // // Apply price range filter
-    // let minPrice, maxPrice;
-
-    // if (
-    //   Array.isArray(selectedFilters.range) &&
-    //   selectedFilters.range.length === 2
-    //   ) {
-    //     [minPrice, maxPrice] = selectedFilters.range;
-    //   updatedFilteredData = updatedFilteredData.filter(
-    //     (item) => item.price >= minPrice && item.price <= maxPrice
-    //   );
-    // }
-
-    // console.log("After selectedStore filter:", updatedFilteredData);
-    // Update the filtered data
-    setFilteredData(updatedFilteredData);
-  }, [storesData, selectedFilters]);
-
   
 
   const uniqueproducts = Array.from(
-    new Set(filteredData.map((product) => product.Name))
+    new Set(filteredData.map((product) => product.product_id))
   );
-  // console.log("uniqueproducts", uniqueproducts);
 
-  // const countByName = (name) => {
-  //   return filteredData.filter((store) => store.Name === name).length;
-  // };
 
   return (
     <div className="flex flex-col">
@@ -121,7 +86,7 @@ const Results = ({
         <div className="flex md:mb-0 mb-4">
           <h2 className="text-[1.4em] font-bold">Results</h2>
           <p className="h-10 min-w-[2em] ml-3 flex items-center text-[1.4em] justify-center text-center border shadow-lg rounded-lg">
-            {uniqueproducts.length || 0}
+            {storesData.length || 0}
           </p>
         </div>
         <div className="flex flex-col md:flex-row md:space-x-4 items-center">
@@ -163,10 +128,10 @@ const Results = ({
         </div>
       </div>
       <div className="flex">
-        <div className="overflow-y-scroll relative rounded-2xl border-b shadow-xl h-[30em] w-[90%] flex scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-100 mb-80">
+        <div className="overflow-y-scroll relative rounded-2xl border-b shadow-xl h-[30em] w-[90%] flex scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100 mb-80">
           <div className="flex flex-col w-full">
             <div className="flex w-full justify-between">
-              <div className="w-full bg-slate-300 sticky top-0 rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em]">
+              <div className="w-full bg-slate-300 sticky top-0 rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em] min-w-[12em]">
                 <h1>Product</h1>
               </div>
 
@@ -174,14 +139,14 @@ const Results = ({
                 selectedstores.map((selectedStore) => (
                   <div
                   key={selectedStore.bb_id}
-                  className="w-full sticky top-0 rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em]"
+                  className="w-full sticky top-0 rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em] min-w-[12em]"
                   >
                   
                     <h1>{selectedStore.name}</h1>
                   </div>
                 ))}
             </div>
-            {filteredData.map((product) => {
+            {storesData.map((product) => {
               return (
                 <div key={product.id} className="flex border-b justify-between">
                   <div className="w-full p-3">
@@ -199,7 +164,7 @@ const Results = ({
                       </p>
                       <p>
                         <span className="font-bold">Size: </span>
-                        {product.size_concat}
+                        {product.size|| 0} {product.size_unit}
                       </p>
                     </div>
                   </div>
@@ -211,7 +176,7 @@ const Results = ({
                       >
                      
                         {product.inv[0].store_id == selectedStore.bb_id ? (
-                          <div className="flex w-full flex-col m-auto">
+                          <div className="flex w-full flex-col m-auto min-w-[12em]">
                             <div className="p-3 w-[50%]">
                               <div className="w-full justify-end items-end">
                               <div className="w-3 rounded-full min-h-3 bg-green-500"></div>
@@ -241,7 +206,7 @@ const Results = ({
                             </div>
                           </div>
                         ) : (
-                          <div className="flex w-full flex-col m-3">
+                          <div className="flex w-full flex-col m-3 min-w-[12em]">
                             <div className="max-w-[40%] min-w-[40%] p-3">
                               <div className="w-full justify-end items-end">
                                 <span className="min-w-3 rounded-full min-h-3 bg-red-500"></span>
