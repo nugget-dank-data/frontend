@@ -66,22 +66,24 @@ const Login = () => {
             className={`bg-black p-4 text-white rounded-lg m-4 hover:bg-white hover:text-black w-full ${error ? 'border-red-500' : ''}`}
           />
           <div className="-mt-4 justify-end w-full text-right">
-            <a href="settings/reset_password" className="text-right underline text-[#cb44f5]">
+            <Link href="/accounts/reset_password" className="text-right underline text-[#cb44f5]">
               Forgot Password?
-            </a>
+            </Link>
           </div>
+          <Link href='/' className="w-full">
           <button
             type="submit"
             className="bg-[#7F56D9] text-white text-[1.4em] p-2 hover:bg-[#5c35af] w-full rounded-xl m-auto mt-6"
           >
             Login
           </button>
+          </Link>
         </form>
         {error && <p className="text-red-500">{error}</p>}
         {message && <p className="text-green-500">{message}</p>}
         <div className="text-white justify-center items-center text-center mt-4 text-[1.1em]">
           <p>
-            Not registered yet? <Link href="accounts/register" className="text-right underline text-[#7F56D9] ml-3">Request access</Link>
+            Not registered yet? <Link href="/accounts/register" className="text-right underline text-[#7F56D9] ml-3">Request access</Link>
           </p>
         </div>
       </div>

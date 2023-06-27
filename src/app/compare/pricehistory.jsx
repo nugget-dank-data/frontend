@@ -20,13 +20,20 @@ import axios from "axios";
 import PriceInventoryGraph from "./pricegraph";
 
 const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  // const startDateFormat = priceData.start_date.split('T')[0]; // Extract only the date part
+const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date()); // Use the current date as the default end date  
   const [selectedstore, setSelectedStore] = useState({});
   const [isStoreDropdownOpen, setIsStoreDropdownOpen] = useState(false);
   const [priceHistory, setPriceHistory] = useState([]);
 
   useEffect(() => {
+    if (priceData && priceData.start_date) {
+      const startDateFormat = priceData.start_date.split('T')[0]; // Extract only the date part
+      setStartDate(new Date(startDateFormat));
+    }
+    setEndDate(new Date()); // Set current date as the default end date
+  
     if (priceData.inv && priceData.inv.length > 0) {
       const storeId = priceData.inv[0].store_id;
       const productId = priceData.inv[0].product_id;
@@ -97,7 +104,7 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
             />
           </div>
           {isStoreDropdownOpen && (
-            <div className="bg-white text-black border flex flex-col max-h-[10em] rounded-lg overflow-scroll mt-1">
+            <div className="bg-white text-black border w-full flex flex-col max-h-[10em] rounded-lg overflow-scroll mt-1">
               {stores.map((store) => (
                 <div
                   key={store.id}
@@ -128,30 +135,47 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
           />
 
           <div className="w-full sm:w-auto my-2 sm:my-0">
-            <DatePicker
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
-              dateFormat="dd MMMM yyyy"
-              className="text-center border rounded-lg text-sm w-full sm:w-auto"
-              wrapperClassName="mr-2"
-            />
+          <DatePicker
+  selected={startDate}
+  onChange={(date) => setStartDate(date)}
+  dateFormat="dd MMMM yyyy"
+  className="text-center border rounded-lg text-sm w-full sm:w-auto"
+  wrapperClassName="mr-2"
+  startDate={startDate}
+  endDate={endDate}
+  selectsStart
+  maxDate={endDate}
+  minDate={new Date(priceData.start_date)} 
+  showYearDropdown
+  scrollableYearDropdown
+  yearDropdownItemNumber={15}
+/>
           </div>
 
           <div className="w-full sm:w-auto">
-            <DatePicker
-              selected={endDate}
-              onChange={(date) => setEndDate(date)}
-              dateFormat="dd MMMM yyyy"
-              className="text-center border rounded-lg text-sm w-full sm:w-auto"
-              wrapperClassName="ml-2"
-            />
+          <DatePicker
+  selected={endDate}
+  onChange={(date) => setEndDate(date)}
+  dateFormat="dd MMMM yyyy"
+  className="text-center border rounded-lg text-sm w-full sm:w-auto"
+  wrapperClassName="ml-2"
+  startDate={startDate}
+  endDate={endDate}
+  selectsEnd
+  maxDate={new Date()} 
+  minDate={new Date(priceData.start_date)} 
+  showYearDropdown
+  scrollableYearDropdown
+  yearDropdownItemNumber={15}
+/>
+
           </div>
         </div>
 
         <PriceInventoryGraph priceData={priceHistory} />
 
         {/* Inventory History */}
-        <div className="inventory-history mt-8 shadow-lg border m-auto flex w-[70%] flex-col rounded-lg p-4">
+        <div className="flex cursor-pointer h-[15em] text-left flex-col overflow-y-scroll justify-between w-3/4 border rounded-lg bg-[#57545411] scrollbar-thin scrollbar-thumb-blue-[#7F56D9] scrollbar-track-gray-100">
           <h3 className="font-bold text-2xl">Inventory History</h3>
           {priceHistory.map((item) => (
             <div key={item.id} className="flex justify-between mt-2 text-sm p-4">

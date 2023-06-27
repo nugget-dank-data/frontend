@@ -4,6 +4,12 @@ module.exports = {
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    'transform: (content) => content.replace(/taos:/g, "")',
+  ],
+  safelist: [
+    '!duration-[0ms]',
+    '!delay-[0ms]',
+    'html.js :where([class*="taos:"]:not(.taos-init))'
   ],
   theme: {
     extend: {
@@ -17,5 +23,6 @@ module.exports = {
   },
   plugins: [
     require('tailwind-scrollbar'),
+    // require('taos/plugin'),
   ],
 }

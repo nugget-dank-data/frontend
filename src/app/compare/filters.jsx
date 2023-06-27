@@ -10,6 +10,9 @@ import Results from "./results";
 import PriceRange from "@/components/PriceRange";
 import Compsetprop from "./compset";
 import Axios from "../api/axios";
+import { Dots } from "react-activity";
+import "react-activity/dist/Dots.css";
+import FilterPanel from "./filterpanel";
 
 const Filters = () => {
   const [range, setRange] = useState([0, 300]);
@@ -26,26 +29,37 @@ const Filters = () => {
   const [showCompset, setShowCompset] = useState(false);
   const compsetRef = useRef(null);
   const [selectedFilters, setSelectedFilters] = useState({});
+  const [productLoading, setIsProductLoading] = useState(false);
+  const [storeLoading, setIsStoreLoading] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
+
+  const [page, setPage] = useState(1);
+const itemsPerPage = 10;
 
   const allstoresurl = "http://142.93.146.70:420/scraper/get-all-stores";
 
-  useEffect(() => {
-    if (selectedStore.length > 0) {
-      const storeIds = selectedStore.map((store) => store.bb_id).join(",");
-      const url = `http://142.93.146.70:420/scraper/unique-products?bb_store_ids=${storeIds}`;
-      Axios.get(url)
-        .then(({ data }) => {
-          setStoresData(data);
-          console.log("data", data);
-        })
-        .catch((error) => {
-          console.error("Error fetching store data:", error);
-        });
-    }
-  }, [selectedStore]);
+  // useEffect(() => {
+  //   if (selectedStore.length > 0) {
+  //     const storeIds = selectedStore.map((store) => store.bb_id).join(",");
+  //     const url = `http://142.93.146.70:420/scraper/unique-products?bb_store_ids=${storeIds}`;
+  //     setIsProductLoading(true);
+  //     Axios.get(url)
+  //       .then(({ data }) => {
+  //         setStoresData(data);
+  //         console.log("data", data);
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error fetching store data:", error);
+  //       })
+  //       .finally(() => {
+  //         setIsProductLoading(false);
+  //       });
+  //   }
+  // }, [selectedStore]);
 
   // FETCH ALL STORES
   useEffect(() => {
+    setIsStoreLoading(true);
     Axios.get(allstoresurl)
       .then(({ data }) => {
         setStores(data.data);
@@ -53,6 +67,9 @@ const Filters = () => {
       })
       .catch((error) => {
         console.error("Error fetching stores:", error);
+      })
+      .finally(() => {
+        setIsStoreLoading(false);
       });
   }, []);
 
@@ -108,6 +125,7 @@ const Filters = () => {
     setIsSizeDropdownOpen(false);
   };
 
+
   const handleSizeChange = (size) => {
     setSelectedSize(size);
     setIsSizeDropdownOpen(false);
@@ -136,6 +154,7 @@ const Filters = () => {
     if (selectedStore.length > 0) {
       const storeIds = selectedStore.map((store) => store.bb_id).join(",");
       const url = `http://142.93.146.70:420/scraper/unique-products?bb_store_ids=${storeIds}`;
+      setIsProductLoading(true);
       Axios.get(url)
         .then(({ data }) => {
           setStoresData(data);
@@ -151,7 +170,10 @@ const Filters = () => {
         })
         .catch((error) => {
           console.error("Error fetching store data:", error);
-        });
+        })
+        .finally(() => {
+                  setIsProductLoading(false);
+                });
     }
   }, [selectedStore]);
 
@@ -175,7 +197,8 @@ const Filters = () => {
                   Remove
                 </button>
               </div>
-            ))}
+            ))
+          }
           </div>
 
           <div
@@ -190,9 +213,19 @@ const Filters = () => {
               alt="k"
             />
           </div>
-          {isStoreDropdownOpen && (
+          {isStoreDropdownOpen &&(
             <div className="flex cursor-pointer h-[7em] text-left flex-col overflow-y-scroll justify-between w-3/4 border rounded-lg bg-[#57545411] scrollbar-thin scrollbar-thumb-blue-[#7F56D9] scrollbar-track-gray-100">
-              {allstores.map((store) => (
+                
+           
+          
+          
+         
+          
+          
+          {storeLoading?
+           <div className="flex justify-center items-center h-16">
+           <Dots size={32} color="#7F56D9" />
+         </div>: allstores.map((store) => (
                 <div
                   key={store.id}
                   className={`cursor-pointer  text-left justify-start text-black py-4 px-1 hover:bg-gray-200 ${
@@ -314,6 +347,8 @@ const Filters = () => {
           </div>
         </div>
       </div>
+
+   
       {showCompset && (
         <div
           ref={compsetRef}
@@ -323,7 +358,15 @@ const Filters = () => {
         </div>
       )}
       <div>
-      <Results storesData={storesData} allstores={allstores} selectedFilters={selectedFilters} selectedstores={selectedStore} />
+      <Results
+  storesData={storesData}
+  allstores={allstores}
+  selectedFilters={selectedFilters}
+  selectedstores={selectedStore}
+  isfetching={productLoading}
+  page={page}
+  itemsPerPage={itemsPerPage}
+/>
       </div>
     </div>
   );
