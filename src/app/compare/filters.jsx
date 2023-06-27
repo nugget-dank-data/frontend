@@ -12,7 +12,6 @@ import Compsetprop from "./compset";
 import Axios from "../api/axios";
 import { Dots } from "react-activity";
 import "react-activity/dist/Dots.css";
-import FilterPanel from "./filterpanel";
 
 const Filters = () => {
   const [range, setRange] = useState([0, 300]);
@@ -215,11 +214,7 @@ const itemsPerPage = 10;
           </div>
           {isStoreDropdownOpen &&(
             <div className="flex cursor-pointer h-[7em] text-left flex-col overflow-y-scroll justify-between w-3/4 border rounded-lg bg-[#57545411] scrollbar-thin scrollbar-thumb-blue-[#7F56D9] scrollbar-track-gray-100">
-                
-           
-          
-          
-         
+                    
           
           
           {storeLoading?
@@ -301,7 +296,7 @@ const itemsPerPage = 10;
                 />
               </div>
               {isSizeDropdownOpen && (
-                <div className="flex cursor-pointer h-[7em] md:w-1/2 mt-4 md:mt-0 text-left flex-col overflow-y-scroll justify-between w-3/4 border rounded-lg bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
+                <div className="flex cursor-pointer h-[7em] mt-4 md:mt-0 text-left flex-col overflow-y-scroll justify-between w-full border rounded-lg bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
                   {sizes.sort((a, b) => a - b).map((size) => (
                     <div
                       key={size}

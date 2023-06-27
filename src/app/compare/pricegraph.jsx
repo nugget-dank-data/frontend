@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   LineChart,
   Line,
@@ -10,18 +10,36 @@ import {
 } from "recharts";
 
 const PriceInventoryGraph = ({ priceData }) => {
+  const [isWeeklyView, setIsWeeklyView] = useState(true);
+
+  // Filter data based on the view type (weekly/monthly)
+  const filteredData = isWeeklyView
+    ? priceData.filter((data, index) => index % 7 === 0) // Show one data point per week
+    : priceData.filter((data, index) => new Date(data.created_at).getDate() === 1); // Show one data point per month
+
+  // Function to toggle between weekly and monthly view
+  const handleViewToggle = () => {
+    setIsWeeklyView(!isWeeklyView);
+  };
+
   return (
     <div>
       {/* Price Trends */}
+      <button
+        onClick={handleViewToggle}
+        className="py-2 rounded-lg px-1 m-auto justify-center align-middle text-white bg-[#7F56D9]"
+      >
+        {isWeeklyView ? "Switch to Monthly View" : "Switch to Weekly View"}
+      </button>
       <div className="price-trends">
         <h3>Price Trends</h3>
         <LineChart
           width={500}
           height={300}
-          data={priceData}
+          data={filteredData}
           margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
         >
-          <CartesianGrid strokeDasharray="3 3" stroke="#000000" />
+          <CartesianGrid strokeDasharray="5 5" stroke="#000000" />
           <XAxis
             dataKey="created_at"
             tickFormatter={(date) =>
@@ -35,7 +53,7 @@ const PriceInventoryGraph = ({ priceData }) => {
           />
           <YAxis stroke="#000000" />
           <Tooltip
-            formatter={(value) => `$${value}`}
+            formatter={(value) => `$${value ?? 0}`}
             labelFormatter={(date) =>
               new Date(date).toLocaleDateString("en-US", {
                 month: "short",
@@ -44,12 +62,11 @@ const PriceInventoryGraph = ({ priceData }) => {
               })
             }
           />
-
           <Legend />
           <Line
-            type="linear"
+            type="monotone"
             dataKey="price"
-            name="Price"
+            name=""
             stroke="#000000"
             activeDot={{ r: 8 }}
           />
@@ -65,7 +82,7 @@ const PriceInventoryGraph = ({ priceData }) => {
           data={priceData}
           margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
         >
-          <CartesianGrid strokeDasharray="3 3" stroke="#000000" />
+          <CartesianGrid strokeDasharray="5 5" stroke="#000000" />
           <XAxis
             dataKey="created_at"
             tickFormatter={(date) =>
@@ -79,7 +96,7 @@ const PriceInventoryGraph = ({ priceData }) => {
           />
           <YAxis stroke="#000000" />
           <Tooltip
-            formatter={(value) => `${value} in stock`}
+            formatter={(value) => `${value ?? 0} in stock`}
             labelFormatter={(date) =>
               new Date(date).toLocaleDateString("en-US", {
                 month: "short",
@@ -88,12 +105,11 @@ const PriceInventoryGraph = ({ priceData }) => {
               })
             }
           />
-
           <Legend />
           <Line
-            type="linear"
-            dataKey="stock"
-            name="Inventory"
+            type="monotone"
+            dataKey={"stock" ?? [0, 5, 10, 15]}
+            name=""
             stroke="#000000"
             activeDot={{ r: 8 }}
           />

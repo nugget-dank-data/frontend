@@ -8,7 +8,15 @@ import "tailwindcss/tailwind.css";
 import { Dots } from "react-activity";
 import "react-activity/dist/Dots.css";
 
-const Results = ({ storesData, allstores, selectedFilters, selectedstores, isfetching, Page, itemsPerPage }) => {
+const Results = ({
+  storesData,
+  allstores,
+  selectedFilters,
+  selectedstores,
+  isfetching,
+  Page,
+  itemsPerPage,
+}) => {
   const startIndex = (Page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const displayedData = storesData.slice(startIndex, endIndex);
@@ -33,8 +41,8 @@ const Results = ({ storesData, allstores, selectedFilters, selectedstores, isfet
   };
 
   useEffect(() => {
-    setIsFetching(isfetching)
-  })
+    setIsFetching(isfetching);
+  });
 
   const handleToggleHistory = () => {
     setShowHistory(!showHistory);
@@ -47,23 +55,27 @@ const Results = ({ storesData, allstores, selectedFilters, selectedstores, isfet
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
-      const scrollHeight = (document.documentElement && document.documentElement.scrollHeight) || document.body.scrollHeight;
-      const clientHeight = document.documentElement.clientHeight || window.innerHeight;
-      
+      const scrollTop =
+        (document.documentElement && document.documentElement.scrollTop) ||
+        document.body.scrollTop;
+      const scrollHeight =
+        (document.documentElement && document.documentElement.scrollHeight) ||
+        document.body.scrollHeight;
+      const clientHeight =
+        document.documentElement.clientHeight || window.innerHeight;
+
       if (scrollTop + clientHeight >= scrollHeight - 20) {
         // Load more data
-        setPage(prevPage => prevPage + 1);
+        setPage((prevPage) => prevPage + 1);
       }
     };
-  
-    window.addEventListener('scroll', handleScroll);
-  
+
+    window.addEventListener("scroll", handleScroll);
+
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-  
 
   useEffect(() => {
     const filteredStores = storesData.filter((product) => {
@@ -76,21 +88,21 @@ const Results = ({ storesData, allstores, selectedFilters, selectedstores, isfet
         selectedCategory === "" || selectedCategory === product.Category;
       const sizeMatch =
         selectedSize === 0 || parseFloat(product.size) === selectedSize;
-        const priceMatch = ''
-        
-  // product?.inv?.[0]?.price >= range[0] && product?.inv?.[0]?.price <= range[1];
+      const priceMatch = "";
 
-        // product.inv &&
-        // product.inv.length > 0 &&
-        // product.inv[0] &&
-        // product.inv[0].price >= range[0] &&
-        // product.inv[0].price <= range[1];
+      // product?.inv?.[0]?.price >= range[0] && product?.inv?.[0]?.price <= range[1];
+
+      // product.inv &&
+      // product.inv.length > 0 &&
+      // product.inv[0] &&
+      // product.inv[0].price >= range[0] &&
+      // product.inv[0].price <= range[1];
       return storeMatches && categoryMatch && sizeMatch && priceMatch;
     });
 
     // Apply sorting based on the selected sort option
     const sortedStores = sortStores(filteredStores);
-    console.log(filteredStores)
+    console.log(filteredStores);
     setFilteredData(sortedStores);
   }, [selectedFilters, storesData]);
 
@@ -287,7 +299,7 @@ const Results = ({ storesData, allstores, selectedFilters, selectedstores, isfet
                               >
                                 <p className="mb-4">${product.inv[0].price}</p>
                                 <p className="mt-8">
-                                  {product.inv[0].raw_stock} in stock
+                                  {product.inv[0].raw_stock ?? 0} in stock
                                 </p>
                               </div>
                             </div>

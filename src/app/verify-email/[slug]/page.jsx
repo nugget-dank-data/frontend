@@ -6,6 +6,8 @@ const Verifymail = () => {
   const verifyUrl = 'http://159.203.36.109:420/users/register/verify-email/';
   const [verificationKey, setVerificationKey] = useState('');
   const [message, setMessage] = useState('');
+  const [isError, setIsError] = useState(false); // State for error message styling
+  const [isSuccess, setIsSuccess] = useState(false); // State for success message styling
 
   useEffect(() => {
     const path = window.location.pathname;
@@ -20,22 +22,48 @@ const Verifymail = () => {
     try {
       const response = await axios.post(verifyUrl, { key: verificationKey });
       setMessage(response.data.message);
+      setIsError(false);
+      setIsSuccess(true);
+      // Redirect to login page after a brief delay
+      setTimeout(() => {
+        window.location.href = '/login'; // Directly change the window location
+      }, 2000);
     } catch (error) {
-      setMessage('An error occurred. Please try again.');
+      if (error.response) {
+        // If the response contains error details
+        const errorCode = error.response.status;
+        if (errorCode === 404) {
+          setMessage('Key not found. Please check your verification link.');
+        } else if (errorCode === 401) {
+          setMessage('Unauthorized. You do not have permission to verify the email.');
+        } else {
+          setMessage('An error occurred. Please try again.');
+        }
+      } else if (error.request) {
+        // If the request was made but no response was received
+        setMessage('No response from the server. Please try again later.');
+      } else {
+        // If an error occurred during the request setup
+        setMessage('An error occurred. Please check your network connection.');
+      }
+      setIsError(true);
+      setIsSuccess(false);
     }
   };
+  
 
   return (
-    <div className="bg-gray-100 min-h-screen flex items-center justify-center -z-30">
-      <div className="bg-white shadow-md rounded-md p-8">
+    <div className="bg-[#070606ec] flex flex-col min-h-screen w-full justify-center items-center">
+      <div className="bg-white shadow-md rounded-md p-8 items-center justify-center">
         <h2 className="text-2xl font-bold mb-6">Verify Your Email</h2>
         <button
           onClick={handleVerify}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
+          className="bg-[#7F56D9] hover:bg-[#6843b8] w-full text-white font-semibold py-2 px-4 rounded"
         >
           Verify
         </button>
-        {message && <p className="text-gray-700 mt-4">{message}</p>}
+        {isError && <p className="text-red-500 mt-4">{message}</p>}
+        {isSuccess && <p className="text-green-500 mt-4">{message}</p>}
       </div>
     </div>
   );
