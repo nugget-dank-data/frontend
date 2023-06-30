@@ -10,11 +10,12 @@ import droped from "../images/dropdown2.svg";
 import notdroped from "../images/dropdown1.svg";
 import Link from "next/link";
 
-const Sidepane = ({ activeTab, handleTabClick }) => {
+const Sidepane = ({ activeTab, handleTabClick, onSettingsTabChange }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentPathname, setCurrentPathname] = useState("");
   const [isManageStoresDropdownOpen, setIsManageStoresDropdownOpen] = useState(false);
   const [isSettingsDropdownOpen, setIsSettingsDropdownOpen] = useState(false);
+  const [settingsTab, setSettingsTab] =useState('')
 
   const renderTabClassName = (tabName) => {
     return `mb-4 ${tabName === activeTab ? "active border-l-2 border-blue-500" : ""}`;
@@ -45,27 +46,38 @@ const Sidepane = ({ activeTab, handleTabClick }) => {
     }
   };
 
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     const sidepane = document.getElementById('sidepane');
-  //     const sidepaneRect = sidepane.getBoundingClientRect();
-  //     const viewportHeight = window.innerHeight;
+  
 
-  //     if (sidepaneRect.top <= 0 && sidepaneRect.bottom > viewportHeight) {
-  //       sidepane.style.position = 'fixed';
-  //       sidepane.style.top = '0';
-  //       sidepane.style.bottom = '0';
-  //     } else {
-  //       sidepane.style.position = 'fixed';
-  //     }
-  //   };
+  useEffect(() => {
+    const handleScroll = () => {
+      const sidepane = document.getElementById('sidepane');
+      const sidepaneRect = sidepane.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
 
-  //   window.addEventListener("scroll", handleScroll);
+      if (sidepaneRect.top <= 0 && sidepaneRect.bottom > viewportHeight) {
+        sidepane.style.position = 'fixed';
+        sidepane.style.top = '0';
+        sidepane.style.bottom = '0';
+      } else {
+        sidepane.style.position = 'fixed';
+      }
+    };
 
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, []);
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+
+  const handleSettingsTabClick = (tabName) => {
+    handleTabClick(tabName);
+    onSettingsTabChange(tabName);
+  };
+
+
+ 
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -212,27 +224,34 @@ const Sidepane = ({ activeTab, handleTabClick }) => {
                 </ul>
               )}
             </li>
-            <li className={`mb-4 p-4 ${renderTabClassName("settings")}`}>
-              <div className="flex cursor-pointer" onClick={toggleSettingsDropdown}>
+           <Link href='/settings'> <li className={`mb-4 p-4 ${renderTabClassName("settings")}`}>
+              <div className="flex cursor-pointer bg-red-300" onClick={toggleSettingsDropdown}>
                 {getIcon("settings")}
                 <span className="ml-2">Settings</span>
-                <Image src={isSettingsDropdownOpen ? droped : notdroped} className="ml-auto" />
+                <Image src={isSettingsDropdownOpen ? droped : notdroped} alt="icon" className="ml-auto" />
               </div>
               {renderSubMenu(
                 "settings",
                 <ul className="list-disc ml-8">
-                  <li className="font-medium mt-3">
-                    <a
-                      href="/settings/reset_password"
-                      onClick={() => handleTabClick("reset-password")}
-                      className=""
-                    >
-                      Reset Password
-                    </a>
+                  <li className="font-medium mt-3"
+                  onClick={() => handleSettingsTabClick("manage_team")}
+                  >                   
+                     Manage Team
+                  </li>
+                  <li className="font-medium mt-3"
+                  onClick={() => handleSettingsTabClick("my_account")}
+                  >                   
+                     My Account
+                  </li>
+                  <li className="font-medium mt-3"
+                  onClick={() => handleSettingsTabClick("Billing")}
+                  >                   
+                     Billing
                   </li>
                 </ul>
               )}
             </li>
+            </Link>
           </ul>
           <p className="text-[#b3b2b25e] text-[1em]">Profile</p>
           <div className="justify-between flex text-[0.9em] mt-6">

@@ -1,8 +1,15 @@
-import React from 'react'
+"use client"
+import React, {useState, useEffect} from 'react'
+import Teams from './components/teams'
 
 const settings = () => {
+
+  
   return (
-    <div>settings route working</div>
+    <div>
+
+      <Teams />
+    </div>
   )
 }
 

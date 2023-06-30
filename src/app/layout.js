@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import Sidepane from "@/components/Sidepane";
 import './globals.css';
 import { Inter } from 'next/font/google';
@@ -10,6 +10,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({ children }) {
   const [activeTab, setActiveTab] = useState('');
+  const [settingstab, setSettingstab] = useState('');
 
   const handleTabClick = (tabName) => {
     if (activeTab === tabName) {
@@ -17,6 +18,10 @@ export default function RootLayout({ children }) {
     } else {
       setActiveTab(tabName);
     }
+  };
+
+  const handleSettingsTabChange = (tabName) => {
+    setSettingstab(tabName);
   };
 
   useEffect(() => {
@@ -35,17 +40,15 @@ export default function RootLayout({ children }) {
         <div className="flex flex-col sm:flex-row relative m-auto">
 
           {!isLoginPage && (
-          <div className="flex absolute md:relative sm:w-1/3 md:1/4">
-          
-              <Sidepane activeTab={activeTab} handleTabClick={handleTabClick} />
-              
-              </div>
-              )}
+            <div className="flex absolute md:relative sm:w-1/3 md:1/4">
+              <Sidepane activeTab={activeTab} handleTabClick={handleTabClick} onSettingsTabChange={handleSettingsTabChange} />
+            </div>
+          )}
 
           <div className="w-full flex flex-col ">
             <div className=" w-full">
-            {!isLoginPage && (
-              <Navbar />
+              {!isLoginPage && (
+                <Navbar settingstab={settingstab} />
               )}
             </div>
             <div className="w-full flex flex-col relative ">{children}</div>

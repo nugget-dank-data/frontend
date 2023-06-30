@@ -1,11 +1,14 @@
+"use client"
 import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 
 import dot from "../../../images/dot.svg";
-import FilterForm from "../../components/FilterForm";
 import Options from "./options";
+import Sidepane, {activeSettingsTab} from "@/components/Sidepane";
 
-const Users = () => {
+
+
+const Teams = ({settingstab}) => {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const filterFormRef = useRef(null);
@@ -14,7 +17,6 @@ const Users = () => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState(undefined);
   const [startDate, setStartDate] = useState(new Date());
-  const [activeTab, setActiveTab] = useState("users");
   const [filterData, setFilterData] = useState({
     date: startDate,
     name: "",
@@ -24,6 +26,18 @@ const Users = () => {
     monitoring_stores: "",
     last_login: "",
   });
+
+  useEffect(() => {
+    const tab = activeSettingsTab;
+    console.log(tab);
+  }, []);
+
+
+// const tab = Sidepane.activeSettingsTab;
+// const tab = activesettingsTab;
+// console.log(typeof(tab));
+
+
 
   useEffect(() => {
     fetch("")
@@ -37,23 +51,8 @@ const Users = () => {
       });
   }, []);
 
-  console.log(users);
+  
 
-  const getTotalUsers = () => {
-    return users.length;
-  };
-
-  const getActiveUsers = () => {
-    return users.filter((user) => user.isActive).length;
-  };
-
-  const getUsersWithLoans = () => {
-    return users.filter((user) => user.loanRepayment !== "").length;
-  };
-
-  const getUsersWithSavings = () => {
-    return users.filter((user) => parseFloat(user.accountBalance) > 0).length;
-  };
 
   const indexOfLastUser = currentPage * itemsPerPage;
   const indexOfFirstUser = indexOfLastUser - itemsPerPage;
@@ -108,68 +107,47 @@ const Users = () => {
 
   return (
     <div>
+      <div>
+        <div>
+          {currentUsers.map((user) => (
+            <div key={user.id}>
               <div>
-                {pageNumbers.map((number, index) => {
-                  if (number === 0) {
-                    return (
-                      <span key={index}>&hellip;</span>
-                    );
-                  }
-                  return (
-                    <button
-                      key={number}
-                      onClick={() => paginate(number)}
-                      className={currentPage === number ? "active" : ""}
-                    >
-                      {number}
-                    </button>
-                  );
-                })}
-              </div>
-         
-        
-          <div>
-            <div>
-              {currentUsers.map((user) => (
-                <div key={user.id}>
-                  <div>
-                    <div>
-                      <h3>{user.orgName}</h3>
-                      <p>{user.userName}</p>
-                    </div>
-                    <div>
-                      <button onClick={() => setSelectedUserId(user.id)}>
-                        View
-                      </button>
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      <p>
-                        <strong>Email:</strong> {user.email}
-                      </p>
-                      <p>
-                        <strong>Phone:</strong> {user.phoneNumber}
-                      </p>
-                    </div>
-                    <div>
-                      <p>
-                        <strong>Join Date:</strong>{" "}
-                        {new Date(user.joinDate).toLocaleDateString()}
-                      </p>
-                      <p>
-                        <strong>Status:</strong>{" "}
-                        {user.isActive ? "Active" : "Inactive"}
-                      </p>
-                    </div>
-                  </div>
+                <div>
+                  <h3>{user.orgName}</h3>
+                  <p>{user.userName}</p>
                 </div>
-              ))}
+                <div>
+                  <button onClick={() => setSelectedUserId(user.id)}>
+                    View
+                  </button>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <p>
+                    <strong>Email:</strong> {user.email}
+                  </p>
+                  <p>
+                    <strong>Phone:</strong> {user.phoneNumber}
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    <strong>Join Date:</strong>{" "}
+                    {new Date(user.joinDate).toLocaleDateString()}
+                  </p>
+                  <p>
+                    <strong>Status:</strong>{" "}
+                    {user.isActive ? "Active" : "Inactive"}
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
-   
+      </div>
+    </div>
   );
 };
 
-export default Users;
+export default Teams;
