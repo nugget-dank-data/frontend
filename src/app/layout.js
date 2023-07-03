@@ -12,6 +12,7 @@ export default function RootLayout({ children }) {
   const [activeTab, setActiveTab] = useState('');
   const [settingstab, setSettingstab] = useState('');
 
+  console.log(settingstab)
   const handleTabClick = (tabName) => {
     if (activeTab === tabName) {
       setActiveTab('');

@@ -3,20 +3,19 @@ import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 
 import dot from "../../../images/dot.svg";
-import Options from "./options";
-import Sidepane, {activeSettingsTab} from "@/components/Sidepane";
+import OptionsComponent from "./options";
+import Sidepane, { activeSettingsTab } from "@/components/Sidepane";
 
-
-
-const Teams = ({settingstab}) => {
+const Teams = ({ settingstab }) => {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const filterFormRef = useRef(null);
-  const [isoptionsVisible, setOptionsVisible] = useState(false);
+  const [isOptionsVisible, setOptionsVisible] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(9);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState(undefined);
   const [startDate, setStartDate] = useState(new Date());
+  const [activeTab, setActiveTab] = useState("manage_team");
   const [filterData, setFilterData] = useState({
     date: startDate,
     name: "",
@@ -27,20 +26,26 @@ const Teams = ({settingstab}) => {
     last_login: "",
   });
 
+  const formatDate = (dateString) => {
+    const options = {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    };
+    const date = new Date(dateString);
+    return date.toLocaleString("en-US", options);
+  };
+
   useEffect(() => {
     const tab = activeSettingsTab;
     console.log(tab);
   }, []);
 
-
-// const tab = Sidepane.activeSettingsTab;
-// const tab = activesettingsTab;
-// console.log(typeof(tab));
-
-
-
   useEffect(() => {
-    fetch("")
+    fetch("https://64a301f3b45881cc0ae5ff1e.mockapi.io/uses")
       .then((response) => response.json())
       .then((data) => {
         setUsers(data);
@@ -51,33 +56,51 @@ const Teams = ({settingstab}) => {
       });
   }, []);
 
+  const handleOptionsClick = (event) => {
+    const userId = event.currentTarget.dataset.userId;
+
+    setSelectedUserId(userId);
+  };
   
 
+  // useEffect(() => {
+  //   // Update filteredUsers whenever filterData changes
+  //   const filtered = users.filter((user) => {
+  //     // Apply your filtering logic based on filterData properties
+  //     // For example, if the name property should match, use:
+  //     return user.name.includes(filterData.name);
+  //   });
+  //   setFilteredUsers(filtered);
+  // }, [filterData, users]);
 
-  const indexOfLastUser = currentPage * itemsPerPage;
-  const indexOfFirstUser = indexOfLastUser - itemsPerPage;
-  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+  // const indexOfLastUser = currentPage * itemsPerPage;
+  // const indexOfFirstUser = indexOfLastUser - itemsPerPage;
+  // const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
 
-  const totalItems = Math.ceil(users.length / itemsPerPage);
-  let pageNumbers = [];
+  // const totalItems = Math.ceil(filteredUsers.length / itemsPerPage);
+  // let pageNumbers = [];
 
-  if (totalItems <= 7) {
-    pageNumbers = Array.from({ length: totalItems }, (_, index) => index + 1);
-  } else if (currentPage <= 4) {
-    pageNumbers = [1, 2, 3, 0, totalItems];
-  } else if (currentPage >= totalItems - 3) {
-    pageNumbers = [1, 0, totalItems - 3, totalItems - 2, totalItems];
-  } else {
-    pageNumbers = [
-      1,
-      0,
-      currentPage - 1,
-      currentPage,
-      currentPage + 1,
-      totalItems,
-    ];
-  }
+  // if (totalItems <= 7) {
+  //   pageNumbers = Array.from({ length: totalItems }, (_, index) => index + 1);
+  // } else if (currentPage <= 4) {
+  //   pageNumbers = [1, 2, 3, 0, totalItems];
+  // } else if (currentPage >= totalItems - 3) {
+  //   pageNumbers = [1, 0, totalItems - 3, totalItems - 2, totalItems];
+  // } else {
+  //   pageNumbers = [
+  //     1,
+  //     0,
+  //     currentPage - 1,
+  //     currentPage,
+  //     currentPage + 1,
+  //     totalItems,
+  //   ];
+  // }
+  const sendUserDetails = (user) => {
+    console.log("User Details:", user);
 
+    // setDetails(user);
+  };
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -106,46 +129,84 @@ const Teams = ({settingstab}) => {
   };
 
   return (
-    <div>
-      <div>
+    <div className="w-full flex flex-col text-[#213F7D] p-4 font-Work-Sans">
+      {activeTab === "manage_team" && (
         <div>
-          {currentUsers.map((user) => (
-            <div key={user.id}>
-              <div>
-                <div>
-                  <h3>{user.orgName}</h3>
-                  <p>{user.userName}</p>
-                </div>
-                <div>
-                  <button onClick={() => setSelectedUserId(user.id)}>
-                    View
-                  </button>
-                </div>
-              </div>
-              <div>
-                <div>
-                  <p>
-                    <strong>Email:</strong> {user.email}
-                  </p>
-                  <p>
-                    <strong>Phone:</strong> {user.phoneNumber}
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <strong>Join Date:</strong>{" "}
-                    {new Date(user.joinDate).toLocaleDateString()}
-                  </p>
-                  <p>
-                    <strong>Status:</strong>{" "}
-                    {user.isActive ? "Active" : "Inactive"}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
+
+          
+          <div className=" flex flex-col shadow-lg border-b border-[#0303031c] relative">
+            <table className="w-full rounded-lg">
+              <thead>
+                <tr className="text-[0.8em]">
+                  <th className="px-4 py-2 text-left">
+                    <div className="flex items-center">
+                      <span className="mr-1">Name</span>
+                     
+                    </div>
+                  </th>
+                  <th className="px-4 py-2 text-left">
+                    <div className="flex items-center">
+                      <span className="mr-1">E-mail</span>
+                     
+                    </div>
+                  </th>
+                  <th className=" px-4 py-2 text-left">
+                    <div className="flex items-center">
+                      <span className="mr-1">permissions</span>
+                      
+                    </div>
+                  </th>
+                  <th className=" px-4 py-2 text-left">
+                    <div className="flex items-center">
+                      <span className="mr-1">Their Stores</span>
+                      
+                    </div>
+                  </th>
+                  <th className=" px-4 py-2 text-left">
+                    <div className="flex items-center">
+                      <span className="mr-1">Monitoring Stores</span>
+                      
+                    </div>
+                  </th>
+                  <th className=" px-4 py-2 text-left">
+                    <div className="flex items-center">
+                      <span className="mr-1">Last Login</span>
+                      
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+              {filteredUsers.map((user) => (
+                  <tr key={user.id} className="border" data-user-id={user.id}>
+                    <td className="p-4 text-left text-sm">{user.name}</td>
+                    <td className="p-4 text-left text-sm">{user.email}</td>
+                    <td className="p-4 text-left text-sm">{user.permissions}</td>
+                    <td className="p-4 text-left text-sm">{user.stores}</td>
+                    <td className="p-4 text-left text-sm">{user.stores}</td>
+                    <td className="p-4 text-left text-sm flex justify-between relative">
+                    {formatDate(user.date)}
+                      {selectedUserId === user.id ? (
+                        <OptionsComponent user={user} sendUserDetails={sendUserDetails} />
+                      ) : (
+                        <Image
+                          src={dot}
+                          alt="Options"
+                          className="user-dot cursor-pointer"
+                          data-user-id={user.id}
+                          onClick={handleOptionsClick}
+                        />
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+           
+          </div>
+      
         </div>
-      </div>
+      )}
     </div>
   );
 };

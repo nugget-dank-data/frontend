@@ -225,7 +225,7 @@ const Sidepane = ({ activeTab, handleTabClick, onSettingsTabChange }) => {
               )}
             </li>
            <Link href='/settings'> <li className={`mb-4 p-4 ${renderTabClassName("settings")}`}>
-              <div className="flex cursor-pointer bg-red-300" onClick={toggleSettingsDropdown}>
+              <div className="flex cursor-pointer " onClick={toggleSettingsDropdown}>
                 {getIcon("settings")}
                 <span className="ml-2">Settings</span>
                 <Image src={isSettingsDropdownOpen ? droped : notdroped} alt="icon" className="ml-auto" />
@@ -244,7 +244,7 @@ const Sidepane = ({ activeTab, handleTabClick, onSettingsTabChange }) => {
                      My Account
                   </li>
                   <li className="font-medium mt-3"
-                  onClick={() => handleSettingsTabClick("Billing")}
+                  onClick={() => handleSettingsTabClick("billing")}
                   >                   
                      Billing
                   </li>

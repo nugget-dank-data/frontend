@@ -2,7 +2,7 @@
 import React, {useState, useEffect} from 'react'
 import Teams from './components/teams'
 
-const settings = () => {
+const settings = ({tabname}) => {
 
   
   return (
