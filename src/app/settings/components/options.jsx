@@ -1,7 +1,5 @@
 import React from "react";
-// import activateusers from '../images/icons/activateuser.svg';
-// import blacklistuser from '../images/icons/blacklistuser.svg';
-// import viewdetails from '../images/icons/eye.svg';
+
 import Image from "next/image";
 import Link from "next/link";
 
@@ -22,24 +20,42 @@ const OptionsComponent = ({ user, sendUserDetails }) => {
   };
 
   return (
-    <div className="w-[180px] global-blue flex font-sans right-[-2em] z-50 absolute bg-[#FFFF] rounded-lg p-3 gap-2">
+    <div className="w-[180px] flex font-sans right-[-2em] z-50 absolute bg-[#000000] mr- rounded-lg p-3 gap-2">
       <ul className="options-menu text-[16px] text-right">
         <div className="flex flex-row mt-3 cursor-pointer">
           {/* <Image src={viewdetails} alt="act.." /> */}
           <Link href={`users/${userid}`} onClick={HandleViewDetails} className="ml-3">
-            View Details
+            Edit user
           </Link>
         </div>
         <div className="flex flex-row mt-3 cursor-pointer ">
           {/* <Image src={blacklistuser} alt="act.." /> */}
           <li onClick={handleBlacklistUser} className="ml-3">
-            Blacklist User
+            Edit Stores
           </li>
         </div>
         <div className="flex flex-row mt-3 cursor-pointer ">
           {/* <Image src={activateusers} alt="act.." /> */}
           <li onClick={handleActivateUser} className="ml-3">
-            Activate User
+            Reset Passwords
+          </li>
+        </div>
+        <div className="flex flex-row mt-3 cursor-pointer ">
+          {/* <Image src={activateusers} alt="act.." /> */}
+          <li onClick={handleActivateUser} className="ml-3">
+            Permissions
+          </li>
+        </div>
+        <div className="flex flex-row mt-3 cursor-pointer border-b ">
+          {/* <Image src={activateusers} alt="act.." /> */}
+          <li onClick={handleActivateUser} className="ml-3">
+            Autopopulate
+          </li>
+        </div>
+        <div className="flex flex-row mt-3 cursor-pointer ">
+          {/* <Image src={activateusers} alt="act.." /> */}
+          <li onClick={handleActivateUser} className="ml-3">
+            Delete Account
           </li>
         </div>
       </ul>

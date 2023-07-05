@@ -1,16 +1,20 @@
 "use client"
-import React, {useState, useEffect} from 'react'
-import Teams from './components/teams'
-
-const settings = ({tabname}) => {
+import React, { useState, useEffect } from 'react';
+import Teams from './components/teams';
+import b from ""
+const Settings = ({subtab}) => {
+  // useEffect(() => {
+  // }, []);
 
   
+  
+  console.log('test test',subtab)
   return (
     <div>
-
-      <Teams />
+      <Teams settingstab={subtab} />
+      
     </div>
-  )
-}
+  );
+};
 
-export default settings
+export default Settings;

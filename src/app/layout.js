@@ -10,29 +10,32 @@ const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({ children }) {
   const [activeTab, setActiveTab] = useState('');
-  const [settingstab, setSettingstab] = useState('');
+  const [settingstab, setSettingstab] = useState('manage_team'|| '');
 
-  console.log(settingstab)
   const handleTabClick = (tabName) => {
     if (activeTab === tabName) {
       setActiveTab('');
     } else {
       setActiveTab(tabName);
     }
-  };
 
+    
+    
+  };
+  
   const handleSettingsTabChange = (tabName) => {
     setSettingstab(tabName);
   };
-
+  
   useEffect(() => {
     const pathName = window.location.pathname;
     // Extract the active tab from the URL path
     const tabName = pathName.substring(1); // Assuming the tab name is the path without the leading slash
 
     setActiveTab(tabName);
+    
   }, []);
-
+  
   const isLoginPage = window.location.pathname.includes('/accounts') || window.location.pathname.includes('/verify-email/');
 
   return (
@@ -42,14 +45,14 @@ export default function RootLayout({ children }) {
 
           {!isLoginPage && (
             <div className="flex absolute md:relative sm:w-1/3 md:1/4">
-              <Sidepane activeTab={activeTab} handleTabClick={handleTabClick} onSettingsTabChange={handleSettingsTabChange} />
+              <Sidepane activeTab={activeTab} handleTabClick={handleTabClick} onSettingsTabChange={handleSettingsTabChange} newtabname={settingstab} />
             </div>
           )}
 
           <div className="w-full flex flex-col ">
             <div className=" w-full">
               {!isLoginPage && (
-                <Navbar settingstab={settingstab} />
+                <Navbar settingstab={handleSettingsTabChange} newtabname={settingstab} />
               )}
             </div>
             <div className="w-full flex flex-col relative ">{children}</div>

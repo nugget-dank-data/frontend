@@ -8,17 +8,21 @@ import settings from "../images/settings.svg";
 import logout from "../images/logout.svg";
 import droped from "../images/dropdown2.svg";
 import notdroped from "../images/dropdown1.svg";
-import Link from "next/link";
+import radioactivive from "../images/radioactive.svg";
+import radioinactivive from "../images/radioinactive.svg";
 
-const Sidepane = ({ activeTab, handleTabClick, onSettingsTabChange }) => {
+const Sidepane = ({ activeTab, handleTabClick, onSettingsTabChange, newtabname}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentPathname, setCurrentPathname] = useState("");
-  const [isManageStoresDropdownOpen, setIsManageStoresDropdownOpen] = useState(false);
+  const [isManageStoresDropdownOpen, setIsManageStoresDropdownOpen] =
+    useState(false);
   const [isSettingsDropdownOpen, setIsSettingsDropdownOpen] = useState(false);
-  const [settingsTab, setSettingsTab] =useState('')
-
+  const [activesettingssubtab, setActiveSettingsSubtab] = useState("");
+ 
   const renderTabClassName = (tabName) => {
-    return `mb-4 ${tabName === activeTab ? "active border-l-2 border-blue-500" : ""}`;
+    return `mb-4 ${
+      tabName === activeTab ? "active border-l-2 border-blue-500" : ""
+    }`;
   };
 
   const renderSubMenu = (parentTab, content) => {
@@ -38,7 +42,9 @@ const Sidepane = ({ activeTab, handleTabClick, onSettingsTabChange }) => {
       case "comp-sets":
         return <Image src={compsets} alt="Comp Sets Icon" className="mr-2" />;
       case "manage-stores":
-        return <Image src={managestores} alt="Manage Stores Icon" className="mr-2" />;
+        return (
+          <Image src={managestores} alt="Manage Stores Icon" className="mr-2" />
+        );
       case "settings":
         return <Image src={settings} alt="Settings Icon" className="mr-2" />;
       default:
@@ -46,38 +52,36 @@ const Sidepane = ({ activeTab, handleTabClick, onSettingsTabChange }) => {
     }
   };
 
-  
+  useEffect(()=>{
+    setActiveSettingsSubtab(newtabname)
+  })
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     const sidepane = document.getElementById('sidepane');
+  //     const sidepaneRect = sidepane.getBoundingClientRect();
+  //     const viewportHeight = window.innerHeight;
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const sidepane = document.getElementById('sidepane');
-      const sidepaneRect = sidepane.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
+  //     if (sidepaneRect.top <= 0 && sidepaneRect.bottom > viewportHeight) {
+  //       sidepane.style.position = 'fixed';
+  //       sidepane.style.top = '0';
+  //       sidepane.style.bottom = '0';
+  //     } else {
+  //       sidepane.style.position = 'fixed';
+  //     }
+  //   };
 
-      if (sidepaneRect.top <= 0 && sidepaneRect.bottom > viewportHeight) {
-        sidepane.style.position = 'fixed';
-        sidepane.style.top = '0';
-        sidepane.style.bottom = '0';
-      } else {
-        sidepane.style.position = 'fixed';
-      }
-    };
+  //   window.addEventListener("scroll", handleScroll);
 
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, []);
 
   const handleSettingsTabClick = (tabName) => {
-    handleTabClick(tabName);
+    // handleTabClick(tabName);
     onSettingsTabChange(tabName);
+    setActiveSettingsSubtab(tabName);
   };
-
-
- 
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -85,12 +89,12 @@ const Sidepane = ({ activeTab, handleTabClick, onSettingsTabChange }) => {
 
   const toggleManageStoresDropdown = () => {
     setIsManageStoresDropdownOpen(!isManageStoresDropdownOpen);
-    handleTabClick('manage-stores')
+    handleTabClick("manage-stores");
   };
 
   const toggleSettingsDropdown = () => {
     setIsSettingsDropdownOpen(!isSettingsDropdownOpen);
-    handleTabClick('settings')
+    handleTabClick("settings");
   };
 
   useEffect(() => {
@@ -111,9 +115,12 @@ const Sidepane = ({ activeTab, handleTabClick, onSettingsTabChange }) => {
   }, []);
 
   return (
-    <div className="fixed bg-red-200">
+    <div className="fixed  bg-red-200">
       {isMenuOpen ? (
-        <div  id="sidepane" className="bg-[#232529] min-h-screen text-white  flex flex-col z-50 p-5 absolute w-[20em] sm:relative">
+        <div
+          id="sidepane"
+          className="bg-[#232529] overflow-y-scroll scrollbar-hide h-screen  text-white flex flex-col z-50 p-5  w-[20em] sm:relative"
+        >
           <div className="top-0 right-2 absolute text-white flex sm:hidden">
             <button className="" onClick={toggleMenu}>
               <svg
@@ -187,10 +194,16 @@ const Sidepane = ({ activeTab, handleTabClick, onSettingsTabChange }) => {
                 "manage-stores"
               )}`}
             >
-              <a className="flex cursor-pointer" onClick={toggleManageStoresDropdown}>
+              <a
+                className="flex cursor-pointer"
+                onClick={toggleManageStoresDropdown}
+              >
                 {getIcon("manage-stores")}
                 <span className="ml-2">Manage Stores</span>
-                <Image src={isManageStoresDropdownOpen ? droped : notdroped} className="ml-auto" />
+                <Image
+                  src={isManageStoresDropdownOpen ? droped : notdroped}
+                  className="ml-auto "
+                />
               </a>
               {renderSubMenu(
                 "manage-stores",
@@ -224,34 +237,74 @@ const Sidepane = ({ activeTab, handleTabClick, onSettingsTabChange }) => {
                 </ul>
               )}
             </li>
-           <Link href='/settings'> <li className={`mb-4 p-4 ${renderTabClassName("settings")}`}>
-              <div className="flex cursor-pointer " onClick={toggleSettingsDropdown}>
-                {getIcon("settings")}
-                <span className="ml-2">Settings</span>
-                <Image src={isSettingsDropdownOpen ? droped : notdroped} alt="icon" className="ml-auto" />
-              </div>
+            <li className={`mb-4 p-4 ${renderTabClassName("settings")}`}>
+              <a href="/settings">
+                {" "}
+                <div
+                  className="flex cursor-pointer "
+                  onClick={toggleSettingsDropdown}
+                >
+                  {getIcon("settings")}
+                  <span className="ml-2">Settings</span>
+                  <Image
+                    src={isSettingsDropdownOpen ? droped : notdroped}
+                    alt="icon"
+                    className="ml-auto"
+                  />
+                </div>{" "}
+              </a>
               {renderSubMenu(
                 "settings",
-                <ul className="list-disc ml-8">
-                  <li className="font-medium mt-3"
-                  onClick={() => handleSettingsTabClick("manage_team")}
-                  >                   
-                     Manage Team
-                  </li>
-                  <li className="font-medium mt-3"
-                  onClick={() => handleSettingsTabClick("my_account")}
-                  >                   
-                     My Account
-                  </li>
-                  <li className="font-medium mt-3"
-                  onClick={() => handleSettingsTabClick("billing")}
-                  >                   
-                     Billing
-                  </li>
-                </ul>
+                <div className="flex flex-col">
+                  <div
+                    className="flex p-2 cursor-pointer items-center "
+                    onClick={() => handleSettingsTabClick("manage_team")}
+                  >
+                    <Image
+                      src={
+                        activesettingssubtab === "manage_team"
+                          ? radioactivive
+                          : radioinactivive
+                      }
+                      className="w-[1em]"
+                      alt="icon"
+                    />
+                    <p className="font-medium ml-2">Manage Team</p>
+                  </div>
+
+                  <div
+                    className="flex p-2 cursor-pointer items-center "
+                    onClick={() => handleSettingsTabClick("my_account")}
+                  >
+                    <Image
+                      src={
+                        activesettingssubtab === "my_account"
+                          ? radioactivive
+                          : radioinactivive
+                      }
+                      className="w-[1em]"
+                      alt="icon"
+                    />
+                    <p className="font-medium ml-2">My Account</p>
+                  </div>
+                  <div
+                    className="flex p-2 cursor-pointer items-center "
+                    onClick={() => handleSettingsTabClick("billing")}
+                  >
+                    <Image
+                      src={
+                        activesettingssubtab === "billing"
+                          ? radioactivive
+                          : radioinactivive
+                      }
+                      className="w-[1em]"
+                      alt="icon"
+                    />
+                    <p className="font-medium ml-2">Billing</p>
+                  </div>
+                </div>
               )}
             </li>
-            </Link>
           </ul>
           <p className="text-[#b3b2b25e] text-[1em]">Profile</p>
           <div className="justify-between flex text-[0.9em] mt-6">
@@ -259,13 +312,13 @@ const Sidepane = ({ activeTab, handleTabClick, onSettingsTabChange }) => {
             <a href="terms_of_use">Terms of Use</a>
           </div>
           <div className="m-auto w-3/4 flex flex-row bg-[#1a181863] rounded-lg mt-8">
-            <Link
+            <a
               href="accounts/login"
               className="flex w-full align-middle items-center text-center justify-center"
             >
               <Image src={logout} alt="" />
               <p className="p-2 text-[1em]"> Logout</p>
-            </Link>
+            </a>
           </div>
         </div>
       ) : (

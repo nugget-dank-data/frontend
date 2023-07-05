@@ -4,7 +4,7 @@ import Image from "next/image";
 
 import dot from "../../../images/dot.svg";
 import OptionsComponent from "./options";
-import Sidepane, { activeSettingsTab } from "@/components/Sidepane";
+
 
 const Teams = ({ settingstab }) => {
   const [users, setUsers] = useState([]);
@@ -15,7 +15,7 @@ const Teams = ({ settingstab }) => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState(undefined);
   const [startDate, setStartDate] = useState(new Date());
-  const [activeTab, setActiveTab] = useState("manage_team");
+  const [activeTab, setActiveTab] = useState();
   const [filterData, setFilterData] = useState({
     date: startDate,
     name: "",
@@ -40,8 +40,7 @@ const Teams = ({ settingstab }) => {
   };
 
   useEffect(() => {
-    const tab = activeSettingsTab;
-    console.log(tab);
+    setActiveTab(settingstab)
   }, []);
 
   useEffect(() => {
