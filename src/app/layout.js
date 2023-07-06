@@ -6,11 +6,20 @@ import { useEffect, useState } from 'react';
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 
+import Settings from "./settings/page";
+import Teams from "./settings/components/teams";
+
 const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({ children }) {
   const [activeTab, setActiveTab] = useState('');
-  const [settingstab, setSettingstab] = useState('manage_team'|| '');
+  const [settingstab, setSettingstab] = useState('manage_team');
+  const [manageteam, setmanageteam] = useState(false)
+  const [accounts, setaccounts] = useState(false)
+  const [billing, setbilling] = useState(false)
+
+  console.log('test tab',settingstab)
+
 
   const handleTabClick = (tabName) => {
     if (activeTab === tabName) {
@@ -22,9 +31,20 @@ export default function RootLayout({ children }) {
     
     
   };
+
   
   const handleSettingsTabChange = (tabName) => {
-    setSettingstab(tabName);
+    if (tabName === 'manage_team') {
+    
+      setSettingstab('manage_team');
+    }
+    else if(tabName === 'my_account'){
+      setSettingstab('my_account');
+    }
+    else if (tabName == 'billing'){
+   
+      setSettingstab('billing');
+    }
   };
   
   useEffect(() => {
@@ -35,15 +55,35 @@ export default function RootLayout({ children }) {
     setActiveTab(tabName);
     
   }, []);
+
+
+  const getTeamsHandler = () =>{
+    setSettingstab('manage_team');
+
+
+  }
+  const getaccHandler = () =>{
+
+    setSettingstab('my_account');
   
-  const isLoginPage = window.location.pathname.includes('/accounts') || window.location.pathname.includes('/verify-email/');
+
+  }
+  const getbillHandler = () =>{
+
+ 
+    setSettingstab('billing');
+  
+  }
+  
+  const isLoginPage = window.location.pathname.includes('/accounts') || window.location.pathname.includes('/verify-email/') || window.location.pathname.includes('/settings');
+  const issettingsPage = window.location.pathname.includes('/accounts') || window.location.pathname.includes('/verify-email/');
 
   return (
     <html className="">
       <div className="w-full h-full p-0 overflow-hidden relative">
         <div className="flex flex-col sm:flex-row relative m-auto">
 
-          {!isLoginPage && (
+          {!issettingsPage && (
             <div className="flex absolute md:relative sm:w-1/3 md:1/4">
               <Sidepane activeTab={activeTab} handleTabClick={handleTabClick} onSettingsTabChange={handleSettingsTabChange} newtabname={settingstab} />
             </div>
@@ -52,8 +92,10 @@ export default function RootLayout({ children }) {
           <div className="w-full flex flex-col ">
             <div className=" w-full">
               {!isLoginPage && (
-                <Navbar settingstab={handleSettingsTabChange} newtabname={settingstab} />
+                <Navbar onSettingsTabChange={handleSettingsTabChange} newtabname={settingstab} getTeams={getTeamsHandler} getAcct={getaccHandler} getBill={getbillHandler}  />
+                
               )}
+              {/* {manageteam && <Teams />} */}
             </div>
             <div className="w-full flex flex-col relative ">{children}</div>
           </div>
@@ -61,6 +103,11 @@ export default function RootLayout({ children }) {
         <div className="w-full bottom-0">
           {/* <Footer /> */}
         </div>
+        
+
+
+
+      
       </div>
     </html>
   );

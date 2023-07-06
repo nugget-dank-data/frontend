@@ -1,4 +1,4 @@
-"use client"
+
 import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 
@@ -6,7 +6,7 @@ import dot from "../../../images/dot.svg";
 import OptionsComponent from "./options";
 
 
-const Teams = ({ settingstab }) => {
+const Teams = () => {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const filterFormRef = useRef(null);
@@ -39,9 +39,6 @@ const Teams = ({ settingstab }) => {
     return date.toLocaleString("en-US", options);
   };
 
-  useEffect(() => {
-    setActiveTab(settingstab)
-  }, []);
 
   useEffect(() => {
     fetch("https://64a301f3b45881cc0ae5ff1e.mockapi.io/uses")
@@ -104,6 +101,7 @@ const Teams = ({ settingstab }) => {
     setCurrentPage(pageNumber);
   };
 
+  
   const handleItemsPerPageChange = (event) => {
     const selectedItemsPerPage = Number(event.target.value);
     setItemsPerPage(selectedItemsPerPage);
@@ -129,7 +127,7 @@ const Teams = ({ settingstab }) => {
 
   return (
     <div className="w-full flex flex-col text-[#213F7D] p-4 font-Work-Sans">
-      {activeTab === "manage_team" && (
+      
         <div>
 
           
@@ -205,7 +203,7 @@ const Teams = ({ settingstab }) => {
           </div>
       
         </div>
-      )}
+      
     </div>
   );
 };

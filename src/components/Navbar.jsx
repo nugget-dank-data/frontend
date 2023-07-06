@@ -1,11 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import notification from '../images/notification.svg';
+import Link from 'next/link';
+import Teams from '@/app/settings/components/teams';
+import Accounts from '@/app/settings/components/accounts';
+import Billing from '@/app/settings/components/billing';
 
-const Navbar = ({ settingstab, newtabname }) => {
+const Navbar = ({ onSettingsTabChange, newtabname, getTeams, getAcct, getBill }) => {
   const [settingsTab, setSettingsTab] = useState('manage_team'|| '');
+
   const [issettings, setissettings] = useState(false);
   const [pageTitle, setPageTitle] = useState('');
+
+
+  const setTeamsHandler = (data) =>{
+    setSettingsTab(data)
+    // settingstab(data)
+    console.log(typeof(onSettingsTabChange))
+    getTeams(true);
+
+  }
+  const setaccHandler = (data) =>{
+    setSettingsTab(data)
+    settingstab(data)
+    getAcct(true);
+
+  }
+  const setbillHandler = (data) =>{
+    setSettingsTab(data)
+    settingstab(data)
+    getBill(true);
+  
+  }
+
+  const handleSettingsTabChange = (tabName) => {
+  
+    setSettingsTab(tabName);
+  };
+
 
   useEffect(() => {
     setissettings(window.location.pathname === '/settings');
@@ -41,6 +73,7 @@ const Navbar = ({ settingstab, newtabname }) => {
   };
 
   const isTabActive = (tabname) => {
+    console.log(settingsTab, newtabname)
     return settingsTab && newtabname === tabname ? 'underline' : '';
   };
 
@@ -53,18 +86,19 @@ const Navbar = ({ settingstab, newtabname }) => {
       <div className='flex'>
         {issettings && (
           <div className='flex justify-between w-[30%]'>
-            <p onClick={() => handleSettingsTabClick('manage_team')} className={`${isTabActive('manage_team')} cursor-pointer`}>
+            <p href="" onClick={() =>{ setTeamsHandler('manage_team');}} className={`${isTabActive('manage_team')} cursor-pointer`}>
               Manage Teams
             </p>
-            <p onClick={() => handleSettingsTabClick('my_account')} className={`${isTabActive('my_account')} cursor-pointer`}>
+            <p onClick={() => setaccHandler('my_account')} className={`${isTabActive('my_account')} cursor-pointer`}>
               My Account
             </p>
-            <p onClick={() => handleSettingsTabClick('billing')} className={`${isTabActive('billing')} cursor-pointer`}>
+            <p onClick={() => setbillHandler('billing')} className={`${isTabActive('billing')} cursor-pointer`}>
               Billing
             </p>
           </div>
         )}
       </div>
+
     </div>
   );
 };

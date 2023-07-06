@@ -10,6 +10,7 @@ import droped from "../images/dropdown2.svg";
 import notdroped from "../images/dropdown1.svg";
 import radioactivive from "../images/radioactive.svg";
 import radioinactivive from "../images/radioinactive.svg";
+import Link from "next/link";
 
 const Sidepane = ({ activeTab, handleTabClick, onSettingsTabChange, newtabname}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -54,6 +55,7 @@ const Sidepane = ({ activeTab, handleTabClick, onSettingsTabChange, newtabname})
 
   useEffect(()=>{
     setActiveSettingsSubtab(newtabname)
+    console.log('tabname:',newtabname)
   })
   // useEffect(() => {
   //   const handleScroll = () => {
@@ -81,6 +83,7 @@ const Sidepane = ({ activeTab, handleTabClick, onSettingsTabChange, newtabname})
     // handleTabClick(tabName);
     onSettingsTabChange(tabName);
     setActiveSettingsSubtab(tabName);
+    setActiveSettingsSubtab(newtabname)
   };
 
   const toggleMenu = () => {
@@ -238,7 +241,7 @@ const Sidepane = ({ activeTab, handleTabClick, onSettingsTabChange, newtabname})
               )}
             </li>
             <li className={`mb-4 p-4 ${renderTabClassName("settings")}`}>
-              <a href="/settings">
+              <Link href="/settings">
                 {" "}
                 <div
                   className="flex cursor-pointer "
@@ -252,7 +255,7 @@ const Sidepane = ({ activeTab, handleTabClick, onSettingsTabChange, newtabname})
                     className="ml-auto"
                   />
                 </div>{" "}
-              </a>
+              </Link>
               {renderSubMenu(
                 "settings",
                 <div className="flex flex-col">

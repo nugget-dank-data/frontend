@@ -1,17 +1,58 @@
-"use client"
-import React, { useState, useEffect } from 'react';
-import Teams from './components/teams';
-import b from ""
-const Settings = ({subtab}) => {
-  // useEffect(() => {
-  // }, []);
+"use client";
+import React, { useState, useEffect } from "react";
+import Teams from "./components/teams";
+import Billing from "./components/billing";
+import Accounts from "./components/accounts";
+import Navbar from "@/components/Navbar";
 
+const Settings = ({ }) => {
+
+  const [managetab, setmanageteam] = useState(false);
+  const [accounts, setaccounts] = useState(true);
+  const [billing, setbilling] = useState(false);
+
+    const [teams, setTeams] = useState(false);
+  const [acct, setAcct] = useState(false);
+  const [bill, setBill] = useState(false)
+  console.log(managetab)
+
+  // const handleSettingsTabChange = (tabName) => {
   
-  
-  console.log('test test',subtab)
+  //   setSettingstab(tabName);
+  // };
+
+
+  const getTeamsHand =()=>{
+    
+    setTeams(true)
+    setAcct(false)
+    setBill(false)
+
+  }
+  const getaccHand =()=>{
+    setTeams(false)
+    setAcct(true)
+    setBill(false)
+
+  }
+  const getbillHand =()=>{
+
+    setTeams(false)
+    setAcct(false)
+    setBill(true)
+
+  }
+
   return (
-    <div>
-      <Teams settingstab={subtab} />
+    <div className="">
+      <Navbar getTeams={getTeamsHand} getAcct={getaccHand} getBill={getbillHand}  />
+
+
+
+{teams && <Teams />}
+{bill && <Billing />}
+{acct && <Accounts />}
+
       
     </div>
   );
