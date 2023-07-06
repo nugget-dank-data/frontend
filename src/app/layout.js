@@ -34,23 +34,14 @@ export default function RootLayout({ children }) {
 
   
   const handleSettingsTabChange = (tabName) => {
-    if (tabName === 'manage_team') {
-    
-      setSettingstab('manage_team');
-    }
-    else if(tabName === 'my_account'){
-      setSettingstab('my_account');
-    }
-    else if (tabName == 'billing'){
-   
-      setSettingstab('billing');
-    }
+    setSettingstab(tabName);
   };
+
   
   useEffect(() => {
     const pathName = window.location.pathname;
     // Extract the active tab from the URL path
-    const tabName = pathName.substring(1); // Assuming the tab name is the path without the leading slash
+    const tabName = pathName.substring(1); 
 
     setActiveTab(tabName);
     
@@ -92,7 +83,7 @@ export default function RootLayout({ children }) {
           <div className="w-full flex flex-col ">
             <div className=" w-full">
               {!isLoginPage && (
-                <Navbar onSettingsTabChange={handleSettingsTabChange} newtabname={settingstab} getTeams={getTeamsHandler} getAcct={getaccHandler} getBill={getbillHandler}  />
+                <Navbar onSettingsTabChange={handleSettingsTabChange}  getTeams={getTeamsHandler} getAcct={getaccHandler} getBill={getbillHandler}  />
                 
               )}
               {/* {manageteam && <Teams />} */}

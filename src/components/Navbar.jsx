@@ -6,7 +6,7 @@ import Teams from '@/app/settings/components/teams';
 import Accounts from '@/app/settings/components/accounts';
 import Billing from '@/app/settings/components/billing';
 
-const Navbar = ({ onSettingsTabChange, newtabname, getTeams, getAcct, getBill }) => {
+const Navbar = ({ onSettingsTabChange, getTeams, getAcct, getBill }) => {
   const [settingsTab, setSettingsTab] = useState('manage_team'|| '');
 
   const [issettings, setissettings] = useState(false);
@@ -15,28 +15,25 @@ const Navbar = ({ onSettingsTabChange, newtabname, getTeams, getAcct, getBill })
 
   const setTeamsHandler = (data) =>{
     setSettingsTab(data)
-    // settingstab(data)
+    handleSettingsTabClick(data)
     console.log(typeof(onSettingsTabChange))
     getTeams(true);
 
   }
   const setaccHandler = (data) =>{
     setSettingsTab(data)
-    settingstab(data)
+    handleSettingsTabClick(data)
     getAcct(true);
 
   }
   const setbillHandler = (data) =>{
     setSettingsTab(data)
-    settingstab(data)
+    handleSettingsTabClick(data)
     getBill(true);
   
   }
 
-  const handleSettingsTabChange = (tabName) => {
-  
-    setSettingsTab(tabName);
-  };
+ 
 
 
   useEffect(() => {
@@ -44,9 +41,9 @@ const Navbar = ({ onSettingsTabChange, newtabname, getTeams, getAcct, getBill })
     handleRouteChange(window.location.pathname);
   }, []);
 
-  useEffect(() => {
-    handleRouteChange(window.location.pathname);
-  }, [newtabname]);
+  // useEffect(() => {
+  //   handleRouteChange(window.location.pathname);
+  // }, [newtabname]);
 
   const handleRouteChange = (pathname) => {
     const getPageTitle = () => {
@@ -68,13 +65,15 @@ const Navbar = ({ onSettingsTabChange, newtabname, getTeams, getAcct, getBill })
   };
 
   const handleSettingsTabClick = (tabName) => {
-    settingstab(tabName);
-    setSettingsTab(tabName);
+    // handleTabClick(tabName);
+    onSettingsTabChange(tabName);
+    
+    
   };
 
   const isTabActive = (tabname) => {
-    console.log(settingsTab, newtabname)
-    return settingsTab && newtabname === tabname ? 'underline' : '';
+    
+    return settingsTab === tabname ? 'underline' : '';
   };
 
   return (

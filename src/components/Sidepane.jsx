@@ -33,6 +33,8 @@ const Sidepane = ({ activeTab, handleTabClick, onSettingsTabChange, newtabname})
     return null;
   };
 
+  console.log('settingstab::', newtabname)
+  
   const getIcon = (tabName) => {
     // Map the tab names to their respective icons
     switch (tabName) {
@@ -53,10 +55,11 @@ const Sidepane = ({ activeTab, handleTabClick, onSettingsTabChange, newtabname})
     }
   };
 
-  useEffect(()=>{
-    setActiveSettingsSubtab(newtabname)
-    console.log('tabname:',newtabname)
-  })
+
+  useEffect(() => {
+    setActiveSettingsSubtab(newtabname);
+  }, [newtabname]);
+
   // useEffect(() => {
   //   const handleScroll = () => {
   //     const sidepane = document.getElementById('sidepane');
@@ -82,6 +85,7 @@ const Sidepane = ({ activeTab, handleTabClick, onSettingsTabChange, newtabname})
   const handleSettingsTabClick = (tabName) => {
     // handleTabClick(tabName);
     onSettingsTabChange(tabName);
+    console.log(typeof(onSettingsTabChange))
     setActiveSettingsSubtab(tabName);
     setActiveSettingsSubtab(newtabname)
   };
