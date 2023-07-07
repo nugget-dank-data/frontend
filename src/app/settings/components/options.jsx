@@ -20,7 +20,7 @@ const OptionsComponent = ({ user, sendUserDetails }) => {
   };
 
   return (
-    <div className="w-[180px] flex font-sans right-[-2em] z-50 absolute bg-[#000000] mr- rounded-lg p-3 gap-2">
+    <div className="w-[180px] flex right-[-2em] z-50 absolute text-white bg-[#000000] rounded-lg p-3 gap-2">
       <ul className="options-menu text-[16px] text-right">
         <div className="flex flex-row mt-3 cursor-pointer">
           {/* <Image src={viewdetails} alt="act.." /> */}

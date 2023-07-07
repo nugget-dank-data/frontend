@@ -1,9 +1,10 @@
-"use client";
+"use client"
 import React, { useState, useEffect } from "react";
-import Newcompset from "./newcompset";
+import Newcompset from "./components/newcompset";
 import Image from "next/image";
 import storesblue from '../../images/storesblue.svg'
-import plus from '../../images/pluswhite.svg'
+import plus from '../../images/pluswhite.svg';
+import axios from "axios";
 
 const Competitivesets = () => {
   const [compsets, setCompsets] = useState([]);
@@ -11,19 +12,25 @@ const Competitivesets = () => {
   const [compsetName, setCompsetName] = useState("");
   const [showAddNew, setShowAddNew] = useState(false);
 
+  const url = 'http://34.75.96.129:420/users/organization-compset-store/';
+
   useEffect(() => {
-    // Fetch user's compsets from the API endpoint
     fetchUserCompsets();
   }, []);
 
-  const fetchUserCompsets = () => {
-    // Fetch compsets from the API endpoint
-    const dummyCompsets = [
-      { id: 1, name: "Compset 1" },
-      { id: 2, name: "Compset 2" },
-      { id: 3, name: "Compset 3" },
-    ];
-    setCompsets(dummyCompsets);
+  const fetchUserCompsets = async () => {
+    try {
+      const token = localStorage.getItem('login_key');
+      const headers = {
+        Authorization: `Token ${token}`
+      };
+
+      const response = await axios.get(url, { headers });
+      setCompsets(response.data);
+      console.log(response)
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleAddNew = () => {
@@ -71,14 +78,13 @@ const Competitivesets = () => {
               </p>
               <button className="flex ml-3 text-white items-center p-2 rounded-lg text-center bg-[#2804ac]">Download All</button>
             </div>
+
+            
             <button onClick={handleAddNew} className="flex ml-3 text-white items-center p-2 rounded-lg text-center bg-[#2804ac]">
               <Image src={plus} alt="icon" className="w-8" /> 
               Create New Compset</button>
           </div>
           <div className="container">
-          
-           
-            </div>
             {compsets.map((compset, index) => (
               <div key={compset.id} className="compset-item border p-4 flex flex-col">
                  <div className="compsores flex w-1/2 justify-around items-start">
@@ -100,11 +106,10 @@ const Competitivesets = () => {
                   Delete
                 </button>
               </div>
-          
             ))}
           </div>
         </div>
-      
+      </div>
     </div>
   );
 };

@@ -76,8 +76,8 @@ useEffect(()=>{
   
   }
   
-  const isLoginPage = window.location.pathname.includes('/accounts') || window.location.pathname.includes('/verify-email/') || window.location.pathname.includes('/settings');
-  const issettingsPage = window.location.pathname.includes('/accounts') || window.location.pathname.includes('/verify-email/');
+  const isLoginPage = window.location.pathname.includes('/accounts') || window.location.pathname.includes('/verify-email/') || window.location.pathname.includes('/settings') ||window.location.pathname.includes('/admin') ;
+  const issettingsPage = window.location.pathname.includes('/accounts') || window.location.pathname.includes('/verify-email/')||window.location.pathname.includes('/admin') ;
 
   return (
     <html className="">

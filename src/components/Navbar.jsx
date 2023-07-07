@@ -49,6 +49,8 @@ const Navbar = ({ getTeams, getAcct, getBill }) => {
           return 'Compare Products';
         case '/competitive_sets':
           return 'Competitive Sets';
+        case '/admin/organizations':
+          return 'Competitive Sets';
         default:
           return 'Unknown Page';
       }
