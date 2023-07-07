@@ -1,7 +1,7 @@
 "use client"
 import Sidepane from "@/components/Sidepane";
 import './globals.css';
-import { Inter } from 'next/font/google';
+
 import { useEffect, useState } from 'react';
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
@@ -9,7 +9,7 @@ import Navbar from "@/components/Navbar";
 import Settings from "./settings/page";
 import Teams from "./settings/components/teams";
 
-const inter = Inter({ subsets: ['latin'] });
+
 
 export default function RootLayout({ children }) {
   const [activeTab, setActiveTab] = useState('');
@@ -19,7 +19,8 @@ export default function RootLayout({ children }) {
   const [billing, setbilling] = useState(false)
 
   console.log('test tab',settingstab)
-
+  const tabname = localStorage.getItem('settingstab')
+  console.log('',tabname);
 
   const handleTabClick = (tabName) => {
     if (activeTab === tabName) {
@@ -31,12 +32,21 @@ export default function RootLayout({ children }) {
     
     
   };
-
+ 
   
   const handleSettingsTabChange = (tabName) => {
     setSettingstab(tabName);
+    console.log('test tab',settingstab)
   };
 
+  const settab = (tabName) => {
+    setSettingstab(tabName);
+    console.log('called',tabName)
+  };
+useEffect(()=>{
+  setSettingstab(settingstab)
+  console.log('test tab',settingstab)
+})
   
   useEffect(() => {
     const pathName = window.location.pathname;
@@ -49,20 +59,20 @@ export default function RootLayout({ children }) {
 
 
   const getTeamsHandler = () =>{
-    setSettingstab('manage_team');
+    setSettingstab(settingstab);
 
 
   }
   const getaccHandler = () =>{
 
-    setSettingstab('my_account');
+    setSettingstab(settingstab);
   
 
   }
   const getbillHandler = () =>{
 
  
-    setSettingstab('billing');
+    setSettingstab(settingstab);
   
   }
   
@@ -83,16 +93,16 @@ export default function RootLayout({ children }) {
           <div className="w-full flex flex-col ">
             <div className=" w-full">
               {!isLoginPage && (
-                <Navbar onSettingsTabChange={handleSettingsTabChange}  getTeams={getTeamsHandler} getAcct={getaccHandler} getBill={getbillHandler}  />
+                <Navbar  getTeams={getTeamsHandler} getAcct={getaccHandler}  getBill={getbillHandler} />
                 
               )}
-              {/* {manageteam && <Teams />} */}
+              
             </div>
             <div className="w-full flex flex-col relative ">{children}</div>
           </div>
         </div>
         <div className="w-full bottom-0">
-          {/* <Footer /> */}
+          
         </div>
         
 

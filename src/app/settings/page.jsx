@@ -7,14 +7,11 @@ import Navbar from "@/components/Navbar";
 
 const Settings = ({ }) => {
 
-  const [managetab, setmanageteam] = useState(false);
-  const [accounts, setaccounts] = useState(true);
-  const [billing, setbilling] = useState(false);
 
-    const [teams, setTeams] = useState(false);
+  const [teams, setTeams] = useState(true);
   const [acct, setAcct] = useState(false);
   const [bill, setBill] = useState(false)
-  console.log(managetab)
+  
 
   // const handleSettingsTabChange = (tabName) => {
   

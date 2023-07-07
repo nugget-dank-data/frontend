@@ -33,7 +33,7 @@ const Sidepane = ({ activeTab, handleTabClick, onSettingsTabChange, newtabname})
     return null;
   };
 
-  console.log('settingstab::', newtabname)
+  
   
   const getIcon = (tabName) => {
     // Map the tab names to their respective icons
@@ -57,42 +57,28 @@ const Sidepane = ({ activeTab, handleTabClick, onSettingsTabChange, newtabname})
 
 
   useEffect(() => {
-    setActiveSettingsSubtab(newtabname);
-  }, [newtabname]);
+   const tabname = localStorage.getItem('settingstab')
+    setActiveSettingsSubtab(tabname);
+  }, []);
 
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     const sidepane = document.getElementById('sidepane');
-  //     const sidepaneRect = sidepane.getBoundingClientRect();
-  //     const viewportHeight = window.innerHeight;
-
-  //     if (sidepaneRect.top <= 0 && sidepaneRect.bottom > viewportHeight) {
-  //       sidepane.style.position = 'fixed';
-  //       sidepane.style.top = '0';
-  //       sidepane.style.bottom = '0';
-  //     } else {
-  //       sidepane.style.position = 'fixed';
-  //     }
-  //   };
-
-  //   window.addEventListener("scroll", handleScroll);
-
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, []);
 
   const handleSettingsTabClick = (tabName) => {
     // handleTabClick(tabName);
     onSettingsTabChange(tabName);
-    console.log(typeof(onSettingsTabChange))
-    setActiveSettingsSubtab(tabName);
-    setActiveSettingsSubtab(newtabname)
+    
+    localStorage.setItem("settingstab", tabName)
+    const newtab = localStorage.getItem('settingstab')
+    setActiveSettingsSubtab(newtab);
   };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  useEffect(() => {
+    const tabname = localStorage.getItem('settingstab')
+     setActiveSettingsSubtab(tabname);
+   }, []);
 
   const toggleManageStoresDropdown = () => {
     setIsManageStoresDropdownOpen(!isManageStoresDropdownOpen);

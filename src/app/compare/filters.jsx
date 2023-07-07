@@ -35,12 +35,12 @@ const Filters = () => {
   const [page, setPage] = useState(1);
 const itemsPerPage = 10;
 
-  const allstoresurl = "http://142.93.146.70:420/scraper/get-all-stores";
+  const allstoresurl = "http://34.75.96.129:420/scraper/get-all-stores";
 
   // useEffect(() => {
   //   if (selectedStore.length > 0) {
   //     const storeIds = selectedStore.map((store) => store.bb_id).join(",");
-  //     const url = `http://142.93.146.70:420/scraper/unique-products?bb_store_ids=${storeIds}`;
+  //     const url = `http://34.75.96.129:420/scraper/unique-products?bb_store_ids=${storeIds}`;
   //     setIsProductLoading(true);
   //     Axios.get(url)
   //       .then(({ data }) => {
@@ -152,7 +152,7 @@ const itemsPerPage = 10;
   useEffect(() => {
     if (selectedStore.length > 0) {
       const storeIds = selectedStore.map((store) => store.bb_id).join(",");
-      const url = `http://142.93.146.70:420/scraper/unique-products?bb_store_ids=${storeIds}`;
+      const url = `http://34.75.96.129:420/scraper/unique-products?bb_store_ids=${storeIds}`;
       setIsProductLoading(true);
       Axios.get(url)
         .then(({ data }) => {

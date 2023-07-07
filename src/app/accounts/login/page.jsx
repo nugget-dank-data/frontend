@@ -4,14 +4,17 @@ import Image from "next/image";
 import nugget from "../../../images/logo.png";
 import axios from "axios";
 import Link from "next/link";
+// import AuthContext from './AuthContext';
+// import { cache } from 'react'
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  
 
-  const url = 'http://159.203.36.109:420/users/login/';
+  const url = 'http://34.75.96.129:420/users/login/';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,14 +22,18 @@ const Login = () => {
     setMessage("");
 
     try {
+      console.log('logging in ..')
       const response = await axios.post(url, {
         email,
         password,
-        username: email // Assuming the username is the same as the email
+        username: email 
       });
 
-      const token = response.data.key;
-      // Do something with the token (e.g., store it in local storage, set it in a global state)
+   
+      localStorage.setItem("login_key", response.data.key)
+      console.log(response.data)
+
+
 
       setMessage("Login successful!");
     } catch (error) {
@@ -38,6 +45,14 @@ const Login = () => {
     }
   };
 
+
+  
+
+
+
+  
+
+ 
   return (
     <div className="bg-[#070606ec] flex flex-col min-h-screen w-full">
       <div className="m-auto flex flex-col text-white items-center mb-0 slate-500 text-center justify-center">
@@ -70,14 +85,15 @@ const Login = () => {
               Forgot Password?
             </Link>
           </div>
-          <Link href='/' className="w-full">
+          {/* <Link href='/' className="w-full"> */}
           <button
             type="submit"
             className="bg-[#7F56D9] text-white text-[1.4em] p-2 hover:bg-[#5c35af] w-full rounded-xl m-auto mt-6"
+            onClick={handleSubmit}
           >
             Login
           </button>
-          </Link>
+          {/* </Link> */}
         </form>
         {error && <p className="text-red-500">{error}</p>}
         {message && <p className="text-green-500">{message}</p>}
