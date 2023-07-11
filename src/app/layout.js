@@ -39,10 +39,7 @@ export default function RootLayout({ children }) {
     console.log('test tab',settingstab)
   };
 
-  const settab = (tabName) => {
-    setSettingstab(tabName);
-    console.log('called',tabName)
-  };
+
 useEffect(()=>{
   setSettingstab(settingstab)
   console.log('test tab',settingstab)

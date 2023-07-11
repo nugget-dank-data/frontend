@@ -5,67 +5,44 @@ import logout from "../../../images/logout.svg";
 import droped from "../../../images/dropdown2.svg";
 import notdroped from "../../../images/dropdown1.svg";
 import radioactivive from "../../../images/radioactive.svg";
-import radioinactivive from "../../../images/radioinactive.svg";
-import Link from "next/link";
+import radioinactive from "../../../images/radioinactive.svg";
 
-const AdminSidepane = ({ activeTab, handleTabClick, onSettingsTabChange, newtabname}) => {
+const AdminSidepane = ({ activeTab, activeSubTab, handleTabClick}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [currentPathname, setCurrentPathname] = useState("");
+  
+  
   const [isManageStoresDropdownOpen, setIsManageStoresDropdownOpen] =
     useState(false);
-  const [isSettingsDropdownOpen, setIsSettingsDropdownOpen] = useState(false);
-  const [activesettingssubtab, setActiveSettingsSubtab] = useState("");
- 
-  const renderTabClassName = (tabName) => {
-    return `mb-4 ${
-      tabName === activeTab ? "active border-l-2 border-blue-500" : ""
-    }`;
-  };
-
-  const renderSubMenu = (parentTab, content) => {
-    if (activeTab === parentTab) {
-      return <div className="ml-10">{content}</div>;
-    }
-    return null;
-  };
-
   
+  
+ 
+
+    const toggleMenu = () => {
+      setIsMenuOpen(!isMenuOpen);
+    };
+  
+    const toggleManageStoresDropdown = () => {
+      setIsManageStoresDropdownOpen(!isManageStoresDropdownOpen);
+      handleTabClick("manage-stores");
+    };
+  
+    const renderTabClassName = (tabName) => {
+      return `mb-4 ${
+        tabName === activeTab ? "active border-l-2 border-blue-500" : ""
+      }`;
+    };
+  
+    const renderSubMenu = (parentTab, content) => {
+      if (activeTab === parentTab) {
+        return <div className="ml-10">{content}</div>;
+      }
+      return null;
+    };
 
 
-
-  useEffect(() => {
-   const tabname = localStorage.getItem('settingstab')
-    setActiveSettingsSubtab(tabname);
-  }, []);
-
-
-  const handleSettingsTabClick = (tabName) => {
-    // handleTabClick(tabName);
-    onSettingsTabChange(tabName);
-    
-    localStorage.setItem("settingstab", tabName)
-    const newtab = localStorage.getItem('settingstab')
-    setActiveSettingsSubtab(newtab);
-  };
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  useEffect(() => {
-    const tabname = localStorage.getItem('settingstab')
-     setActiveSettingsSubtab(tabname);
-   }, []);
-
-  const toggleManageStoresDropdown = () => {
-    setIsManageStoresDropdownOpen(!isManageStoresDropdownOpen);
-    handleTabClick("manage-stores");
-  };
-
-  const toggleSettingsDropdown = () => {
-    setIsSettingsDropdownOpen(!isSettingsDropdownOpen);
-    handleTabClick("settings");
-  };
+    const handleSubTabClick = (subTabName) => {
+      
+    };
 
   useEffect(() => {
     const handleResize = () => {
@@ -85,7 +62,7 @@ const AdminSidepane = ({ activeTab, handleTabClick, onSettingsTabChange, newtabn
   }, []);
 
   return (
-    <div className="bg-red-200">
+    <div className="fixed bg-red-200">
       {isMenuOpen ? (
         <div
           id="AdminSidepane"
@@ -116,14 +93,14 @@ const AdminSidepane = ({ activeTab, handleTabClick, onSettingsTabChange, newtabn
           <p className="text-[#b3b2b25e] text-[1em]">menu</p>
           <ul className="list-none font-semibold">
             <li
-              onClick={() => handleTabClick("compare")}
+              onClick={() => handleTabClick("organizations")}
               className={`mb-4 p-4 font-medium rounded-lg shadow-xl  ${renderTabClassName(
-                "compare"
+                "organizations"
               )}`}
             >
               <a
                 href="/admin/organizations"
-                onClick={() => handleTabClick("compare")}
+                onClick={() => handleTabClick("organizations")}
                 className="flex items-center"
               >
                 
@@ -131,19 +108,20 @@ const AdminSidepane = ({ activeTab, handleTabClick, onSettingsTabChange, newtabn
               </a>
             </li>
             <li
-              onClick={() => handleTabClick("compare-v2")}
+              onClick={() => handleTabClick("old_admin")}
               className={`mb-4 p-4 font-medium rounded-lg shadow-xl ${renderTabClassName(
-                "compare-v2"
+                "old_admin"
               )}`}
             >
               <a
                 href="/compare-v2"
-                onClick={() => handleTabClick("compare-v2")}
+                onClick={() => handleTabClick("old_admin")}
                 className="flex"
               >
                 
                 Old Admin
               </a>
+              
             </li>
             
             <li
@@ -164,34 +142,54 @@ const AdminSidepane = ({ activeTab, handleTabClick, onSettingsTabChange, newtabn
               </a>
               {renderSubMenu(
                 "manage-stores",
-                <ul className="list-disc">
-                  <li className="font-medium mt-3">
-                    <a
-                      href="/my-stores"
-                      onClick={() => handleTabClick("manage-stores")}
-                      className="font-medium mt-3"
-                    >
-                      My Stores
-                    </a>
-                  </li>
-                  <li className="font-medium mt-3">
-                    <a
-                      href="/stores-to-monitor"
-                      onClick={() => handleTabClick("manage-stores")}
-                      className="font-medium mt-3"
-                    >
-                      Stores to Monitor
-                    </a>
-                  </li>
-                  <li className="font-medium mt-3">
-                    <a
-                      href="/organization-stores"
-                      onClick={() => handleTabClick("manage-stores")}
-                    >
-                      Organization Stores
-                    </a>
-                  </li>
-                </ul>
+                <div className="flex flex-col">
+                  <div
+                    className="flex p-2 cursor-pointer items-center "
+                    onClick={() => handleSubTabClick("my_stores")}
+                  >
+                    <Image
+                      src={
+                        activeSubTab === "My Stores"
+                          ? radioactivive
+                          : radioinactive
+                      }
+                      className="w-[1em]"
+                      alt="icon"
+                    />
+                    <p className="font-medium ml-2">My Stores </p>
+                  </div>
+
+                  <div
+                    className="flex p-2 cursor-pointer items-center "
+                    onClick={() => handleSubTabClick("Stores_to_Monitor")}
+                  >
+                    <Image
+                      src={
+                        activeSubTab === "Stores_to_Monitor"
+                          ? radioactivive
+                          : radioinactive
+                      }
+                      className="w-[1em]"
+                      alt="icon"
+                    />
+                    <p className="font-medium ml-2">Stores to Monitor</p>
+                  </div>
+                  <div
+                    className="flex p-2 cursor-pointer items-center "
+                    onClick={() => handleSubTabClick("organization_stores")}
+                  >
+                    <Image
+                      src={
+                        activeSubTab === "organization_stores"
+                          ? radioactivive
+                          : radioinactive
+                      }
+                      className="w-[1em]"
+                      alt="icon"
+                    />
+                    <p className="font-medium ml-2">Organization Stores</p>
+                  </div>
+                </div>
               )}
             </li>
           </ul>
