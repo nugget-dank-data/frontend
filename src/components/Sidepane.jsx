@@ -249,6 +249,8 @@ const Sidepane = ({ activeTab, handleTabClick, onSettingsTabChange, newtabname})
               {renderSubMenu(
                 "settings",
                 <div className="flex flex-col">
+                  
+                  <Link href='/settings/manage_team' >
                   <div
                     className="flex p-2 cursor-pointer items-center "
                     onClick={() => handleSettingsTabClick("manage_team")}
@@ -264,7 +266,9 @@ const Sidepane = ({ activeTab, handleTabClick, onSettingsTabChange, newtabname})
                     />
                     <p className="font-medium ml-2">Manage Team</p>
                   </div>
+                  </Link>
 
+                  <Link href='/settings/accounts' >
                   <div
                     className="flex p-2 cursor-pointer items-center "
                     onClick={() => handleSettingsTabClick("my_account")}
@@ -280,6 +284,9 @@ const Sidepane = ({ activeTab, handleTabClick, onSettingsTabChange, newtabname})
                     />
                     <p className="font-medium ml-2">My Account</p>
                   </div>
+
+                  </Link>
+                  <Link href='/settings/billing' >
                   <div
                     className="flex p-2 cursor-pointer items-center "
                     onClick={() => handleSettingsTabClick("billing")}
@@ -295,6 +302,8 @@ const Sidepane = ({ activeTab, handleTabClick, onSettingsTabChange, newtabname})
                     />
                     <p className="font-medium ml-2">Billing</p>
                   </div>
+                  </Link>
+
                 </div>
               )}
             </li>

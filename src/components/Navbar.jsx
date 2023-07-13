@@ -30,7 +30,7 @@ const Navbar = ({ getTeams, getAcct, getBill }) => {
   };
 
   useEffect(() => {
-    setissettings(window.location.pathname === '/settings');
+    setissettings(window.location.pathname.includes('/settings'));
     handleRouteChange(window.location.pathname);
   }, []);
 
@@ -64,7 +64,7 @@ const Navbar = ({ getTeams, getAcct, getBill }) => {
   };
 
   return (
-    <div className='p-5 justify-between flex flex-col border-b w-full sticky'>
+    <div className='p-5 justify-between flex flex-col border-b w-full'>
       <div className='p-5 justify-between flex w-full'>
         {pageTitle && <p className='text-[2em] font-medium ml-8 md:ml-0'>{pageTitle}</p>}
         <Image src={notification} alt='n' />
@@ -72,15 +72,15 @@ const Navbar = ({ getTeams, getAcct, getBill }) => {
       <div className='flex'>
         {issettings && (
           <div className='flex justify-between w-[30%]'>
-            <p onClick={() => setTeamsHandler('manage_team')} className={`${isTabActive('manage_team')} cursor-pointer`}>
+            <Link href='/settings/manage_teams' onClick={() => setTeamsHandler('manage_team')} className={`${isTabActive('manage_team')} cursor-pointer`}>
               Manage Teams
-            </p>
-            <p onClick={() => setaccHandler('my_account')} className={`${isTabActive('my_account')} cursor-pointer`}>
+            </Link>
+            <Link href='/settings/accounts' onClick={() => setaccHandler('my_account')} className={`${isTabActive('my_account')} cursor-Linkointer`}>
               My Account
-            </p>
-            <p onClick={() => setbillHandler('billing')} className={`${isTabActive('billing')} cursor-pointer`}>
+            </Link>
+            <Link href='/settings/billing' onClick={() => setbillHandler('billing')} className={`${isTabActive('billing')} cursor-pointer`}>
               Billing
-            </p>
+            </Link>
           </div>
         )}
       </div>

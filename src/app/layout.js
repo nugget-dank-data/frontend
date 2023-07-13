@@ -6,8 +6,6 @@ import { useEffect, useState } from 'react';
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 
-import Settings from "./settings/page";
-import Teams from "./settings/components/teams";
 
 
 
@@ -95,7 +93,7 @@ useEffect(()=>{
               )}
               
             </div>
-            <div className="w-full flex flex-col relative ">{children}</div>
+            <div className="w-full flex flex-col  ">{children}</div>
           </div>
         </div>
         <div className="w-full bottom-0">

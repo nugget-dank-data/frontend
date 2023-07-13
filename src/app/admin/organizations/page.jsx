@@ -10,7 +10,7 @@ const Adminorganizations = () => {
   const [activeTab, setActiveTab] = useState('');
   const [activeSubTab, setActiveSubTab] = useState('');
 
-  console.log('tabname is...',activeTab)
+  
 
 
   useEffect(() => {

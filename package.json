@@ -27,6 +27,7 @@
     "tailwind-scrollbar": "^3.0.4",
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss": "3.3.2",
-    "taos": "^1.0.3"
+    "taos": "^1.0.3",
+    "tw-elements": "^1.0.0-beta2"
   }
 }

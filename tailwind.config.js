@@ -24,6 +24,7 @@ module.exports = {
   plugins: [
     require('tailwind-scrollbar-hide'),
     require('tailwind-scrollbar'),
+    require("tw-elements/dist/plugin.cjs"),
     // require('taos/plugin'),
   ],
 }

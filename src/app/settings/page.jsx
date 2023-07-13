@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Teams from "./components/teams";
-import Billing from "./components/billing";
-import Accounts from "./components/accounts";
+import Teams from "./manage_team/page";
+import Billing from "./billing/page";
+import Accounts from "./accounts/page";
 import Navbar from "@/components/Navbar";
 
 const Settings = ({ }) => {
@@ -11,12 +11,6 @@ const Settings = ({ }) => {
   const [teams, setTeams] = useState(true);
   const [acct, setAcct] = useState(false);
   const [bill, setBill] = useState(false)
-  
-
-  // const handleSettingsTabChange = (tabName) => {
-  
-  //   setSettingstab(tabName);
-  // };
 
 
   const getTeamsHand =()=>{

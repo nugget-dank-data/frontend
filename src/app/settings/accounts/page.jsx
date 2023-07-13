@@ -1,5 +1,7 @@
+"use client"
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Navbar from "@/components/Navbar";
 
 const Accounts = () => {
   const [firstName, setFirstName] = useState('');
@@ -25,6 +27,7 @@ const Accounts = () => {
         setLastName(last_name);
         setEmail(email)
         setPhonenumber(phonenumber)
+        localStorage.setItem("user_id", pk);
       } catch (error) {
         console.log(error);
       }
@@ -50,6 +53,7 @@ const Accounts = () => {
 
   return (
     <div className='relative'>
+        <Navbar />
       <div className={status ? 'text-green-500 bg-green-100 flex float-left flex-col absolute p-4 right-0 top-0 w-1/4': 'text-red-500 bg-red-100 flex right-0 flex-col absolute top-0 w-1/4'}>{message}</div>
 
 

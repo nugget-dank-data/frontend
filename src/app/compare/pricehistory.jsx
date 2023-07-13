@@ -64,7 +64,7 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
   };
 
   return (
-    <div className="absolute z-50 flex top-0 p-10 bg-[#00000041] flex-col scrollbar-thin bottom-0 w-full overflow-y-scroll scrollbar-thumb-blue-500 scrollbar-track-gray-100">
+    <div className="absolute z-50 flex left-0 right-0 top-0 p-10 bg-[#00000041] flex-col justify-center items-center scrollbar-thin bottom-0 w-full overflow-y-scroll scrollbar-thumb-blue-500 scrollbar-track-gray-100">
       <div className="bg-white m-auto rounded-lg flex flex-col items-center justify-center relative p-4">
         {/* Price History */}
         <div className="flex justify-between w-full">

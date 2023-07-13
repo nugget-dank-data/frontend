@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import NewOrganization from "./createneworganization";
 import plus from "../../../../images/pluswhite.svg";
 import Image from "next/image";
+import Users from "./users";
 
 const Organizations = () => {
   const [showCreate, setShowCreate] = useState(false);
@@ -27,8 +28,8 @@ const Organizations = () => {
   }, []);
 
   return (
-    <div>
-      {showCreate && <NewOrganization handleAddOrg={handleAddOrg} />}
+    <div className=" min-h-[100vh] flex flex-col relative overflow-y-scroll scrollbar-hide">
+      
       <div>
         <div className="w-full flex justify-between p-6">
           <div className="flex justify-center items-end">
@@ -48,7 +49,10 @@ const Organizations = () => {
             <Image src={plus} alt="icon" className="w-8" /> Create Organization
           </button>
         </div>
+      {showCreate && <NewOrganization handleAddOrg={handleAddOrg} handleclose={handleCreateOrg} />}
       </div>
+
+      <Users />
     </div>
   );
 };

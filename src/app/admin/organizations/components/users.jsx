@@ -2,11 +2,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 
-import dot from "../../../images/dot.svg";
-import OptionsComponent from "./options";
+import { BsChevronRight } from 'react-icons/bs';
+import OptionsComponent from "@/app/settings/components/options";
 
 
-const Teams = () => {
+const Users = () => {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const filterFormRef = useRef(null);
@@ -143,34 +143,18 @@ const Teams = () => {
                   </th>
                   <th className="px-4 py-2 text-left">
                     <div className="flex items-center">
-                      <span className="mr-1">E-mail</span>
+                      <span className="mr-1">Owner</span>
                      
                     </div>
                   </th>
                   <th className=" px-4 py-2 text-left">
                     <div className="flex items-center">
-                      <span className="mr-1">permissions</span>
+                      <span className="mr-1">Pass</span>
                       
                     </div>
                   </th>
-                  <th className=" px-4 py-2 text-left">
-                    <div className="flex items-center">
-                      <span className="mr-1">Their Stores</span>
-                      
-                    </div>
-                  </th>
-                  <th className=" px-4 py-2 text-left">
-                    <div className="flex items-center">
-                      <span className="mr-1">Monitoring Stores</span>
-                      
-                    </div>
-                  </th>
-                  <th className=" px-4 py-2 text-left">
-                    <div className="flex items-center">
-                      <span className="mr-1">Last Login</span>
-                      
-                    </div>
-                  </th>
+            
+               
                 </tr>
               </thead>
               <tbody>
@@ -179,20 +163,14 @@ const Teams = () => {
                     <td className="p-4 text-left text-sm">{user.name}</td>
                     <td className="p-4 text-left text-sm">{user.email}</td>
                     <td className="p-4 text-left text-sm">{user.permissions}</td>
-                    <td className="p-4 text-left text-sm">{user.stores}</td>
-                    <td className="p-4 text-left text-sm">{user.stores}</td>
-                    <td className="p-4 text-left text-sm flex justify-between relative">
-                    {formatDate(user.date)}
+               
+                    <td className="p-4 text-left text-sm flex justify-between relative cursor-pointer">
+                   
                       {selectedUserId === user.id ? (
                         <OptionsComponent user={user} sendUserDetails={sendUserDetails} />
                       ) : (
-                        <Image
-                          src={dot}
-                          alt="Options"
-                          className="user-dot cursor-pointer"
-                          data-user-id={user.id}
-                          onClick={handleOptionsClick}
-                        />
+                        <BsChevronRight onClick={handleOptionsClick} />
+
                       )}
                     </td>
                   </tr>
@@ -208,4 +186,6 @@ const Teams = () => {
   );
 };
 
-export default Teams;
+export default Users;
+
+
