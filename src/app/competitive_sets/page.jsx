@@ -2,9 +2,10 @@
 import React, { useState, useEffect } from "react";
 import Newcompset from "./components/newcompset";
 import Image from "next/image";
-import storesblue from "../../images/storesblue.svg";
+
 import plus from "../../images/pluswhite.svg";
 import axios from "axios";
+import Compsets from "./components/compsets";
 
 const Competitivesets = () => {
   const [compsets, setCompsets] = useState([]);
@@ -12,7 +13,7 @@ const Competitivesets = () => {
   const [compsetName, setCompsetName] = useState("");
   const [showAddNew, setShowAddNew] = useState(false);
 
-  const url = "http://34.75.96.129:420/users/organization-compset-store/";
+  const url = "https://64a301f3b45881cc0ae5ff1e.mockapi.io/compsets";
 
 
   useEffect(() => {
@@ -22,11 +23,11 @@ const Competitivesets = () => {
   const fetchUserCompsets = async () => {
     try {
       const token = localStorage.getItem("login_key");
-      const headers = {
-        Authorization: `Token ${token}`,
-      };
+      // const headers = {
+      //   Authorization: `Token ${token}`,
+      // };
 
-      const response = await axios.get(url, { headers }, 2);
+      const response = await axios.get(url);
       setCompsets(response.data);
       console.log(response);
     } catch (error) {
@@ -42,24 +43,23 @@ const Competitivesets = () => {
     setEditingIndex(index);
   };
 
-  const handleUpdateCompset = (index, updatedCompset) => {
-    const updatedCompsets = [...compsets];
-    updatedCompsets[index] = updatedCompset;
-    setCompsets(updatedCompsets);
-    setEditingIndex(-1);
+  const handleUpdateCompset = async (index, updatedCompset) => {
+    try {
+      const compsetId = compsets[index].id;
+      const response = await axios.put(`${url}${compsetId}/`, updatedCompset);
+      const updatedCompsets = [...compsets];
+      updatedCompsets[index] = response.data;
+      setCompsets(updatedCompsets);
+      setEditingIndex(-1);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleDeleteCompset = async (index) => {
     try {
-      const token = localStorage.getItem("login_key");
-      const headers = {
-        Authorization: `Token ${token}`,
-      };
-
       const compsetId = compsets[index].id;
-
-      await axios.delete(`${url}${compsetId}/`, { headers });
-
+      await axios.delete(`${url}${compsetId}/`);
       const updatedCompsets = compsets.filter((_, i) => i !== index);
       setCompsets(updatedCompsets);
     } catch (error) {
@@ -67,7 +67,8 @@ const Competitivesets = () => {
     }
   };
 
-  
+
+
 
   return (
     <div className="min-h-screen">
@@ -98,35 +99,8 @@ const Competitivesets = () => {
               Create New Compset
             </button>
           </div>
-          <div className="container">
-            {compsets.map((compset, index) => (
-              <div
-                key={compset.id}
-                className="compset-item border p-4 flex flex-col"
-              >
-                <div className="compsores flex w-1/2 justify-around items-start">
-                  <div className="rounded-lg flex bg-[#a49d9d43] p-2">
-                    <Image src={storesblue} alt="nn" />
-                    <p className="ml-2 text-[0.9em]">
-                      Number of Competitive stores
-                    </p>
-                  </div>
-                  <div className="rounded-lg flex bg-[#a49d9d43] p-2">
-                    <p>Org-wide</p>
-                  </div>
-                </div>
-
-                <div className="flex">
-                  <Image src={storesblue} alt="nn" />
-                  <p>{compset.name}</p>
-                </div>
-                <button onClick={() => handleEditCompset(index)}>Edit</button>
-                <button onClick={() => handleDeleteCompset(index)}>
-                  Delete
-                </button>
-              </div>
-            ))}
-          </div>
+        
+        <Compsets compsets={compsets} update={handleUpdateCompset} delete={handleDeleteCompset} handleEditCompset={handleEditCompset} />
         </div>
       </div>
     </div>
