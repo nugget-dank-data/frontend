@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
+import close from '../../../images/close.svg'
 
-const AddStore = (handleClose) => {
-  const [stores, setStores] = useState([]); // State to store the list of stores
-  const [selectedStore, setSelectedStore] = useState(''); // State to track the selected store
+const AddStore = (prop) => {
+  const [stores, setStores] = useState([]);
+  const [selectedStore, setSelectedStore] = useState(''); 
 
   useEffect(() => {
     // Fetch all stores from the API endpoint
@@ -10,33 +12,31 @@ const AddStore = (handleClose) => {
       try {
         const response = await fetch('http://34.75.96.129:420/users/organization-compset-store/');
         const data = await response.json();
+        console.log('Fetched data:', data); // Check the value of data
         setStores(data);
       } catch (error) {
         console.error('Error fetching stores:', error);
       }
     };
-
+  
     fetchStores();
   }, []);
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Perform the submit logic using the selected store
-    // Submit the selectedStore to the API endpoint specified in submiturlurl
-
-    // Clear the selected store
     setSelectedStore('');
   };
 
   return (
-    <div className="flex w-full min-h-full z-50 bg-[#bbbabaeb] absolute">
-      <div className="rounded-xl bg-[#ffff] flex flex-col m-auto p-4 ">
+    <div className="flex w-full items-center justify-center h-screen left-0 right-0 top-0 z-50 bg-[#bbbabaeb] fixed">
+      <div className="rounded-xl bg-[#ffff] flex flex-col p-4 ">
         <div className="top">
           <Image
             src={close}
             alt="cc"
-            onClick={handleClose}
+            onClick={prop.handleclose}
             className="w-[1.5em] mr-2 mt-2 float-right cursor-pointer"
           />
         </div>
@@ -53,14 +53,17 @@ const AddStore = (handleClose) => {
             <select
               value={selectedStore}
               onChange={(e) => setSelectedStore(e.target.value)}
-              className="p-2 mb-4"
+              className="p-4 w-[20em] mb-4 bg-white rounded-lg"
             >
-              {/* Map over the stores and display them as options */}
-              {stores.map((store) => (
-                <option key={store.store_id} value={store.store_id}>
-                  {store.title}
-                </option>
-              ))}
+              {stores && stores.length > 0 ? (
+                stores.map((store) => (
+                  <option key={store.store_id} value={store.store_id}>
+                    {store.title}
+                  </option>
+                ))
+              ) : (
+                <option value="">No stores available</option>
+              )}
             </select>
             <button
               type="submit"
@@ -71,7 +74,7 @@ const AddStore = (handleClose) => {
           </form>
         </div>
 
-        <p className="text-center text-[#2804ac] cursor-pointer" onClick={handleClose}>
+        <p className="text-center text-[#2804ac] cursor-pointer" onClick={prop.handleclose}>
           Cancel
         </p>
       </div>

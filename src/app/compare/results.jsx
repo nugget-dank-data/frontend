@@ -106,9 +106,7 @@ const Results = ({
     setFilteredData(sortedStores);
   }, [selectedFilters, storesData]);
 
-  const sortStores = () => {
-    let data = storesData.slice(); // Create a copy of the array before sorting
-
+  const sortStores = (data) => {
     if (sortOption === "name-asc") {
       return data.sort((a, b) => a.Name.localeCompare(b.Name));
     } else if (sortOption === "name-desc") {
@@ -126,9 +124,13 @@ const Results = ({
     }
   };
 
-  const uniqueproducts = Array.from(
-    new Set(filteredData.map((product) => product.product_id))
-  );
+  const sortedData = Array.isArray(sortStores(storesData)) ? sortStores(storesData) : [];
+
+  const uniqueStoreNames = Array.from(new Set(sortedData.map((store) => store.Name)));
+
+  const countByName = (name) => {
+    return sortedData.filter((store) => store.Name === name).length;
+  };
 
   const handleScroll = () => {
     if (

@@ -4,7 +4,6 @@ import Image from "next/image";
 
 import dot from "../../../images/dot.svg";
 import OptionsComponent from "../components/options";
-import Navbar from "@/components/Navbar";
 
 
 const Teams = () => {

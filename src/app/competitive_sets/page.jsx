@@ -14,6 +14,7 @@ const Competitivesets = () => {
   const [showAddNew, setShowAddNew] = useState(false);
 
   const url = "https://64a301f3b45881cc0ae5ff1e.mockapi.io/compsets";
+  const endpoint = 'http://34.75.96.129:420/users/organization-compset-store/';
 
 
   useEffect(() => {
@@ -23,11 +24,13 @@ const Competitivesets = () => {
   const fetchUserCompsets = async () => {
     try {
       const token = localStorage.getItem("login_key");
-      // const headers = {
-      //   Authorization: `Token ${token}`,
-      // };
+      const headers = {
+        Authorization: `Token ${token}`,
+      };
 
-      const response = await axios.get(url);
+      const compset_id = 1
+
+      const response = await axios.get(endpoint, headers, compset_id);
       setCompsets(response.data);
       console.log(response);
     } catch (error) {

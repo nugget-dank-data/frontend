@@ -53,7 +53,6 @@ const Accounts = () => {
 
   return (
     <div className='relative'>
-        <Navbar />
       <div className={status ? 'text-green-500 bg-green-100 flex float-left flex-col absolute p-4 right-0 top-0 w-1/4': 'text-red-500 bg-red-100 flex right-0 flex-col absolute top-0 w-1/4'}>{message}</div>
 
 

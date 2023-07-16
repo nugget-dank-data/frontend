@@ -2,10 +2,11 @@
 import React, { useState, useEffect } from "react";
 import Teams from "./manage_team/page";
 import Billing from "./billing/page";
-import Accounts from "./accounts/page";
+import Accounts from "./account/page";
 import Navbar from "@/components/Navbar";
+import Sidepane from "@/components/Sidepane";
 
-const Settings = ({ }) => {
+export default function Settings({ children }) {
 
 
   const [teams, setTeams] = useState(true);
@@ -38,15 +39,10 @@ const Settings = ({ }) => {
     <div className="">
       <Navbar getTeams={getTeamsHand} getAcct={getaccHand} getBill={getbillHand}  />
 
-
-
-{teams && <Teams />}
-{bill && <Billing />}
-{acct && <Accounts />}
-
+      <div className="w-full flex flex-col  ">{children}</div>
       
     </div>
   );
 };
 
-export default Settings;
+

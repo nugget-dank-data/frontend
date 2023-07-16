@@ -14,7 +14,7 @@ const Newcompset = ({ handleclose }) => {
 
     const compset = {
       name: compsetName,
-      organization: 8,
+      organization: 1,
     };
 
     try {
