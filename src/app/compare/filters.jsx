@@ -349,7 +349,7 @@ const itemsPerPage = 10;
           ref={compsetRef}
           className="absolute top-0 right-0 bg-white w-80 mt-12 rounded-lg shadow-md"
         >
-          <Compsetprop />
+          <Compsetprop closeFunction={handlecompset} /> 
         </div>
       )}
       <div>

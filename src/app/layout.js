@@ -76,14 +76,17 @@ useEffect(()=>{
 
   return (
     <html className="">
-      <div className="w-full h-full p-0 overflow-hidden relative">
-        <div className="flex flex-col sm:flex-row relative m-auto">
+      <body>
+      <div className="w-full h-full p-0 overflow-hidden">
+        <div className="flex flex-row  m-auto relative ">
 
+        <div className="flex sticky top-0 lg:w-[30%]">
           {!issettingsPage && (
-            <div className="flex absolute md:relative sm:w-1/3 md:1/4">
+            <div className="flex lg:fixed lg:w-[23%] ">
               <Sidepane activeTab={activeTab} handleTabClick={handleTabClick} onSettingsTabChange={handleSettingsTabChange} newtabname={settingstab} />
             </div>
           )}
+          </div>
 
           <div className="w-full flex flex-col ">
             <div className=" w-full">
@@ -105,6 +108,7 @@ useEffect(()=>{
 
       
       </div>
+      </body>
     </html>
   );
 }

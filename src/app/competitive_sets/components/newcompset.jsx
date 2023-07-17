@@ -91,21 +91,21 @@ const Newcompset = ({ handleclose }) => {
                 <select name="" id="" className="p-3 w-full bg-white border rounded-lg">
                   <option value="">Search a store</option>
                 </select>
-                <span className="rounded-[1em] border bg-[#2804ac] flex items-center cursor-pointer text-white m-auto h-1/2 px-6 text-center">
+                <span className="rounded-[1em] border bg-[#7F56D9] flex items-center cursor-pointer text-white m-auto h-1/2 px-6 text-center">
                   add
                 </span>
               </div>
             </div>
             <button
               type="submit"
-              className="bg-[#2804ac] text-white text-[1.4em] w-full p-2 hover:bg-[#5c35af] rounded-xl m-auto mt-6"
+              className="bg-[#7F56D9] text-white text-[1.4em] w-full p-2 hover:bg-[#5c35af] rounded-xl m-auto mt-6"
             >
               Create New Compset
             </button>
           </form>
         </div>
 
-        <p className="text-center text-[#2804ac] cursor-pointer" onClick={handleclose}>
+        <p className="text-center text-[#7F56D9] cursor-pointer" onClick={handleclose}>
           cancel
         </p>
       </div>

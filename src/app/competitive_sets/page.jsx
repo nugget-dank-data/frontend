@@ -21,22 +21,29 @@ const Competitivesets = () => {
     fetchUserCompsets();
   }, []);
 
-  const fetchUserCompsets = async () => {
-    try {
-      const token = localStorage.getItem("login_key");
-      const headers = {
-        Authorization: `Token ${token}`,
-      };
+const fetchUserCompsets = async () => {
+  try {
+    const token = localStorage.getItem("login_key");
+    // const headers = {
+    //   Authorization: `Token ${token}`,
+    // };
 
-      const compset_id = 1
+    // const compset_id = 1;
 
-      const response = await axios.get(endpoint, headers, compset_id);
-      setCompsets(response.data);
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    const response = await axios.get(url, {
+      // headers: headers,
+      // params: {
+      //   compset_id: compset_id,
+      // },
+    });
+    setCompsets(response.data);
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
 
   const handleAddNew = () => {
     setShowAddNew(!showAddNew);
@@ -89,14 +96,14 @@ const Competitivesets = () => {
               <p className="h-10 min-w-[2em] ml-3 flex items-center text-[1.4em] justify-center text-center border rounded-lg">
                 {compsets.length || 0}
               </p>
-              <button className="flex ml-3 text-white items-center p-2 rounded-lg text-center bg-[#2804ac]">
+              <button className="flex ml-3 text-white items-center p-2 rounded-lg text-center bg-[#7F56D9]">
                 Download All
               </button>
             </div>
 
             <button
               onClick={handleAddNew}
-              className="flex ml-3 text-white items-center p-2 rounded-lg text-center bg-[#2804ac]"
+              className="flex ml-3 text-white items-center p-2 rounded-lg text-center bg-[#7F56D9]"
             >
               <Image src={plus} alt="icon" className="w-8" />
               Create New Compset

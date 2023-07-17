@@ -8,7 +8,8 @@ const Compsetprop = ({ closeFunction }) => {
         //implement submit logic
     }
   return (
-    <div className="bg-white rounded-xl flex flex-col justify-center w-3/4 sm:w-1/4 border p-6 absolute top-[50%] z-50 left-[50%] transform -translate-x-1/2 -translate-y-1/2">
+    <div className="flex w-full items-center justify-center h-screen left-0 right-0 top-0 z-50 bg-[#bbbabaeb] fixed">
+      <div className="rounded-xl bg-[#ffff] relative  flex flex-col p-4 ">
       <h2>Select a Comp-set</h2>
 
       <button
@@ -37,12 +38,13 @@ const Compsetprop = ({ closeFunction }) => {
       <button
         type="submit"
         onClick={handleSubmit}
-        className="bg-[#0202a5] text-white w-full rounded-lg p-2 m-auto"
+        className="bg-[#7F56D9] text-white w-full rounded-lg p-2 m-auto"
       >
         Select comp-set
       </button>
       <a href="#" className="mt-4 mb-4 text-[#8a206f]">View in accelerated full screen [beta]</a>
       <p className="text-[#8a206f] cursor-pointer" onClick={closeFunction}>cancel</p>
+      </div>
       </div>
     </div>
   );

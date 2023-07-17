@@ -70,7 +70,7 @@ const Sidepane = ({
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth > 768) {
+      if (window.innerWidth > 850) {
         setIsMenuOpen(true); // Open menu on desktop
       } else {
         setIsMenuOpen(false); // Close menu on mobile
@@ -86,13 +86,13 @@ const Sidepane = ({
   }, []);
 
   return (
-    <div className="fixed  bg-red-200">
+    <div className="h-[100vh] overflow-scroll bottom-0 scrollbar-hide w-full">
       {isMenuOpen ? (
         <div
           id="sidepane"
-          className="bg-[#232529] overflow-y-scroll scrollbar-hide h-screen  text-white flex flex-col z-50 p-5  w-[20em] sm:relative"
+          className="bg-[#232529] overflow-y-scroll scrollbar-hide h-screen fixed  text-white flex flex-col z-50 p-5 md:relative "
         >
-          <div className="top-0 right-2 absolute text-white flex sm:hidden">
+          <div className="top-0 right-2 absolute text-white flex md:hidden ">
             <button className="" onClick={toggleMenu}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -120,7 +120,7 @@ const Sidepane = ({
               onClick={() => handleTabClick("compare")}
               className={`mb-4 p-4 font-medium rounded-lg shadow-xl  ${
                 currentRoute.includes("/compare")
-                  ? "border-l-4 bg-[#08070753] border-[#2804ac]"
+                  ? "border-l-4 bg-[#08070753] border-[#7F56D9]"
                   : ""
               }`}
             >
@@ -137,7 +137,7 @@ const Sidepane = ({
               onClick={() => handleTabClick("compare-v2")}
               className={`mb-4 p-4 font-medium rounded-lg shadow-xl ${
                 currentRoute.includes("/compare-v2")
-                  ? "border-l-4 bg-[#08070753] border-[#2804ac]"
+                  ? "border-l-4 bg-[#08070753] border-[#7F56D9]"
                   : ""
               }`}
             >
@@ -153,7 +153,7 @@ const Sidepane = ({
             <li
               className={`mb-4 p-4 font-medium rounded-lg shadow-xl ${
                 currentRoute.includes("/competitive_sets")
-                  ? "border-l-4 bg-[#08070753] border-[#2804ac]"
+                  ? "border-l-4 bg-[#08070753] border-[#7F56D9]"
                   : ""
               }`}
             >
@@ -169,7 +169,7 @@ const Sidepane = ({
             <li
               className={`mb-4 p-4 font-medium rounded-lg shadow-xl ${
                 currentRoute.includes("/manage_stores")
-                  ? "border-l-4 bg-[#08070753] border-[#2804ac]"
+                  ? "border-l-4 bg-[#08070753] border-[#7F56D9]"
                   : ""
               }`}
             >
@@ -240,7 +240,7 @@ const Sidepane = ({
             <li
               className={`mb-4 p-4 font-medium rounded-lg shadow-xl ${
                 currentRoute.includes("/settings")
-                  ? "border-l-4 bg-[#1b1a1a98] border-[#2804ac]"
+                  ? "border-l-4 bg-[#1b1a1a98] border-[#7F56D9]"
                   : ""
               }`}
             >

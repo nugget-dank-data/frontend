@@ -80,13 +80,13 @@ const Accounts = () => {
           </div>
           <div className="phonenumber flex flex-col px-4 rounded-lg border m-4 min-w-[4em] max-w-[40%]">
             <span className='edit text-[0.9em] text-[#999797]'>Phone number</span>
-            <span className='text-[1.2em]'>{phonenumber}</span>
+            <span className='text-[1.2em] py-2'>{phonenumber}</span>
           </div>
         </div>
       </div>
 
       <div className="button">
-        <button onClick={handlePasswordReset} className="flex ml-3 text-white items-center p-2 rounded-lg text-center bg-[#2804ac]">Reset Password</button>
+        <button onClick={handlePasswordReset} className="flex ml-3 text-white items-center p-2 rounded-lg text-center bg-[#7F56D9]">Reset Password</button>
       </div>
     </div>
   );

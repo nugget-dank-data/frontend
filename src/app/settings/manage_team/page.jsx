@@ -126,7 +126,7 @@ const Teams = () => {
   };
 
   return (
-    <div className="w-full flex flex-col text-[#213F7D] p-4 font-Work-Sans">
+    <div className="w-full flex flex-col text-[#181b21] p-4 font-Work-Sans">
       
         <div>
 

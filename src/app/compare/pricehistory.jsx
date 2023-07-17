@@ -1,15 +1,6 @@
 import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from "recharts";
 import search from "../../images/brand.svg";
 import Image from "next/image";
 import close from "../../images/close.svg";
@@ -20,24 +11,24 @@ import axios from "axios";
 import PriceInventoryGraph from "./pricegraph";
 
 const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
-  // const startDateFormat = priceData.start_date.split('T')[0]; // Extract only the date part
+  
   const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date()); // Use the current date as the default end date
+  const [endDate, setEndDate] = useState(new Date()); 
   const [selectedstore, setSelectedStore] = useState({});
   const [isStoreDropdownOpen, setIsStoreDropdownOpen] = useState(false);
   const [priceHistory, setPriceHistory] = useState([]);
 
   useEffect(() => {
     if (priceData && priceData.start_date) {
-      const startDateFormat = priceData.start_date.split("T")[0]; // Extract only the date part
+      const startDateFormat = priceData.start_date.split("T")[0]; 
       setStartDate(new Date(startDateFormat));
     }
-    setEndDate(new Date()); // Set current date as the default end date
+    setEndDate(new Date());
 
     if (priceData.inv && priceData.inv.length > 0) {
       const storeId = priceData.inv[0].store_id;
       const productId = priceData.inv[0].product_id;
-      setSelectedStore(selectedStore); // <- Change this line
+      setSelectedStore(selectedStore);
       fetchPriceHistory(storeId, productId);
     }
   }, [priceData]);
@@ -64,8 +55,8 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
   };
 
   return (
-    <div className="absolute z-50 flex left-0 right-0 top-0 p-10 bg-[#00000041] flex-col justify-center items-center scrollbar-thin bottom-0 w-full overflow-y-scroll scrollbar-thumb-blue-500 scrollbar-track-gray-100">
-      <div className="bg-white m-auto rounded-lg flex flex-col items-center justify-center relative p-4">
+    <div className="absolute z-50 flex left-0 right-0 top-0 p-10 bg-[#00000041] flex-col justify-center items-center scrollbar-thin bottom-0 w-full overflow-y-scroll scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
+      <div className="bg-white m-auto rounded-lg flex flex-col items-center w-[40%] justify-center relative p-7 ">
         {/* Price History */}
         <div className="flex justify-between w-full">
           <h2 className="font-bold text-2xl">Price History</h2>
@@ -77,7 +68,7 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
             />
           </button>
         </div>
-        <div className="first mt-4 w-full">
+        <div className=" mt-4 w-full">
           <div className="w-full border pr-2 rounded-lg bg-white flex mb-6">
             <Image src={search} alt="Search" className="w-6 h-6" />
             <input
@@ -85,9 +76,9 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
               className="border-none rounded-lg bg-transparent p-2 w-full focus:outline-none text-sm"
             />
           </div>
-          <div className="flex w-full">
+          <div className="flex flex-col">
             <div
-              className="flex cursor-pointer justify-between m-auto p-2 items-center border rounded-lg bg-[#57545411]"
+              className="flex cursor-pointer w-full justify-between p-2 items-center border rounded-lg bg-[#57545411]"
               onClick={toggleStoreDropdown}
             >
               <Image src={storeimg} alt="Store" className="w-6 h-6" />
@@ -103,7 +94,7 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
               />
             </div>
             {isStoreDropdownOpen && (
-              <div className="bg-white text-black border m-auto flex flex-col max-h-[10em] rounded-lg overflow-scroll mt-1">
+              <div className="bg-white w-full text-black border flex flex-col max-h-[10em] rounded-lg overflow-y-scroll scrollbar-thin  scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100 ">
                 {stores.map((store) => (
                   <div
                     key={store.id}
@@ -123,8 +114,8 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
         </div>
 
         {/* Filters */}
-        <div className="flex justify-between items-center my-4">
-          <div className="flex w-full">
+        <div className="flex  w-full items-stretch my-4 gap-6">
+          <div className="flex justify-center w-[40%] items-center float-left ">
             <label htmlFor="all-data-points" className="text-sm">
               All Data Points
             </label>
@@ -135,14 +126,14 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
               className="mr-1"
             />
           </div>
-          <div className="dates flex w-full ">
+          <div className="dates flex w-[60%] justify-between ">
             <div className="w-full sm:w-auto my-2 sm:my-0">
-              <p>End Date</p>
+              <p>Start Date</p>
               <DatePicker
                 selected={startDate}
                 onChange={(date) => setStartDate(date)}
                 dateFormat="dd MMMM yyyy"
-                className="text-center border rounded-lg w-2/4 px-4 py-2 text-sm "
+                className="text-center border rounded-lg w-[7em] px-4 py-2 text-sm "
                 startDate={startDate}
                 endDate={endDate}
                 selectsStart
@@ -160,7 +151,7 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
                 selected={endDate}
                 onChange={(date) => setEndDate(date)}
                 dateFormat="dd MMMM yyyy"
-                className="text-center border rounded-lg w-2/4 px-4 py-2 text-sm "
+                className="text-center border rounded-lg w-[7em] px-4 py-2 text-sm "
                 startDate={startDate}
                 endDate={endDate}
                 selectsEnd
@@ -176,7 +167,7 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
         <PriceInventoryGraph priceData={priceHistory} />
 
         {/* Inventory History */}
-        <div className="flex relative cursor-pointer h-[15em] text-left flex-col overflow-y-scroll justify-between w-3/4 border rounded-lg bg-[#57545411] scrollbar-thin scrollbar-thumb-blue-[#7F56D9] scrollbar-track-gray-100">
+        <div className="flex relative cursor-pointer h-[15em] text-left flex-col overflow-y-scroll justify-between w-3/4 border rounded-lg bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
           <h3 className="font-bold bg-[#999cb9] z-50 text-2xl sticky top-0">
             Inventory History
           </h3>

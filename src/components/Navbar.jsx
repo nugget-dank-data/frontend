@@ -67,14 +67,14 @@ const Navbar = ({ getTeams, getAcct, getBill }) => {
           <div className='flex justify-between w-[30%]'>
             <Link href='/settings/manage_team' passHref
               
-                className={`cursor-pointer ${ currentRoute === '/settings/manage_team' ? 'underline' : ''}`}
+                className={`cursor-pointer ${ currentRoute === '/settings/manage_team' ? 'underline text-[#7F56D9]' : ''}`}
                 onClick={() => setTeamsHandler('manage_team')}
               >
                 Manage Teams
               
             </Link>
             <Link href='/settings/account' passHref
-                   className={`cursor-pointer ${currentRoute === '/settings/account' ? 'underline' : ''}`}
+                   className={`cursor-pointer ${currentRoute === '/settings/account' ? 'underline text-[#7F56D9]' : ''}`}
                 onClick={() => setaccHandler('my_account')}
               >
                 My Account
@@ -82,7 +82,7 @@ const Navbar = ({ getTeams, getAcct, getBill }) => {
             </Link>
             <Link href='/settings/billing' passHref
               
-                className={`cursor-pointer ${currentRoute === '/settings/billing' ? 'underline' : ''}`}
+                className={`cursor-pointer ${currentRoute === '/settings/billing' ? 'underline text-[#7F56D9]' : ''}`}
                 onClick={() => setbillHandler('billing')}>
               
                 Billing

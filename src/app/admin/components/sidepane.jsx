@@ -62,7 +62,7 @@ const AdminSidepane = ({ activeTab, activeSubTab, handleTabClick}) => {
   }, []);
 
   return (
-    <div className="fixed bg-red-200">
+    <div className="fixed ">
       {isMenuOpen ? (
         <div
           id="AdminSidepane"

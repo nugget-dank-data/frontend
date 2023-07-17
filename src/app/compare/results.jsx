@@ -231,7 +231,7 @@ const Results = ({
         <div className="overflow-y-scroll relative rounded-2xl border-b shadow-xl h-[30em] w-[90%] flex scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100 mb-80">
           <div className="flex flex-col w-full">
             <div className="flex w-full justify-between">
-              <div className="w-full bg-slate-300 sticky top-0 rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em] min-w-[12em]">
+              <div className="w-full bg-[#7f56d95d] sticky top-0 rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em] min-w-[12em]">
                 <h1>Product</h1>
               </div>
 

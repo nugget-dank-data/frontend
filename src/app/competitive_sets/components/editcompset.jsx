@@ -3,6 +3,8 @@ import Image from "next/image";
 import close from "../../../images/close.svg";
 import axios from "axios";
 import ProgressBar from './progressbar';
+import { FaSync } from 'react-icons/fa';
+
 
 const AddStore = (prop) => {
   const [stores, setStores] = useState([]);
@@ -11,6 +13,7 @@ const AddStore = (prop) => {
   const [organizationId, setOrganizationId] = useState(1);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  
   
 
   useEffect(() => {
@@ -97,7 +100,7 @@ const AddStore = (prop) => {
 
 
         <div className="heading text-[1.5em] font-bold text-center">
-          <h1>Add store</h1>
+          <h1>Edit Compset Name</h1>
         </div>
 
         <div className="form flex flex-col p-4">
@@ -109,29 +112,13 @@ const AddStore = (prop) => {
           {errorMessage && <div className="error-message">{errorMessage}</div>}
 
           <form onSubmit={handleSubmit} className="flex flex-col">
-            <label htmlFor="text" className="text-[1.2em] font-bold mb-2 mt-2">
-              select a store
-            </label>
-            <select
-              value={selectedStore}
-              onChange={(e) => setSelectedStore(e.target.value)}
-              className="p-4 w-[20em] mb-4 bg-white rounded-lg border border-[#4b4949]"
-            >
-              {stores && stores.length > 0 ? (
-                stores.map((store) => (
-                  <option key={store.id} value={store.store}>
-                    {store.store}
-                  </option>
-                ))
-              ) : (
-                <option value="">No stores available</option>
-              )}
-            </select>
+           
+           <input type="text" name="name" id="name"  />
             <button
               type="submit"
               className="bg-[#7F56D9] text-white text-[1.4em] w-full p-2 hover:bg-[#5c35af] rounded-xl m-auto mt-6"
             >
-              Submit
+              Confirm
             </button>
           </form>
         </div>
