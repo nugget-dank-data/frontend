@@ -31,9 +31,10 @@ const Filters = () => {
   const [productLoading, setIsProductLoading] = useState(false);
   const [storeLoading, setIsStoreLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
+  const [brandSearch, setBrandSearch] = useState("");
 
   const [page, setPage] = useState(1);
-const itemsPerPage = 10;
+  const itemsPerPage = 10;
 
   const allstoresurl = "http://34.75.96.129:420/scraper/get-all-stores";
 
@@ -74,11 +75,15 @@ const itemsPerPage = 10;
 
   const applyFilters = () => {
     setSelectedFilters({
-      selectedStore,
       selectedCategory,
       selectedSize,
-      range
+      range,
+      brandSearch,
     });
+  };
+
+  const handleBrandSearchChange = (event) => {
+    setBrandSearch(event.target.value);
   };
 
   const handleStoreChange = (store) => {
@@ -123,7 +128,6 @@ const itemsPerPage = 10;
     setIsStoreDropdownOpen(false);
     setIsSizeDropdownOpen(false);
   };
-
 
   const handleSizeChange = (size) => {
     setSelectedSize(size);
@@ -171,8 +175,8 @@ const itemsPerPage = 10;
           console.error("Error fetching store data:", error);
         })
         .finally(() => {
-                  setIsProductLoading(false);
-                });
+          setIsProductLoading(false);
+        });
     }
   }, [selectedStore]);
 
@@ -196,8 +200,7 @@ const itemsPerPage = 10;
                   Remove
                 </button>
               </div>
-            ))
-          }
+            ))}
           </div>
 
           <div
@@ -212,29 +215,29 @@ const itemsPerPage = 10;
               alt="k"
             />
           </div>
-          {isStoreDropdownOpen &&(
+          {isStoreDropdownOpen && (
             <div className="flex cursor-pointer h-[7em] text-left flex-col overflow-y-scroll justify-between w-3/4 border rounded-lg bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
-                    
-          
-          
-          {storeLoading?
-           <div className="flex justify-center items-center h-16">
-           <Dots size={32} color="#7F56D9" />
-         </div>: allstores.map((store) => (
-                <div
-                  key={store.id}
-                  className={`cursor-pointer  text-left justify-start text-black py-4 px-1 hover:bg-gray-200 ${
-                    selectedStore.some(
-                      (selectedStore) => selectedStore.id === store.id
-                    )
-                      ? " bg-gray-200"
-                      : ""
-                  }`}
-                  onClick={() => handleStoreChange(store)}
-                >
-                  {store.name}
+              {storeLoading ? (
+                <div className="flex justify-center items-center h-16">
+                  <Dots size={32} color="#7F56D9" />
                 </div>
-              ))}
+              ) : (
+                allstores.map((store) => (
+                  <div
+                    key={store.id}
+                    className={`cursor-pointer  text-left justify-start text-black py-4 px-1 hover:bg-gray-200 ${
+                      selectedStore.some(
+                        (selectedStore) => selectedStore.id === store.id
+                      )
+                        ? " bg-gray-200"
+                        : ""
+                    }`}
+                    onClick={() => handleStoreChange(store)}
+                  >
+                    {store.name}
+                  </div>
+                ))
+              )}
             </div>
           )}
           <div className="compset mt-5">
@@ -297,17 +300,19 @@ const itemsPerPage = 10;
               </div>
               {isSizeDropdownOpen && (
                 <div className="flex cursor-pointer h-[7em] mt-4 md:mt-0 text-left flex-col overflow-y-scroll justify-between w-full border rounded-lg bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
-                  {sizes.sort((a, b) => a - b).map((size) => (
-                    <div
-                      key={size}
-                      className={`cursor-pointer text-black p-4 hover:bg-gray-200 ${
-                        selectedSize === size ? " bg-gray-200" : ""
-                      }`}
-                      onClick={() => handleSizeChange(size)}
-                    >
-                      {size}
-                    </div>
-                  ))}
+                  {sizes
+                    .sort((a, b) => a - b)
+                    .map((size) => (
+                      <div
+                        key={size}
+                        className={`cursor-pointer text-black p-4 hover:bg-gray-200 ${
+                          selectedSize === size ? " bg-gray-200" : ""
+                        }`}
+                        onClick={() => handleSizeChange(size)}
+                      >
+                        {size}
+                      </div>
+                    ))}
                 </div>
               )}
             </div>
@@ -323,6 +328,8 @@ const itemsPerPage = 10;
                 type="text"
                 className="pl-8 bg-transparent outline-none text-[#0a0a0a83] w-full"
                 placeholder="Brand"
+                value={brandSearch}
+                onChange={handleBrandSearchChange}
               />
             </div>
           </div>
@@ -343,25 +350,24 @@ const itemsPerPage = 10;
         </div>
       </div>
 
-   
       {showCompset && (
         <div
           ref={compsetRef}
           className="absolute top-0 right-0 bg-white w-80 mt-12 rounded-lg shadow-md"
         >
-          <Compsetprop closeFunction={handlecompset} /> 
+          <Compsetprop closeFunction={handlecompset} />
         </div>
       )}
       <div>
-      <Results
-  storesData={storesData}
-  allstores={allstores}
-  selectedFilters={selectedFilters}
-  selectedstores={selectedStore}
-  isfetching={productLoading}
-  page={page}
-  itemsPerPage={itemsPerPage}
-/>
+        <Results
+          storesData={storesData}
+          allstores={allstores}
+          selectedFilters={selectedFilters}
+          selectedstores={selectedStore}
+          isfetching={productLoading}
+          page={page}
+          itemsPerPage={itemsPerPage}
+        />
       </div>
     </div>
   );

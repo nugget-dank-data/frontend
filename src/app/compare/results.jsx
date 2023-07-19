@@ -7,6 +7,7 @@ import Pricehistory from "./pricehistory";
 import "tailwindcss/tailwind.css";
 import { Dots } from "react-activity";
 import "react-activity/dist/Dots.css";
+import { BioRhyme_Expanded } from "next/font/google";
 
 const Results = ({
   storesData,
@@ -23,90 +24,73 @@ const Results = ({
   const [sortOption, setSortOption] = useState("");
   const [showHistory, setShowHistory] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const {
-    selectedStore = [],
-    selectedCategory,
-    selectedSize,
-    range,
-  } = selectedFilters;
   const [filteredData, setFilteredData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [page, setPage] = useState(1);
   const [isFetching, setIsFetching] = useState(false);
+  const [page, setPage] = useState(1);
 
-  console.log(selectedFilters);
   const handleSortChange = (event) => {
     setSortOption(event.target.value);
-    sortStores();
+    sortData();
   };
-
-  useEffect(() => {
-    setIsFetching(isfetching);
-  });
 
   const handleToggleHistory = () => {
     setShowHistory(!showHistory);
   };
 
   const handleSelectProduct = (product) => {
-    filteredData;
     setSelectedProduct(product);
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop =
-        (document.documentElement && document.documentElement.scrollTop) ||
-        document.body.scrollTop;
-      const scrollHeight =
-        (document.documentElement && document.documentElement.scrollHeight) ||
-        document.body.scrollHeight;
-      const clientHeight =
-        document.documentElement.clientHeight || window.innerHeight;
-
-      if (scrollTop + clientHeight >= scrollHeight - 20) {
-        // Load more data
-        setPage((prevPage) => prevPage + 1);
+  const filterProducts = (filterData) => {
+    const { selectedCategory, selectedSize, range, brandSearch } = filterData;
+  
+    const filtered = storesData.filter((product) => {
+      let isMatch = true;
+  
+      if (
+        selectedCategory &&
+        !product.Category.toLowerCase().includes(selectedCategory.toLowerCase())
+      ) {
+        isMatch = false;
       }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
-  useEffect(() => {
-    const filteredStores = storesData.filter((product) => {
-      // console.log(filteredStores)
-      // Check if the product matches the selected filters
-      const storeMatches =
-        selectedStore.length === 0 ||
-        selectedStore.some((store) => store.bb_id === product.inv[0].store_id);
-      const categoryMatch =
-        selectedCategory === "" || selectedCategory === product.Category;
-      const sizeMatch =
-        selectedSize === 0 || parseFloat(product.size) === selectedSize;
-      const priceMatch = "";
-
-      // product?.inv?.[0]?.price >= range[0] && product?.inv?.[0]?.price <= range[1];
-
-      // product.inv &&
-      // product.inv.length > 0 &&
-      // product.inv[0] &&
-      // product.inv[0].price >= range[0] &&
-      // product.inv[0].price <= range[1];
-      return storeMatches && categoryMatch && sizeMatch && priceMatch;
+      if (
+        brandSearch &&
+        !product.Brand.toLowerCase().includes(brandSearch.toLowerCase())
+      ) {
+        isMatch = false;
+      }
+  
+      if (selectedSize) {
+        const productSize = product.size || 0;
+        if (productSize !== selectedSize) {
+          isMatch = false;
+        }
+      }
+  
+      if (range) {
+        const priceMatch =
+          product.inv &&
+          product.inv.length > 0 &&
+          product.inv[0]?.price >= range[0] &&
+          product.inv[0]?.price <= range[1];
+  
+        if (!priceMatch) {
+          isMatch = false;
+        }
+      }
+  
+      return isMatch;
     });
+  
+    setFilteredData(filtered);
+    console.log('mydata::', filteredData);
+  };
+  
+  
 
-    // Apply sorting based on the selected sort option
-    const sortedStores = sortStores(filteredStores);
-    console.log(filteredStores);
-    setFilteredData(sortedStores);
-  }, [selectedFilters, storesData]);
-
-  const sortStores = (data) => {
+  // Function to sort the data based on the selected sort option
+  const sortData = (data, sortOption) => {
     if (sortOption === "name-asc") {
       return data.sort((a, b) => a.Name.localeCompare(b.Name));
     } else if (sortOption === "name-desc") {
@@ -124,65 +108,50 @@ const Results = ({
     }
   };
 
-  const sortedData = Array.isArray(sortStores(storesData)) ? sortStores(storesData) : [];
+  useEffect(() => {
+    // Filter the storesData based on selected filters
+    filterProducts(selectedFilters);
+  }, [selectedFilters, storesData]);
+  
 
-  const uniqueStoreNames = Array.from(new Set(sortedData.map((store) => store.Name)));
-
-  const countByName = (name) => {
-    return sortedData.filter((store) => store.Name === name).length;
-  };
-
+  // Function to load more data on scrolling
   const handleScroll = () => {
     if (
       window.innerHeight + window.scrollY >= document.body.offsetHeight - 500 &&
       !isFetching
     ) {
+      setIsFetching(true);
     }
   };
 
   useEffect(() => {
+    // Attach event listener for scrolling
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    // Load more data when isFetching is true
     if (!isFetching) return;
 
-    // Fetch more data here...
-    // For example, you can make an API call to fetch the next page of data
-    // and append it to the existing data
-
-    // Simulating a delay to show loading animation
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
       setPage((prevPage) => prevPage + 1);
       setIsFetching(false);
     }, 1500);
-
-    // Clean up event listener
-    return () => window.removeEventListener("scroll", handleScroll);
   }, [isFetching]);
 
-  useEffect(() => {
-    // Attach event listener for scrolling
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
-    <div className="flex flex-col">
-      {showHistory && selectedProduct && (
-        <Pricehistory
-          priceData={selectedProduct}
-          stores={allstores}
-          handleclose={() => setShowHistory(false)}
-          onClose={() => setShowHistory(false)}
-          selectedStore={selectedStore}
-        />
-      )}
+    <div className="flex flex-col relatve">
       <div className="flex flex-col md:flex-row justify-between p-4 mx-auto">
         <div className="flex md:mb-0 mb-4">
           <h2 className="text-[1.4em] font-bold">Results</h2>
           <p className="h-10 min-w-[2em] ml-3 flex items-center text-[1.4em] justify-center text-center border shadow-lg rounded-lg">
             {isFetching ? (
               <div className="flex justify-center items-center h-16">
-                <Dots size={32} color="#7F56D9" />
+                <Dots size={20} color="#7F56D9" />
               </div>
             ) : (
               storesData.length
@@ -228,7 +197,7 @@ const Results = ({
         </div>
       </div>
       <div className="flex">
-        <div className="overflow-y-scroll relative rounded-2xl border-b shadow-xl h-[30em] w-[90%] flex scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100 mb-80">
+        <div className="overflow-y-scroll  rounded-2xl border-b shadow-xl h-[30em] w-[90%] flex scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100 mb-80">
           <div className="flex flex-col w-full">
             <div className="flex w-full justify-between">
               <div className="w-full bg-[#7f56d95d] sticky top-0 rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em] min-w-[12em]">
@@ -239,13 +208,22 @@ const Results = ({
                 selectedstores.map((selectedStore) => (
                   <div
                     key={selectedStore.bb_id}
-                    className="w-full sticky top-0 flex flex-col rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em] min-w-[12em]"
+                    className="w-full top-0 flex flex-col rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em] min-w-[12em]"
                   >
+                    {showHistory && selectedProduct && (
+                      <Pricehistory
+                        priceData={selectedProduct}
+                        stores={allstores}
+                        handleclose={() => setShowHistory(false)}
+                        onClose={() => setShowHistory(false)}
+                        selectedStore={selectedStore}
+                      />
+                    )}
                     <h1>{selectedStore.name}</h1>
                   </div>
                 ))}
             </div>
-            {storesData.map((product) => {
+            {filteredData.map((product) => {
               return (
                 <div
                   key={product.id}
@@ -280,7 +258,9 @@ const Results = ({
                           <div className="flex w-full flex-col m-auto min-w-[12em]">
                             <div className="p-3 w-[50%]">
                               <div className="w-full justify-end items-end">
-                                <div className="w-3 rounded-full min-h-3 bg-green-500"></div>
+                                <div className="w-3 rounded-full min-h-3 bg-green-500">
+                                  {" "}
+                                </div>
                                 <a
                                   href={product.inv[0].url}
                                   className="items-end text-right"
@@ -310,7 +290,9 @@ const Results = ({
                           <div className="flex w-full flex-col m-3 min-w-[12em]">
                             <div className="max-w-[40%] min-w-[40%] p-3">
                               <div className="w-full justify-end items-end">
-                                <span className="min-w-3 rounded-full min-h-3 bg-red-500"></span>
+                                <span className="min-w-3 rounded-full min-h-3 bg-red-500">
+                                  {" "}
+                                </span>
                                 <a
                                   // href={product.inv[0].url}
                                   className="items-end text-right"

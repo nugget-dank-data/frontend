@@ -1,21 +1,43 @@
-"use client"
+"use client";
 import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
-
+import Invite from "./invite";
+import managerrole from "../../../images/userrole.svg";
 import dot from "../../../images/dot.svg";
 import OptionsComponent from "../components/options";
+import { RiUserSettingsLine } from "react-icons/ri";
+import EditUser from "../components/edituser";
+// import useOutsideClickHandler from "@/components/clickoutside";
 
+
+const useOutsideClickHandler = (ref, callback) => {
+  const handleClick = (event) => {
+    if (ref.current && !ref.current.contains(event.target)) {
+      callback();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+    };
+  }, [ref, callback]);
+};
 
 const Teams = () => {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const filterFormRef = useRef(null);
+  const optionsRef = useRef(null);
+  const optionsComponentRef = useRef(null);
   const [isOptionsVisible, setOptionsVisible] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(9);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState(undefined);
   const [startDate, setStartDate] = useState(new Date());
-  const [activeTab, setActiveTab] = useState();
+  const [showaddteam, setShowaddteam] = useState(false);
+  const [showEditUser, setShowEditUser] = useState(false);
   const [filterData, setFilterData] = useState({
     date: startDate,
     name: "",
@@ -39,7 +61,6 @@ const Teams = () => {
     return date.toLocaleString("en-US", options);
   };
 
-
   useEffect(() => {
     fetch("https://64a301f3b45881cc0ae5ff1e.mockapi.io/uses")
       .then((response) => response.json())
@@ -53,11 +74,11 @@ const Teams = () => {
   }, []);
 
   const handleOptionsClick = (event) => {
+    event.stopPropagation();
     const userId = event.currentTarget.dataset.userId;
 
     setSelectedUserId(userId);
   };
-  
 
   // useEffect(() => {
   //   // Update filteredUsers whenever filterData changes
@@ -92,16 +113,31 @@ const Teams = () => {
   //     totalItems,
   //   ];
   // }
-  const sendUserDetails = (user) => {
-    console.log("User Details:", user);
 
-    // setDetails(user);
+  const closeOptions = () => {
+    setSelectedUserId(undefined);
   };
+
+  // useOutsideClickHandler(optionsRef, setSelectedUserId(undefined));
+
+  const handleClick = (event) => {
+    if (optionsRef.current && !optionsRef.current.contains(event.target)) {
+      closeOptions();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+    };
+  }, [optionsRef, closeOptions]);
+
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  
   const handleItemsPerPageChange = (event) => {
     const selectedItemsPerPage = Number(event.target.value);
     setItemsPerPage(selectedItemsPerPage);
@@ -125,89 +161,122 @@ const Teams = () => {
     });
   };
 
+  const handleShowAddTeammates = () => {
+    setShowaddteam(!showaddteam);
+  };
+
+  const handleshowedituser = () => {
+    setShowEditUser(!showEditUser);
+  };
+
   return (
     <div className="w-full flex flex-col text-[#181b21] p-4 font-Work-Sans">
-      
-        <div>
-
-          
-          <div className=" flex flex-col shadow-lg border-b border-[#0303031c] relative">
-            <table className="w-full rounded-lg">
-              <thead>
-                <tr className="text-[0.8em]">
-                  <th className="px-4 py-2 text-left">
-                    <div className="flex items-center">
-                      <span className="mr-1">Name</span>
-                     
-                    </div>
-                  </th>
-                  <th className="px-4 py-2 text-left">
-                    <div className="flex items-center">
-                      <span className="mr-1">E-mail</span>
-                     
-                    </div>
-                  </th>
-                  <th className=" px-4 py-2 text-left">
-                    <div className="flex items-center">
-                      <span className="mr-1">permissions</span>
-                      
-                    </div>
-                  </th>
-                  <th className=" px-4 py-2 text-left">
-                    <div className="flex items-center">
-                      <span className="mr-1">Their Stores</span>
-                      
-                    </div>
-                  </th>
-                  <th className=" px-4 py-2 text-left">
-                    <div className="flex items-center">
-                      <span className="mr-1">Monitoring Stores</span>
-                      
-                    </div>
-                  </th>
-                  <th className=" px-4 py-2 text-left">
-                    <div className="flex items-center">
-                      <span className="mr-1">Last Login</span>
-                      
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-              {filteredUsers.map((user) => (
-                  <tr key={user.id} className="border" data-user-id={user.id}>
-                    <td className="p-4 text-left text-sm">{user.name}</td>
-                    <td className="p-4 text-left text-sm">{user.email}</td>
-                    <td className="p-4 text-left text-sm">{user.permissions}</td>
-                    <td className="p-4 text-left text-sm">{user.stores}</td>
-                    <td className="p-4 text-left text-sm">{user.stores}</td>
-                    <td className="p-4 text-left text-sm flex justify-between relative">
-                    {formatDate(user.date)}
-                      {selectedUserId === user.id ? (
-                        <OptionsComponent user={user} sendUserDetails={sendUserDetails} />
-                      ) : (
-                        <Image
-                          src={dot}
-                          alt="Options"
-                          className="user-dot cursor-pointer"
-                          data-user-id={user.id}
-                          onClick={handleOptionsClick}
-                        />
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-           
+      {showaddteam && <Invite handleclose={handleShowAddTeammates} />}
+      {showEditUser && (
+        <EditUser handleclose={handleshowedituser} user={filteredUsers} />
+      )}
+      <div className="nav flex justify-between">
+        <div className="flex">
+          <p className="font-bold p-4 text-[1.5em]">Manage Team</p>
+          <div className="items-center flex">
+            <span className="rounded-lg border items-center p-2 text-[1.2em] text-center">
+              {filteredUsers.length}
+            </span>
           </div>
-      
         </div>
-      
+        <div className="items-center flex">
+          <button
+            onClick={handleShowAddTeammates}
+            className="flex items-center rounded-lg text-center px-2 text-[0.9em] py-0 bg-[#7F56D9] text-white mb-2 md:mb-0 sm:py-2"
+          >
+            Invite Teammates
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <div className=" flex flex-col shadow-lg border-b border-[#0303031c] relative">
+          <table className="w-full rounded-lg">
+            <thead>
+              <tr className="text-[0.8em]">
+                <th className="px-4 py-2 text-left">
+                  <div className="flex items-center">
+                    <span className="mr-1">Name</span>
+                  </div>
+                </th>
+                <th className="px-4 py-2 text-left">
+                  <div className="flex items-center">
+                    <span className="mr-1">E-mail</span>
+                  </div>
+                </th>
+                <th className=" px-4 py-2 text-left">
+                  <div className="flex items-center">
+                    <span className="mr-1">permissions</span>
+                  </div>
+                </th>
+                <th className=" px-4 py-2 text-left">
+                  <div className="flex items-center">
+                    <span className="mr-1">Their Stores</span>
+                  </div>
+                </th>
+                <th className=" px-4 py-2 text-left">
+                  <div className="flex items-center">
+                    <span className="mr-1">Monitoring Stores</span>
+                  </div>
+                </th>
+                <th className=" px-4 py-2 text-left">
+                  <div className="flex items-center">
+                    <span className="mr-1">Last Login</span>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredUsers.map((user) => (
+                <tr key={user.id} className="border" data-user-id={user.id}>
+                  <td className="p-4 text-left text-sm">{user.name}</td>
+                  <td className="p-4 text-left text-sm">{user.email}</td>
+                  <td className="text-left text-sm px-4">
+                    <div className="flex gap-1 rounded-2xl bg-[#ede5e5] py-2 items-center text-red-500 justify-center ">
+                      <RiUserSettingsLine
+                        style={{ fontWeight: "12px", color: "red" }}
+                        size={"1.8em"}
+                      />
+                      {user.permissions}
+                    </div>
+                  </td>
+                  <td className="p-4 text-left text-sm">{user.stores}</td>
+                  <td className="p-4 text-left text-sm">{user.stores}</td>
+                  <td className="p-4 text-left text-sm flex justify-between options-comp relative">
+                    {formatDate(user.date)}
+                    {selectedUserId === user.id ? (
+                      <OptionsComponent
+                        ref={optionsRef}
+                        user={user}
+                        showeditUser={handleshowedituser}
+                        handleclose={() => {
+                          setSelectedUserId(undefined);
+                        }}
+                        optionsRef={optionsComponentRef}
+                      />
+                    ) : (
+                      <Image
+                        src={dot}
+                        alt="Options"
+                        className="user-dot cursor-pointer"
+                        data-user-id={user.id}
+                        onClick={handleOptionsClick}
+                      />
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };
 
 export default Teams;
-
-

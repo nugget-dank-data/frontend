@@ -3,9 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import nugget from "../../../images/logo.png";
 import axios from "axios";
-import eyedark from "../../../images/eyedark.png";
 import eye from "../../../images/eye.png";
-import eyecloseddark from "../../../images/eyecloseddark.png";
 import eyeclosed from "../../../images/eyeclosed.png";
 import Link from "next/link";
 

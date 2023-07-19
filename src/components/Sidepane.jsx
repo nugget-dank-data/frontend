@@ -85,8 +85,32 @@ const Sidepane = ({
     };
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem("login_key");
+      const headers = {
+        Authorization: `Token ${token}`,
+      };
+
+      
+      const response = await axios.post(
+        "http://34.75.96.129:420/users/logout/",
+        null,
+        { headers }
+      );
+
+      
+      localStorage.clear();
+
+      
+      setLogoutMessage(response.data.message);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
-    <div className="h-[100vh] overflow-scroll bottom-0 scrollbar-hide w-full">
+    <div className="h-[100vh] overflow-scroll bottom-0 scrollbar-hide w-full z-50">
       {isMenuOpen ? (
         <div
           id="sidepane"
@@ -244,7 +268,7 @@ const Sidepane = ({
                   : ""
               }`}
             >
-              <Link href="/settings/manage_team" passHref>
+              <a href="/settings/manage_team" passHref>
                 <div
                   className="flex cursor-pointer"
                   onClick={toggleSettingsDropdown}
@@ -257,7 +281,7 @@ const Sidepane = ({
                     className="ml-auto"
                   />
                 </div>
-              </Link>
+              </a>
               {renderSubMenu(
                 "settings",
                 <div className="flex flex-col">
@@ -327,8 +351,9 @@ const Sidepane = ({
           </div>
           <div className="m-auto w-3/4 flex flex-row bg-[#1a181863] rounded-lg mt-8">
             <a
-              href="accounts/login"
+              href="/accounts/login"
               className="flex w-full align-middle items-center text-center justify-center"
+              onClick={handleLogout}
             >
               <Image src={logout} alt="" />
               <p className="p-2 text-[1em]"> Logout</p>

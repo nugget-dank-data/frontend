@@ -26,7 +26,7 @@ const Verifymail = () => {
       setIsSuccess(true);
       // Redirect to login page after a brief delay
       setTimeout(() => {
-        window.location.href = '/login'; // Directly change the window location
+        window.location.href = '/accounts/login'; 
       }, 2000);
     } catch (error) {
       if (error.response) {
@@ -35,7 +35,7 @@ const Verifymail = () => {
         if (errorCode === 404) {
           setMessage('Key not found. Please check your verification link.');
         } else if (errorCode === 401) {
-          setMessage('Unauthorized. You do not have permission to verify the email.');
+          setMessage('Unauthorized. check your link');
         } else {
           setMessage('An error occurred. Please try again.');
         }

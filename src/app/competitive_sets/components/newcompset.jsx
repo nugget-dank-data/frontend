@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import close from '../../../images/close.svg';
-import Image from 'next/image';
+import React, { useState } from "react";
+import close from "../../../images/close.svg";
+import Image from "next/image";
 
 const Newcompset = ({ handleclose }) => {
-  const [compsetName, setCompsetName] = useState('');
+  const [compsetName, setCompsetName] = useState("");
   const [organization, setOrganization] = useState(2);
-  const [stores, setStores] = useState([])
+  const [stores, setStores] = useState([]);
 
-  const endpoint = 'http://34.75.96.129:420/users/organization-compset/';
+  const endpoint = "http://34.75.96.129:420/users/organization-compset/";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,24 +19,20 @@ const Newcompset = ({ handleclose }) => {
 
     try {
       const response = await fetch(endpoint, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(compset),
       });
 
       if (response.ok) {
-        // Handle success response
-        console.log('Compset created successfully!');
-        // Add any additional actions you want to perform on success
+        console.log("Compset created successfully!");
       } else {
-        // Handle error response
-        console.log('Failed to create compset');
-        // Add any additional error handling you want to perform
+        console.log("Failed to create compset");
       }
     } catch (error) {
-      console.log('An error occurred:', error);
+      console.log("An error occurred:", error);
     }
   };
 
@@ -81,14 +77,21 @@ const Newcompset = ({ handleclose }) => {
             />
 
             <div className="stores flex flex-col">
-              <label htmlFor="text" className="text-[1.2em] font-bold mb-2 mt-2">
+              <label
+                htmlFor="text"
+                className="text-[1.2em] font-bold mb-2 mt-2"
+              >
                 Competitive Stores
               </label>
               <div className="flex gap-4 w-full">
                 <span className="rounded-lg m-0 p-3 h-1/2 justify-center items-center text-[#4d0798] bg-[#9d9d9d3b] flex">
-                  #{''}
+                  #{""}
                 </span>
-                <select name="" id="" className="p-3 w-full bg-white border rounded-lg">
+                <select
+                  name=""
+                  id=""
+                  className="p-3 w-full bg-white border rounded-lg"
+                >
                   <option value="">Search a store</option>
                 </select>
                 <span className="rounded-[1em] border bg-[#7F56D9] flex items-center cursor-pointer text-white m-auto h-1/2 px-6 text-center">
@@ -105,7 +108,10 @@ const Newcompset = ({ handleclose }) => {
           </form>
         </div>
 
-        <p className="text-center text-[#7F56D9] cursor-pointer" onClick={handleclose}>
+        <p
+          className="text-center text-[#7F56D9] cursor-pointer"
+          onClick={handleclose}
+        >
           cancel
         </p>
       </div>

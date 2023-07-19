@@ -4,8 +4,7 @@ import Image from "next/image";
 import nugget from "../../../images/logo.png";
 import axios from "axios";
 import Link from "next/link";
-// import AuthContext from './AuthContext';
-// import { cache } from 'react'
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -36,6 +35,7 @@ const Login = () => {
 
 
       setMessage("Login successful!");
+      window.location.href = "/compare";
     } catch (error) {
       if (error.response) {
         setError(error.response.data.message);
