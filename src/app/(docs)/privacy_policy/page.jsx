@@ -1,9 +1,5 @@
 import React from "react";
 
-
-
-
-
 const PrivacyPolicy = () => {
   return (
     <div className="min-h-screen bg-gray-100 leading-10">
@@ -12,7 +8,6 @@ const PrivacyPolicy = () => {
         <p>Last updated May 06, 2022</p>
       </div>
       <div className="body p-8 leading-10">
-
         <p class="mb-8">
           This privacy notice for Leslieville Development Group Ltd. (doing
           business as Nugget) ("Nugget," "we," "us," or "our"), describes how
@@ -128,8 +123,8 @@ const PrivacyPolicy = () => {
               the Services, the choices you make, and the products and features
               you use. Click{" "}
               <a href="#section1" className="text-blue-500">
-                here
-              </a>{" "}
+                here{" "}
+              </a>
               to learn more.
             </p>
           </div>
@@ -196,9 +191,9 @@ const PrivacyPolicy = () => {
               guarantee that hackers, cybercriminals, or other unauthorized
               third parties will not be able to defeat our security and
               improperly collect, access, steal, or modify your information.
-              Click
+              Click{" "}
               <a href="#section7" className="text-blue-500">
-                here
+                here{" "}
               </a>
               to learn more.
             </p>
@@ -1314,7 +1309,10 @@ const PrivacyPolicy = () => {
               from you, change that information, or delete it in some
               circumstances. To request to review, update, or delete your
               personal information, please submit a request form by clicking{" "}
-              <a href="https://app.termly.io/notify/74b870e4-f07c-43f6-aab8-c2ef377bbaa8" className="text-blue-600 underline">
+              <a
+                href="https://app.termly.io/notify/74b870e4-f07c-43f6-aab8-c2ef377bbaa8"
+                className="text-blue-600 underline"
+              >
                 here
               </a>
               .
