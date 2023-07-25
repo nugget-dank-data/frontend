@@ -12,6 +12,38 @@ const PrivacyPolicy = () => {
         <p>Last updated May 06, 2022</p>
       </div>
       <div className="body p-8 leading-10">
+
+        <p class="mb-8">
+          This privacy notice for Leslieville Development Group Ltd. (doing
+          business as Nugget) ("Nugget," "we," "us," or "our"), describes how
+          and why we might collect, store, use, and/or share ("process") your
+          information when you use our services ("Services"), such as when you:
+          <ul class="list-disc list-inside mb-4">
+            <li>
+              Visit our website at{" "}
+              <a href="https://www.nuggetdata.net" target="_blank" class="link">
+                https://www.nuggetdata.net
+              </a>
+              , or any website of ours that links to this privacy notice
+            </li>
+            <li>
+              Engage with us in other related ways, including any sales,
+              marketing, or events
+            </li>
+          </ul>
+          <span class="font-bold">Questions or concerns?</span> Reading this
+          privacy notice will help you understand your privacy rights and
+          choices. If you do not agree with our policies and practices, please
+          do not use our Services. If you still have any questions or concerns,
+          please contact us at{" "}
+          <a
+            href="mailto:support@nuggetdata.net"
+            className="link text-[#7F56D9]"
+          >
+            support@nuggetdata.net
+          </a>
+          .
+        </p>
         {/* Table of Contents */}
         <div className="bg-[#f5f7ffda] rounded-lg shadow-lg p-6 mb-8">
           <h1 className="text-2xl font-bold mb-4">TABLE OF CONTENTS</h1>
@@ -75,38 +107,6 @@ const PrivacyPolicy = () => {
             </li>
           </ol>
         </div>
-
-        <p class="mb-8">
-          This privacy notice for Leslieville Development Group Ltd. (doing
-          business as Nugget) ("Nugget," "we," "us," or "our"), describes how
-          and why we might collect, store, use, and/or share ("process") your
-          information when you use our services ("Services"), such as when you:
-          <ul class="list-disc list-inside mb-4">
-            <li>
-              Visit our website at{" "}
-              <a href="https://www.nuggetdata.net" target="_blank" class="link">
-                https://www.nuggetdata.net
-              </a>
-              , or any website of ours that links to this privacy notice
-            </li>
-            <li>
-              Engage with us in other related ways, including any sales,
-              marketing, or events
-            </li>
-          </ul>
-          <span class="font-bold">Questions or concerns?</span> Reading this
-          privacy notice will help you understand your privacy rights and
-          choices. If you do not agree with our policies and practices, please
-          do not use our Services. If you still have any questions or concerns,
-          please contact us at{" "}
-          <a
-            href="mailto:support@nuggetdata.net"
-            className="link text-[#7F56D9]"
-          >
-            support@nuggetdata.net
-          </a>
-          .
-        </p>
 
         <div className="py-8 leading-10">
           <h1 className="text-3xl font-bold mb-4">SUMMARY OF KEY POINTS</h1>
