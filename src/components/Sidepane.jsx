@@ -157,23 +157,7 @@ const Sidepane = ({
                 Compare
               </a>
             </li>
-            <li
-              onClick={() => handleTabClick("compare-v2")}
-              className={`mb-4 p-4 font-medium rounded-lg shadow-xl ${
-                currentRoute.includes("/compare-v2")
-                  ? "border-l-4 bg-[#08070753] border-[#7F56D9]"
-                  : ""
-              }`}
-            >
-              <a
-                href="/compare-v2"
-                onClick={() => handleTabClick("compare-v2")}
-                className="flex"
-              >
-                {getIcon("compare-v2")}
-                Compare V2 [Beta]
-              </a>
-            </li>
+           
             <li
               className={`mb-4 p-4 font-medium rounded-lg shadow-xl ${
                 currentRoute.includes("/competitive_sets")

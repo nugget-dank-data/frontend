@@ -1,113 +1,25 @@
 import React, { useState } from "react";
-import { Chart } from "chart.js";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from "recharts";
 
 const PriceInventoryGraph = ({ priceData }) => {
   const [isWeeklyView, setIsWeeklyView] = useState(true);
-
-  // Function to toggle between weekly and monthly view
-  const handleViewToggle = () => {
-    setIsWeeklyView(!isWeeklyView);
-  };
 
   // Filter data based on the view type (weekly/monthly)
   const filteredData = isWeeklyView
     ? priceData.filter((data, index) => index % 7 === 0) // Show one data point per week
     : priceData.filter((data, index) => new Date(data.created_at).getDate() === 1); // Show one data point per month
 
-  // Prepare the chart data for price trends
-  const priceTrendData = {
-    labels: filteredData.map((data) =>
-      new Date(data.created_at).toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      })
-    ),
-    datasets: [
-      {
-        label: "Price",
-        data: filteredData.map((data) => data.price),
-        borderColor: "#000000",
-        borderWidth: 2,
-        pointRadius: 5,
-        pointHoverRadius: 8,
-        fill: false,
-      },
-    ],
-  };
-
-  // Prepare the chart data for inventory history
-  const inventoryHistoryData = {
-    labels: priceData.map((data) =>
-      new Date(data.created_at).toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      })
-    ),
-    datasets: [
-      {
-        label: "Stock",
-        data: priceData.map((data) => data.stock ?? 0),
-        borderColor: "#000000",
-        borderWidth: 2,
-        pointRadius: 5,
-        pointHoverRadius: 8,
-        fill: false,
-      },
-    ],
-  };
-
-  // Create the price trends chart
-  const createPriceTrendChart = () => {
-    const ctx = document.getElementById("priceTrendChart");
-    new Chart(ctx, {
-      type: "line",
-      data: priceTrendData,
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          x: {
-            grid: {
-              display: false,
-            },
-          },
-          y: {
-            beginAtZero: true,
-            grid: {
-              color: "#e5e5e5",
-            },
-          },
-        },
-      },
-    });
-  };
-
-  // Create the inventory history chart
-  const createInventoryHistoryChart = () => {
-    const ctx = document.getElementById("inventoryHistoryChart");
-    new Chart(ctx, {
-      type: "line",
-      data: inventoryHistoryData,
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          x: {
-            grid: {
-              display: true,
-            },
-          },
-          y: {
-            beginAtZero: true,
-            grid: {
-              color: "#e5e5e5",
-            },
-          },
-        },
-      },
-    });
+  // Function to toggle between weekly and monthly view
+  const handleViewToggle = () => {
+    setIsWeeklyView(!isWeeklyView);
   };
 
   return (
@@ -121,13 +33,87 @@ const PriceInventoryGraph = ({ priceData }) => {
       </button>
       <div className="price-trends">
         <h3>Price Trends</h3>
-        <canvas id="priceTrendChart"></canvas>
+        <LineChart
+          width={500}
+          height={300}
+          data={filteredData}
+          margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+        >
+          <CartesianGrid strokeDasharray="5 5" stroke="#000000" />
+          <XAxis
+            dataKey="created_at"
+            tickFormatter={(date) =>
+              new Date(date).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })
+            }
+            stroke="#000000"
+          />
+          <YAxis stroke="#000000" />
+          <Tooltip
+            formatter={(value) => `$${value ?? 0}`}
+            labelFormatter={(date) =>
+              new Date(date).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })
+            }
+          />
+          <Legend />
+          <Line
+            type="monotone"
+            dataKey="price"
+            name=""
+            stroke="#000000"
+            activeDot={{ r: 8 }}
+          />
+        </LineChart>
       </div>
 
       {/* Inventory History */}
       <div className="inventory-history">
         <h3>Inventory History</h3>
-        <canvas id="inventoryHistoryChart"></canvas>
+        <LineChart
+          width={500}
+          height={300}
+          data={priceData}
+          margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+        >
+          <CartesianGrid strokeDasharray="5 5" stroke="#000000" />
+          <XAxis
+            dataKey="created_at"
+            tickFormatter={(date) =>
+              new Date(date).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })
+            }
+            stroke="#000000"
+          />
+          <YAxis stroke="#000000" />
+          <Tooltip
+            formatter={(value) => `${value ?? 0} in stock`}
+            labelFormatter={(date) =>
+              new Date(date).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })
+            }
+          />
+          <Legend />
+          <Line
+            type="monotone"
+            dataKey={"stock" ?? [0, 5, 10, 15]}
+            name=""
+            stroke="#000000"
+            activeDot={{ r: 8 }}
+          />
+        </LineChart>
       </div>
     </div>
   );

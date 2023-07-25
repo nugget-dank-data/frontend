@@ -28,10 +28,13 @@ const Results = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [page, setPage] = useState(1);
+  const [searchValue, setSearchValue] = useState("");
 
   const handleSortChange = (event) => {
-    setSortOption(event.target.value);
-    sortData();
+    const newSortOption = event.target.value;
+    setSortOption(newSortOption);
+    const sortedData = sortData(filteredData, newSortOption);
+    setFilteredData(sortedData);
   };
 
   const handleToggleHistory = () => {
@@ -42,12 +45,34 @@ const Results = ({
     setSelectedProduct(product);
   };
 
+  const keywordsearch = (search) => {
+    if (!search) {
+      // If the search is empty, return the original array as it is
+      return storesData;
+    }
+
+    const filtered = storesData.filter((product) => {
+      // Convert the product object to a string
+      const productString = JSON.stringify(product);
+
+      // Perform a case-insensitive search by converting both the search and product values to lowercase
+      const searchString = search.toLowerCase();
+      const productStringLower = productString.toLowerCase();
+
+      // Check if the product object as a string contains the search value
+      return productStringLower.includes(searchString);
+    });
+
+    setFilteredData(filtered);
+    console.log('search complete')
+  };
+
   const filterProducts = (filterData) => {
     const { selectedCategory, selectedSize, range, brandSearch } = filterData;
-  
+
     const filtered = storesData.filter((product) => {
       let isMatch = true;
-  
+
       if (
         selectedCategory &&
         !product.Category.toLowerCase().includes(selectedCategory.toLowerCase())
@@ -60,34 +85,32 @@ const Results = ({
       ) {
         isMatch = false;
       }
-  
+
       if (selectedSize) {
         const productSize = product.size || 0;
         if (productSize !== selectedSize) {
           isMatch = false;
         }
       }
-  
+
       if (range) {
         const priceMatch =
           product.inv &&
           product.inv.length > 0 &&
           product.inv[0]?.price >= range[0] &&
           product.inv[0]?.price <= range[1];
-  
+
         if (!priceMatch) {
           isMatch = false;
         }
       }
-  
+
       return isMatch;
     });
-  
+
     setFilteredData(filtered);
-    console.log('mydata::', filteredData);
+    console.log("mydata::", filteredData);
   };
-  
-  
 
   // Function to sort the data based on the selected sort option
   const sortData = (data, sortOption) => {
@@ -112,7 +135,6 @@ const Results = ({
     // Filter the storesData based on selected filters
     filterProducts(selectedFilters);
   }, [selectedFilters, storesData]);
-  
 
   // Function to load more data on scrolling
   const handleScroll = () => {
@@ -131,30 +153,45 @@ const Results = ({
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    // Load more data when isFetching is true
-    if (!isFetching) return;
+  // useEffect(() => {
+  //   // Load more data when isFetching is true
+  //   if (!isFetching) return;
 
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      setPage((prevPage) => prevPage + 1);
-      setIsFetching(false);
-    }, 1500);
-  }, [isFetching]);
+  //   setIsLoading(true);
+  //   setTimeout(() => {
+  //     setIsLoading(false);
+  //     setPage((prevPage) => prevPage + 1);
+  //     setIsFetching(false);
+  //   }, 1500);
+  // }, [isFetching]);
+
+  const handleInputChange = (event) => {
+    const { value } = event.target;
+    setSearchValue(value);
+    keywordsearch(value);
+  };
 
   return (
-    <div className="flex flex-col relatve">
+    <div className="m-auto flex flex-col relatve">
+          {showHistory && selectedProduct && (
+                      <Pricehistory
+                        priceData={selectedProduct}
+                        stores={allstores}
+                        handleclose={() => setShowHistory(false)}
+                        onClose={() => setShowHistory(false)}
+                        selectedStore={selectedProduct}
+                      />
+                    )}
       <div className="flex flex-col md:flex-row justify-between p-4 mx-auto">
         <div className="flex md:mb-0 mb-4">
           <h2 className="text-[1.4em] font-bold">Results</h2>
           <p className="h-10 min-w-[2em] ml-3 flex items-center text-[1.4em] justify-center text-center border shadow-lg rounded-lg">
-            {isFetching ? (
+            {isfetching ? (
               <div className="flex justify-center items-center h-16">
                 <Dots size={20} color="#7F56D9" />
               </div>
             ) : (
-              storesData.length
+              filteredData.length
             )}
           </p>
         </div>
@@ -167,6 +204,8 @@ const Results = ({
               placeholder="Keyword Search"
               id=""
               className="bg-transparent p-2 border-none focus:outline-none"
+              value={searchValue}
+              onChange={handleInputChange}
             />
           </div>
           <div className="flex items-center space-x-1 md:space-x-4">
@@ -198,8 +237,8 @@ const Results = ({
       </div>
       <div className="flex">
         <div className="overflow-y-scroll  rounded-2xl border-b shadow-xl h-[30em] w-[90%] flex scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100 mb-80">
-          <div className="flex flex-col w-full">
-            <div className="flex w-full justify-between">
+          <div className="flex flex-col w-full relative">
+              <div className="flex w-full justify-between sticky top-0 bg-white py-2 px-4">
               <div className="w-full bg-[#7f56d95d] sticky top-0 rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em] min-w-[12em]">
                 <h1>Product</h1>
               </div>
@@ -210,15 +249,7 @@ const Results = ({
                     key={selectedStore.bb_id}
                     className="w-full top-0 flex flex-col rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em] min-w-[12em]"
                   >
-                    {showHistory && selectedProduct && (
-                      <Pricehistory
-                        priceData={selectedProduct}
-                        stores={allstores}
-                        handleclose={() => setShowHistory(false)}
-                        onClose={() => setShowHistory(false)}
-                        selectedStore={selectedStore}
-                      />
-                    )}
+                
                     <h1>{selectedStore.name}</h1>
                   </div>
                 ))}
@@ -258,9 +289,7 @@ const Results = ({
                           <div className="flex w-full flex-col m-auto min-w-[12em]">
                             <div className="p-3 w-[50%]">
                               <div className="w-full justify-end items-end">
-                                <div className="w-3 rounded-full min-h-3 bg-green-500">
-                                  {" "}
-                                </div>
+                                <span className="w-2 rounded-full h-2 block bg-green-500"></span>
                                 <a
                                   href={product.inv[0].url}
                                   className="items-end text-right"
@@ -290,9 +319,7 @@ const Results = ({
                           <div className="flex w-full flex-col m-3 min-w-[12em]">
                             <div className="max-w-[40%] min-w-[40%] p-3">
                               <div className="w-full justify-end items-end">
-                                <span className="min-w-3 rounded-full min-h-3 bg-red-500">
-                                  {" "}
-                                </span>
+                                <span className="w-2 rounded-full h-2 block bg-red-500"></span>
                                 <a
                                   // href={product.inv[0].url}
                                   className="items-end text-right"

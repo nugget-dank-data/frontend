@@ -35,11 +35,7 @@ const OptionsComponent = ({ user, showeditUser, handleclose }) => {
             Edit user
           </span>
         </div>
-        <div className="flex flex-row mt-3 cursor-pointer ">
-          <li onClick={handleBlacklistUser} className="ml-3 options-comp">
-            Edit Stores
-          </li>
-        </div>
+       
         <div className="flex flex-row mt-3 cursor-pointer ">
           <li onClick={handleActivateUser} className="ml-3 options-comp">
             Reset Passwords
@@ -50,12 +46,8 @@ const OptionsComponent = ({ user, showeditUser, handleclose }) => {
             Permissions
           </li>
         </div>
-        <div className="flex flex-row mt-3 cursor-pointer border-b  options-comp">
-          <li onClick={handleActivateUser} className="ml-3 options-comp">
-            Autopopulate
-          </li>
-        </div>
-        <div className="flex flex-row mt-3 cursor-pointer options-comp">
+      
+             <div className="flex flex-row mt-3 cursor-pointer options-comp">
           <li onClick={handleActivateUser} className="ml-3 options-comp">
             Delete Account
           </li>
