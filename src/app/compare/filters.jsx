@@ -233,7 +233,7 @@ const Filters = () => {
   }, []);
 
   return (
-    <div className="flex flex-col border-l">
+    <div className="flex flex-col border-l w-full ">
       <div className="relative flex flex-col pr-9 gap-6  md:flex-row border-b w-full justify-between">
         <div className="store p-4 w-[80%] ">
           <h1 className="text-[1.5em]">Stores</h1>

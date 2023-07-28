@@ -75,18 +75,18 @@ useEffect(()=>{
   const issettingsPage = window.location.pathname.includes('/accounts') || window.location.pathname.includes('/verify-email/')||window.location.pathname.includes('/admin') ;
 
   return (
-    <html className="">
-      <body>
-      <div className="w-full h-full p-0 overflow-hidden">
-        <div className="flex flex-row  m-auto relative ">
-
-        <div className="flex sticky top-0  z-50">
+    <html className="relative">
+      <body className="h-[100%] flex">
+        <div className="sticky bottom-0 w-[25%] top-0 flex h-full">
           {!issettingsPage && (
-            <div className="flex">
+            
               <Sidepane activeTab={activeTab} handleTabClick={handleTabClick} onSettingsTabChange={handleSettingsTabChange} newtabname={settingstab} />
-            </div>
+            
           )}
           </div>
+      <div className="w-full h-full p-0 overflow-hidden">
+        <div className="flex w-full h-[100%]  ">
+
 
           <div className="w-full flex flex-col ">
             <div className=" w-full">

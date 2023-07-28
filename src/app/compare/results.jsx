@@ -7,7 +7,7 @@ import Pricehistory from "./pricehistory";
 import "tailwindcss/tailwind.css";
 import { Dots } from "react-activity";
 import "react-activity/dist/Dots.css";
-import { BioRhyme_Expanded } from "next/font/google";
+
 
 const Results = ({
   storesData,
@@ -171,7 +171,7 @@ const Results = ({
   };
 
   return (
-    <div className="flex flex-col relatve m-2 w-screen">
+    <div className="flex flex-col relatve m-2 w-full  p-4">
       {showHistory && selectedProduct && (
         <Pricehistory
           priceData={selectedProduct}
@@ -181,7 +181,7 @@ const Results = ({
           selectedStore={selectedProduct}
         />
       )}
-      <div className="flex flex-col md:flex-row justify-between p-4 mx-auto">
+      <div className="flex flex-col md:flex-row w-full px-8 justify-between p-4 mx-auto">
         <div className="flex md:mb-0 mb-4">
           <h2 className="text-[1.4em] font-bold">Results</h2>
           <p className="h-10 min-w-[2em] ml-3 flex items-center text-[1.4em] justify-center text-center border shadow-lg rounded-lg">
@@ -234,13 +234,13 @@ const Results = ({
           </div>
         </div>
       </div>
-      <div className="inline-block w-screen bg-red-100 ml-4 ">
+      <div className="flex w-full">
         <div className="overflow-scroll scrollbar-thin scrollbar-thumb-[#7F56D9] mb-72 w-full scrollbar-track-gray-100 h-[80vh]">
 
 
           {selectedstores.length>0 ? (
             <div className="flex gap-8 sticky m-0 right-0 shadow-md top-0 rounded-xl items-center min-w-full w-fit bg-[#ffff] ">
-              <div className="w-[16em] bg-[#ECF0F1]  shadow-xl rounded-tl-[5px] rounded-tr-[5px] p-2 ">
+              <div className="w-[18em] bg-[#ECF0F1] ml-1  shadow-xl rounded-tl-[5px] rounded-tr-[5px] p-2 ">
                 <h1 className="ml-4">Product</h1>
               </div>
 
@@ -248,7 +248,7 @@ const Results = ({
                 selectedstores.map((selectedStore) => (
                   <div
                     key={selectedStore.bb_id}
-                    className="w-[15em] top-0 flex border-r shadow-xl bg-white m-2 flex-col rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em] "
+                    className="w-[15em] top-0 flex border-r shadow-xl bg-white m-2 flex-col rounded-tl-[2em] rounded-tr-[5px] py-[0.5em] pl-[1em] "
                   >
                     <h1>{selectedStore.name}</h1>
                   </div>
@@ -265,7 +265,7 @@ const Results = ({
                 key={product.id}
                 className="flex border-b gap-8 w-fit  scroll:animate-pulse  duration-[1000ms] taos:opacity-0"
               >
-                <div className="w-[16em]  px-3">
+                <div className="w-[18em]  px-3 mt-6">
                   <div className="text-[0.9em]">
                     <p className="pb-[2%]">{product.Name}</p>
                     <p className="pb-[2%]">
@@ -280,7 +280,7 @@ const Results = ({
                     </p>
                     <p>
                       <span className="font-bold">Size: </span>
-                      {product.size || 0} {product.size_unit}
+                      {product.size || 0}{product.size_unit}
                     </p>
                   </div>
                 </div>
@@ -291,7 +291,7 @@ const Results = ({
                         <div className="flex w-full flex-col m-auto ">
                           <div className="p-3">
                             <div className="w-full justify-between align-middle items-center flex">
-                              <span className={`w-2 rounded-full h-2 block bg-${isWithin24Hours(product.inv[0].created_at) ? 'green-500' : 'orange'}-600`}>test</span>
+                            <span className={`w-2 rounded-full h-2 block ${isWithin24Hours(product.inv[0].created_at) ? 'bg-green-500' : 'bg-orange-400'}`}></span>
                               <a
                                 href={product.inv[0].url}
                                 className="items-end text-right"
@@ -321,7 +321,7 @@ const Results = ({
                         <div className="flex w-full flex-col m-3 min-w-[12em]">
                           <div className="p-3">
                             <div className="w-full justify-between align-middle items-center flex">
-                              <span className="w-2 rounded-full h-2 block bg-red-500"></span>
+                              <span className="w-2 rounded-full h-2 block bg-red-600"></span>
                               <a
                                 // href={product.inv[0].url}
                                 className="items-end text-right"

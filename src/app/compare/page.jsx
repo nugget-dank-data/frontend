@@ -3,7 +3,7 @@ import Filters from './filters'
 
 const Compare = () => {
   return (
-    <div className='inline-block'>
+    <div className='flex w-full flex-col'>
       <Filters />
 
       

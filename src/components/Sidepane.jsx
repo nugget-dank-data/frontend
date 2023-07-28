@@ -110,11 +110,11 @@ const Sidepane = ({
   }
 
   return (
-    <div className="h-[100vh] overflow-scroll bottom-0 scrollbar-hide w-full z-50">
+    <div className="flex overflow-scroll sticky bottom-0 scrollbar-hide w-full z-50">
       {isMenuOpen ? (
         <div
           id="sidepane"
-          className="bg-[#232529] overflow-y-scroll scrollbar-hide h-screen   text-white flex flex-col z-50 p-5 md:relative "
+          className="bg-[#232529] overflow-y-scroll scrollbar-hide h-screen w-full  text-white flex flex-col z-50 p-5 md:relative "
         >
           <div className="top-0 right-2 absolute text-white flex md:hidden ">
             <button className="" onClick={toggleMenu}>
@@ -252,7 +252,7 @@ const Sidepane = ({
                   : ""
               }`}
             >
-              <a href="/settings/manage_team" passHref>
+              <Link href="/settings/manage_team" passHref>
                 <div
                   className="flex cursor-pointer"
                   onClick={toggleSettingsDropdown}
@@ -265,7 +265,7 @@ const Sidepane = ({
                     className="ml-auto"
                   />
                 </div>
-              </a>
+              </Link>
               {renderSubMenu(
                 "settings",
                 <div className="flex flex-col">
