@@ -7,8 +7,10 @@ import dot from "../../../images/dot.svg";
 import OptionsComponent from "../components/options";
 import { RiUserSettingsLine } from "react-icons/ri";
 import EditUser from "../components/edituser";
+import ConfirmDelete from "./confirmdelete";
+import ConfirmReset from "./confirmreset";
+import Permissions from "./editpermissions";
 // import useOutsideClickHandler from "@/components/clickoutside";
-
 
 const useOutsideClickHandler = (ref, callback) => {
   const handleClick = (event) => {
@@ -38,6 +40,10 @@ const Teams = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [showaddteam, setShowaddteam] = useState(false);
   const [showEditUser, setShowEditUser] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
+  const [showOptions, setshowOptions] = useState(false);
+  const [showPermissions, setShowPermissions] = useState(false);
+  const [showconfirmPassword, setShowConfirmPassword] = useState(false);
   const [filterData, setFilterData] = useState({
     date: startDate,
     name: "",
@@ -75,10 +81,13 @@ const Teams = () => {
 
   const handleOptionsClick = (event) => {
     event.stopPropagation();
+    setshowOptions(!showOptions)
     const userId = event.currentTarget.dataset.userId;
 
     setSelectedUserId(userId);
   };
+
+  
 
   // useEffect(() => {
   //   // Update filteredUsers whenever filterData changes
@@ -115,28 +124,28 @@ const Teams = () => {
   // }
 
   const closeOptions = () => {
-    setSelectedUserId(undefined);
+    setshowOptions(!showOptions)
   };
 
   // useOutsideClickHandler(optionsRef, setSelectedUserId(undefined));
 
-  const handleClick = (event) => {
-    if (optionsRef.current && !optionsRef.current.contains(event.target)) {
-      closeOptions();
-    }
-  };
+  // const handleClick = (event) => {
+  //   if (optionsRef.current && !optionsRef.current.contains(event.target)) {
+  //     closeOptions();
+  //   }
+  // };
 
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClick);
+  // useEffect(() => {
+  //   document.addEventListener("mousedown", handleClick);
 
-    return () => {
-      document.removeEventListener("mousedown", handleClick);
-    };
-  }, [optionsRef, closeOptions]);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClick);
+  //   };
+  // }, [optionsRef, closeOptions]);
 
-  const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+  // const paginate = (pageNumber) => {
+    // setCurrentPage(pageNumber);
+  // };
 
   const handleItemsPerPageChange = (event) => {
     const selectedItemsPerPage = Number(event.target.value);
@@ -161,13 +170,30 @@ const Teams = () => {
     });
   };
 
+  const togglepermissions = ()=>{
+    setShowPermissions(!showPermissions);
+    
+  }
+
   const handleShowAddTeammates = () => {
     setShowaddteam(!showaddteam);
   };
 
+ 
+
   const handleshowedituser = () => {
     setShowEditUser(!showEditUser);
   };
+
+  const handleshowconfirmdelete = () => {
+    setShowDelete(!showDelete);
+  };
+
+  const handleshowconfirmpassword = () => {
+    setShowConfirmPassword(!showconfirmPassword);
+  };
+
+  const selectedUser = users.find((user) => user.id === selectedUserId);
 
   return (
     <div className="w-full flex flex-col text-[#181b21] p-4 font-Work-Sans">
@@ -175,6 +201,13 @@ const Teams = () => {
       {showEditUser && (
         <EditUser handleclose={handleshowedituser} user={filteredUsers} />
       )}
+
+      {showDelete && <ConfirmDelete handleclose={handleshowconfirmdelete} email={selectedUser.email} closeoptions={closeOptions} />}
+      {showconfirmPassword && 
+        <ConfirmReset handleclose={handleshowconfirmpassword} email={selectedUser.email} closeoptions={closeOptions} />
+      }
+      {showPermissions && <Permissions handleclose={togglepermissions} closeoptions={closeOptions} />}
+
       <div className="nav flex justify-between">
         <div className="flex">
           <p className="font-bold p-4 text-[1.5em]">Manage Team</p>
@@ -236,11 +269,11 @@ const Teams = () => {
                 <tr key={user.id} className="border" data-user-id={user.id}>
                   <td className="p-4 text-left text-sm">{user.name}</td>
                   <td className="p-4 text-left text-sm">{user.email}</td>
-                  <td className="text-left text-sm px-4">
-                    <div className="flex gap-1 rounded-2xl bg-[#ede5e5] py-2 items-center text-red-500 justify-center ">
+                  <td className="text-left text-sm ">
+                    <div className="flex gap-1 w-fit px-1 rounded-2xl bg-[#ede5e5] py-1 text-red-500 ">
                       <RiUserSettingsLine
                         style={{ fontWeight: "12px", color: "red" }}
-                        size={"1.8em"}
+                        size={"1.5em"}
                       />
                       {user.permissions}
                     </div>
@@ -249,7 +282,7 @@ const Teams = () => {
                   <td className="p-4 text-left text-sm">{user.stores}</td>
                   <td className="p-4 text-left text-sm flex justify-between options-comp relative">
                     {formatDate(user.date)}
-                    {selectedUserId === user.id ? (
+                    {showOptions && selectedUserId === user.id ? (
                       <OptionsComponent
                         ref={optionsRef}
                         user={user}
@@ -258,6 +291,9 @@ const Teams = () => {
                           setSelectedUserId(undefined);
                         }}
                         optionsRef={optionsComponentRef}
+                        showconfirmpassword={handleshowconfirmpassword}
+                        showconfirmdelete={handleshowconfirmdelete}
+                        showchangepermissions={togglepermissions}
                       />
                     ) : (
                       <Image

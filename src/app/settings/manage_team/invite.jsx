@@ -60,7 +60,7 @@ const Invite = ({ handleclose }) => {
             <input
               className="p-4 border w-[30em] rounded-lg mb-4"
               type="text"
-              placeholder="Name your compset"
+              placeholder="firstname"
               value={compsetName}
               onChange={(e) => setCompsetName(e.target.value)}
             />
@@ -71,7 +71,7 @@ const Invite = ({ handleclose }) => {
             <input
               className="p-4 border w-[30em] rounded-lg mb-4"
               type="text"
-              placeholder="search main stores"
+              placeholder="lastname"
               value={stores}
               onChange={(e) => setStores(e.target.value)}
             />
@@ -82,7 +82,7 @@ const Invite = ({ handleclose }) => {
             <input
               className="p-4 border w-[30em] rounded-lg mb-4"
               type="text"
-              placeholder="search main stores"
+              placeholder="email address"
               value={stores}
               onChange={(e) => setStores(e.target.value)}
             />
@@ -98,9 +98,9 @@ const Invite = ({ handleclose }) => {
                 <select
                   name=""
                   id=""
-                  className="p-3 w-full bg-white border rounded-lg"
+                  className="p-3 py-4 w-full bg-white border rounded-lg"
                 >
-                  <option value="">Member</option>
+                  <option value="" className="">permissions</option>
                 </select>
               </div>
             </div>

@@ -20,12 +20,12 @@ const Results = ({
 }) => {
   const startIndex = (Page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const displayedData = storesData.slice(startIndex, endIndex);
+
   const [sortOption, setSortOption] = useState("");
   const [showHistory, setShowHistory] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [filteredData, setFilteredData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+
   const [isFetching, setIsFetching] = useState(false);
   const [page, setPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
@@ -64,53 +64,56 @@ const Results = ({
     });
 
     setFilteredData(filtered);
-    console.log('search complete')
+    console.log("search complete");
   };
 
   const filterProducts = (filterData) => {
     const { selectedCategory, selectedSize, range, brandSearch } = filterData;
-
+  
     const filtered = storesData.filter((product) => {
       let isMatch = true;
-
-      if (
-        selectedCategory &&
-        !product.Category.toLowerCase().includes(selectedCategory.toLowerCase())
-      ) {
-        isMatch = false;
-      }
-      if (
-        brandSearch &&
-        !product.Brand.toLowerCase().includes(brandSearch.toLowerCase())
-      ) {
-        isMatch = false;
-      }
-
-      if (selectedSize) {
-        const productSize = product.size || 0;
-        if (productSize !== selectedSize) {
+  
+      if (selectedCategory?.length > 0) {
+        const categories = selectedCategory.map((category) => category.toLowerCase());
+        if (!categories.includes(product.Category.toLowerCase())) {
           isMatch = false;
         }
       }
-
+  
+      if (brandSearch?.length > 0) {
+        const brands = brandSearch.map((brand) => brand.toLowerCase());
+        if (!brands.includes(product.Brand.toLowerCase())) {
+          isMatch = false;
+        }
+      }
+  
+      if (selectedSize?.length > 0) {
+        const productSizes = product.size || []; // Ensure productSizes is an array
+        if (!Array.isArray(productSizes) || !productSizes.some((size) => selectedSize.includes(size))) {
+          isMatch = false;
+        }
+      }
+  
       if (range) {
         const priceMatch =
           product.inv &&
           product.inv.length > 0 &&
           product.inv[0]?.price >= range[0] &&
           product.inv[0]?.price <= range[1];
-
+  
         if (!priceMatch) {
           isMatch = false;
         }
       }
-
+  
       return isMatch;
     });
-
+  
     setFilteredData(filtered);
     console.log("mydata::", filteredData);
   };
+  
+  
 
   // Function to sort the data based on the selected sort option
   const sortData = (data, sortOption) => {
@@ -153,17 +156,13 @@ const Results = ({
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // useEffect(() => {
-  //   // Load more data when isFetching is true
-  //   if (!isFetching) return;
+  const isWithin24Hours = (createdAt) => {
+    const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+    const currentTime = new Date().getTime();
+    const createdTime = new Date(createdAt).getTime();
 
-  //   setIsLoading(true);
-  //   setTimeout(() => {
-  //     setIsLoading(false);
-  //     setPage((prevPage) => prevPage + 1);
-  //     setIsFetching(false);
-  //   }, 1500);
-  // }, [isFetching]);
+    return currentTime - createdTime <= twentyFourHours;
+  };
 
   const handleInputChange = (event) => {
     const { value } = event.target;
@@ -172,16 +171,16 @@ const Results = ({
   };
 
   return (
-    <div className="m-auto flex flex-col relatve">
-          {showHistory && selectedProduct && (
-                      <Pricehistory
-                        priceData={selectedProduct}
-                        stores={allstores}
-                        handleclose={() => setShowHistory(false)}
-                        onClose={() => setShowHistory(false)}
-                        selectedStore={selectedProduct}
-                      />
-                    )}
+    <div className="flex flex-col relatve m-2 w-screen">
+      {showHistory && selectedProduct && (
+        <Pricehistory
+          priceData={selectedProduct}
+          stores={allstores}
+          handleclose={() => setShowHistory(false)}
+          onClose={() => setShowHistory(false)}
+          selectedStore={selectedProduct}
+        />
+      )}
       <div className="flex flex-col md:flex-row justify-between p-4 mx-auto">
         <div className="flex md:mb-0 mb-4">
           <h2 className="text-[1.4em] font-bold">Results</h2>
@@ -235,119 +234,111 @@ const Results = ({
           </div>
         </div>
       </div>
-      <div className="flex">
-        <div className="overflow-y-scroll  rounded-2xl border-b shadow-xl h-[30em] w-[90%] flex scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100 mb-80">
-          <div className="flex flex-col w-full relative">
-              <div className="flex w-full justify-between sticky top-0 bg-white py-2 px-4">
-              <div className="w-full bg-[#7f56d95d] sticky top-0 rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em] min-w-[12em]">
-                <h1>Product</h1>
+      <div className="inline-block w-screen bg-red-100 ml-4 ">
+        <div className="overflow-scroll scrollbar-thin scrollbar-thumb-[#7F56D9] mb-72 w-full scrollbar-track-gray-100 h-[80vh]">
+
+
+          {selectedstores.length>0 ? (
+            <div className="flex gap-8 sticky m-0 right-0 shadow-md top-0 rounded-xl items-center min-w-full w-fit bg-[#ffff] ">
+              <div className="w-[16em] bg-[#ECF0F1]  shadow-xl rounded-tl-[5px] rounded-tr-[5px] p-2 ">
+                <h1 className="ml-4">Product</h1>
               </div>
 
               {Array.isArray(selectedstores) &&
                 selectedstores.map((selectedStore) => (
                   <div
                     key={selectedStore.bb_id}
-                    className="w-full top-0 flex flex-col rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em] min-w-[12em]"
+                    className="w-[15em] top-0 flex border-r shadow-xl bg-white m-2 flex-col rounded-tl-[5px] rounded-tr-[5px] py-[0.5em] pl-[1em] "
                   >
-                
                     <h1>{selectedStore.name}</h1>
                   </div>
                 ))}
             </div>
-            {filteredData.map((product) => {
-              return (
-                <div
-                  key={product.id}
-                  className="flex border-b justify-between scroll:animate-pulse  duration-[1000ms] taos:opacity-0"
-                >
-                  <div className="w-full p-3">
-                    <div className="text-[0.9em]">
-                      <p className="pb-[2%]">{product.Name}</p>
-                      <p className="pb-[2%]">
-                        <span className="font-bold">Producer: </span>
-                        {product.lowercase_brand}
-                      </p>
-                    </div>
-                    <div className="flex justify-between w-[85 %]">
-                      <p>
-                        <span className="font-bold">Category: </span>
-                        {product.Category}
-                      </p>
-                      <p>
-                        <span className="font-bold">Size: </span>
-                        {product.size || 0} {product.size_unit}
-                      </p>
-                    </div>
+          ) : (
+            ""
+          )}
+
+
+          {filteredData.map((product) => {
+            return (
+              <div
+                key={product.id}
+                className="flex border-b gap-8 w-fit  scroll:animate-pulse  duration-[1000ms] taos:opacity-0"
+              >
+                <div className="w-[16em]  px-3">
+                  <div className="text-[0.9em]">
+                    <p className="pb-[2%]">{product.Name}</p>
+                    <p className="pb-[2%]">
+                      <span className="font-bold">Producer: </span>
+                      {product.lowercase_brand}
+                    </p>
                   </div>
-                  {Array.isArray(selectedstores) &&
-                    selectedstores.map((selectedStore) => (
-                      <div
-                        key={selectedStore.id}
-                        className="w-full justify-between"
-                      >
-                        {product.inv[0].store_id == selectedStore.bb_id ? (
-                          <div className="flex w-full flex-col m-auto min-w-[12em]">
-                            <div className="p-3 w-[50%]">
-                              <div className="w-full justify-end items-end">
-                                <span className="w-2 rounded-full h-2 block bg-green-500"></span>
-                                <a
-                                  href={product.inv[0].url}
-                                  className="items-end text-right"
-                                >
-                                  <Image
-                                    src={expand}
-                                    alt="ee"
-                                    className="w-[1.3em] float-right"
-                                  />
-                                </a>
-                              </div>
-                              <div
-                                className="hover:bg-[#8b8b8b79] w-full justify-between flex flex-col p-[0.5em]"
-                                onClick={() => {
-                                  handleSelectProduct(product);
-                                  handleToggleHistory();
-                                }}
-                              >
-                                <p className="mb-4">${product.inv[0].price}</p>
-                                <p className="mt-8">
-                                  {product.inv[0].raw_stock ?? 0} in stock
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="flex w-full flex-col m-3 min-w-[12em]">
-                            <div className="max-w-[40%] min-w-[40%] p-3">
-                              <div className="w-full justify-end items-end">
-                                <span className="w-2 rounded-full h-2 block bg-red-500"></span>
-                                <a
-                                  // href={product.inv[0].url}
-                                  className="items-end text-right"
-                                ></a>
-                              </div>
-                              <div
-                                className="hover:bg-[#8b8b8b79] w-full justify-between flex flex-col p-[0.5em]"
-                                onClick={() => {
-                                  handleSelectProduct(product);
-                                  handleToggleHistory();
-                                }}
-                              >
-                                <p className="mb-4">
-                                  {/* ${product.inv[0].price} */}
-                                </p>
-                                <p className="mt-8">
-                                  {/* {product.inv[0].raw_stock} in stock */}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    ))}
+                  <div className="flex justify-between w-[85%]">
+                    <p>
+                      <span className="font-bold">Category: </span>
+                      {product.Category}
+                    </p>
+                    <p>
+                      <span className="font-bold">Size: </span>
+                      {product.size || 0} {product.size_unit}
+                    </p>
+                  </div>
                 </div>
-              );
-            })}
-          </div>
+                {Array.isArray(selectedstores) &&
+                  selectedstores.map((selectedStore) => (
+                    <div key={selectedStore.id} className="w-[15em] ">
+                      {product.inv[0].store_id == selectedStore.bb_id ? (
+                        <div className="flex w-full flex-col m-auto ">
+                          <div className="p-3">
+                            <div className="w-full justify-between align-middle items-center flex">
+                              <span className={`w-2 rounded-full h-2 block bg-${isWithin24Hours(product.inv[0].created_at) ? 'green-500' : 'orange'}-600`}>test</span>
+                              <a
+                                href={product.inv[0].url}
+                                className="items-end text-right"
+                              >
+                                <Image
+                                  src={expand}
+                                  alt="ee"
+                                  className="w-[1.3em] float-right"
+                                />
+                              </a>
+                            </div>
+                            <div
+                              className="hover:bg-[#ECF0F1] w-full justify-between flex flex-col p-[0.5em]"
+                              onClick={() => {
+                                handleSelectProduct(product);
+                                handleToggleHistory();
+                              }}
+                            >
+                              <p className="mb-4">${product.inv[0].price}</p>
+                              <p className="mt-8">
+                                {product.inv[0].raw_stock ?? 0} in stock
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex w-full flex-col m-3 min-w-[12em]">
+                          <div className="p-3">
+                            <div className="w-full justify-between align-middle items-center flex">
+                              <span className="w-2 rounded-full h-2 block bg-red-500"></span>
+                              <a
+                                // href={product.inv[0].url}
+                                className="items-end text-right"
+                              ></a>
+                            </div>
+                            <div className="hover:bg-[#ECF0F1] w-full justify-between flex flex-col p-[0.5em]">
+                              <p className="mb-4"></p>
+                              <p className="mt-8"></p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

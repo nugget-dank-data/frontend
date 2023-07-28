@@ -10,6 +10,7 @@ import Results from "./results";
 import PriceRange from "@/components/PriceRange";
 import Compsetprop from "./compset";
 import Axios from "../api/axios";
+import SelectedFilters from "./selecedfilters";
 import { Dots } from "react-activity";
 import "react-activity/dist/Dots.css";
 
@@ -18,8 +19,8 @@ const Filters = () => {
   const [allstores, setStores] = useState([]);
   const [storesData, setStoresData] = useState([]);
   const [selectedStore, setSelectedStore] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedSize, setSelectedSize] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState([]);
+  const [selectedSize, setSelectedSize] = useState([]);
   const [categories, setCategories] = useState([]);
   const [sizes, setSizes] = useState([]);
   const [isStoreDropdownOpen, setIsStoreDropdownOpen] = useState(false);
@@ -31,33 +32,13 @@ const Filters = () => {
   const [productLoading, setIsProductLoading] = useState(false);
   const [storeLoading, setIsStoreLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
-  const [brandSearch, setBrandSearch] = useState("");
-
+  const [brandSearch, setBrandSearch] = useState([]);
+  const [brandvalue, setbrandvalue] = useState('')
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
-
   const allstoresurl = "http://34.75.96.129:420/scraper/get-all-stores";
+  const typingTimeoutRef = useRef(null);
 
-  // useEffect(() => {
-  //   if (selectedStore.length > 0) {
-  //     const storeIds = selectedStore.map((store) => store.bb_id).join(",");
-  //     const url = `http://34.75.96.129:420/scraper/unique-products?bb_store_ids=${storeIds}`;
-  //     setIsProductLoading(true);
-  //     Axios.get(url)
-  //       .then(({ data }) => {
-  //         setStoresData(data);
-  //         console.log("data", data);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error fetching store data:", error);
-  //       })
-  //       .finally(() => {
-  //         setIsProductLoading(false);
-  //       });
-  //   }
-  // }, [selectedStore]);
-
-  // FETCH ALL STORES
   useEffect(() => {
     setIsStoreLoading(true);
     Axios.get(allstoresurl)
@@ -71,86 +52,6 @@ const Filters = () => {
       .finally(() => {
         setIsStoreLoading(false);
       });
-  }, []);
-
-  const applyFilters = () => {
-    setSelectedFilters({
-      selectedCategory,
-      selectedSize,
-      range,
-      brandSearch,
-    });
-  };
-
-  const handleBrandSearchChange = (event) => {
-    setBrandSearch(event.target.value);
-  };
-
-  const handleStoreChange = (store) => {
-    // Check if the selected store is already in the array
-    const isSelected = selectedStore.some(
-      (selectedStore) => selectedStore.id === store.id
-    );
-
-    if (isSelected) {
-      // Remove the store from the selected stores array
-      setSelectedStore(
-        selectedStore.filter((selectedStore) => selectedStore.id !== store.id)
-      );
-    } else {
-      // Add the store to the selected stores array
-      setSelectedStore([...selectedStore, store]);
-    }
-    setIsStoreDropdownOpen(!isStoreDropdownOpen);
-  };
-
-  const handlecompset = () => {
-    setShowCompset(!showCompset);
-  };
-
-  const handlePriceChanges = (event, newValue) => {
-    setRange(newValue);
-  };
-
-  const toggleStoreDropdown = () => {
-    setIsStoreDropdownOpen(!isStoreDropdownOpen);
-    setIsCategoryDropdownOpen(false);
-    setIsSizeDropdownOpen(false);
-  };
-
-  const handleCategoryChange = (category) => {
-    setSelectedCategory(category);
-    setIsCategoryDropdownOpen(false);
-  };
-
-  const toggleCategoryDropdown = () => {
-    setIsCategoryDropdownOpen(!isCategoryDropdownOpen);
-    setIsStoreDropdownOpen(false);
-    setIsSizeDropdownOpen(false);
-  };
-
-  const handleSizeChange = (size) => {
-    setSelectedSize(size);
-    setIsSizeDropdownOpen(false);
-  };
-
-  const toggleSizeDropdown = () => {
-    setIsSizeDropdownOpen(!isSizeDropdownOpen);
-    setIsStoreDropdownOpen(false);
-    setIsCategoryDropdownOpen(false);
-  };
-
-  const handleOutsideClick = (event) => {
-    if (compsetRef.current && !compsetRef.current.contains(event.target)) {
-      setShowCompset(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleOutsideClick);
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
   }, []);
 
   useEffect(() => {
@@ -180,17 +81,168 @@ const Filters = () => {
     }
   }, [selectedStore]);
 
+  const applyFilters = () => {
+    setSelectedFilters({
+      selectedCategory,
+      selectedSize,
+      range,
+      brandSearch,
+    });
+    add()
+    setbrandvalue('')
+  };
+
+  const handleStoreChange = (store) => {
+    // Check if the selected store is already in the array
+    const isSelected = selectedStore.some(
+      (selectedStore) => selectedStore.id === store.id
+    );
+
+    if (isSelected) {
+      setSelectedStore(
+        selectedStore.filter((selectedStore) => selectedStore.id !== store.id)
+      );
+    } else {
+      setSelectedStore([...selectedStore, store]);
+    }
+    setIsStoreDropdownOpen(!isStoreDropdownOpen);
+  };
+
+  const handlecompset = () => {
+    setShowCompset(!showCompset);
+  };
+
+  const handlePriceChanges = (event, newValue) => {
+    setRange(newValue);
+  };
+
+  const handleCategoryChange = (category) => {
+    const isSelected = selectedCategory.includes(category);
+
+    if (isSelected) {
+      setSelectedCategory((prevSelectedCategory) =>
+        prevSelectedCategory.filter((item) => item !== category)
+      );
+    } else {
+      setSelectedCategory((prevSelectedCategory) => [
+        ...prevSelectedCategory,
+        category,
+      ]);
+    }
+
+    setIsCategoryDropdownOpen(false);
+  };
+
+  const handleSizeChange = (size) => {
+    const isSelected = selectedSize.includes(size);
+
+    if (isSelected) {
+      setSelectedSize((prevSelectedSize) =>
+        prevSelectedSize.filter((item) => item !== size)
+      );
+    } else {
+      setSelectedSize((prevSelectedSize) => [...prevSelectedSize, size]);
+    }
+
+    setIsSizeDropdownOpen(false);
+  };
+
+  const handleBrandSearchChange = (event) => {
+    const value = event.target.value;
+    setbrandvalue(value)
+    
+
+  };
+
+  const add = () => {
+    
+    if (brandvalue && brandvalue.trim() !== '') {
+      setBrandSearch((prevBrandSearch) => {
+        
+        if (!prevBrandSearch.includes(brandvalue)) {
+          
+          return [...prevBrandSearch, brandvalue];
+        }
+        return prevBrandSearch;
+      });
+    }
+  };
+  
+    
+
+  const resetFilters = () => {
+    setSelectedStore([]);
+    setSelectedCategory([]);
+    setSelectedSize([]);
+    setRange([0, 300]);
+    setBrandSearch("");
+    setSelectedFilters({});
+  };
+
+  const handleRemoveItem = (type, value) => {
+    switch (type) {
+      case "category":
+        setSelectedCategory((prevSelectedCategory) =>
+          prevSelectedCategory.filter((category) => category !== value)
+        );
+        break;
+      case "size":
+        setSelectedSize((prevSelectedSize) =>
+          prevSelectedSize.filter((size) => size !== value)
+        );
+        break;
+      case "brand":
+        setBrandSearch((prevBrandSearch) =>
+          prevBrandSearch.filter((brand) => brand !== value)
+        );
+        break;
+      default:
+        break;
+    }
+  };
+
+  const toggleStoreDropdown = () => {
+    setIsStoreDropdownOpen(!isStoreDropdownOpen);
+    setIsCategoryDropdownOpen(false);
+    setIsSizeDropdownOpen(false);
+  };
+
+  const toggleCategoryDropdown = () => {
+    setIsCategoryDropdownOpen(!isCategoryDropdownOpen);
+    setIsStoreDropdownOpen(false);
+    setIsSizeDropdownOpen(false);
+  };
+
+  const toggleSizeDropdown = () => {
+    setIsSizeDropdownOpen(!isSizeDropdownOpen);
+    setIsStoreDropdownOpen(false);
+    setIsCategoryDropdownOpen(false);
+  };
+
+  const handleOutsideClick = (event) => {
+    if (compsetRef.current && !compsetRef.current.contains(event.target)) {
+      setShowCompset(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
+
   return (
-    <div className="w-full">
-      <div className="relative flex flex-col md:flex-row border-b w-full">
-        <div className="store p-4 w-full">
+    <div className="flex flex-col border-l">
+      <div className="relative flex flex-col pr-9 gap-6  md:flex-row border-b w-full justify-between">
+        <div className="store p-4 w-[80%] ">
           <h1 className="text-[1.5em]">Stores</h1>
 
           <div className="selected-stores w-full">
             {selectedStore.map((store) => (
               <div
                 key={store.id}
-                className="flex items-center w-3/4 justify-between p-2 bg-gray-200 mb-2 rounded-lg"
+                className="flex items-center w-3/4 justify-between p-2 bg-gray-200 mb-2 rounded-xl"
               >
                 <span>{store.name}</span>
                 <button
@@ -204,7 +256,7 @@ const Filters = () => {
           </div>
 
           <div
-            className="flex cursor-pointer justify-between w-3/4 p-2 items-center border rounded-lg bg-[#57545411] "
+            className="flex cursor-pointer justify-between w-3/4 p-2 items-center border rounded-xl bg-[#57545411] "
             onClick={toggleStoreDropdown}
           >
             <Image src={store} alt="b" className="w-[1.4em]" />
@@ -216,7 +268,7 @@ const Filters = () => {
             />
           </div>
           {isStoreDropdownOpen && (
-            <div className="flex cursor-pointer h-[7em] text-left flex-col overflow-y-scroll justify-between w-3/4 border rounded-lg bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
+            <div className="flex cursor-pointer h-[7em] text-left flex-col overflow-y-scroll justify-between w-3/4 border rounded-xl bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
               {storeLoading ? (
                 <div className="flex justify-center items-center h-16">
                   <Dots size={32} color="#7F56D9" />
@@ -249,49 +301,47 @@ const Filters = () => {
 
         {/* Display selected stores */}
 
-        <div className="filters w-full p-4">
+        <div className="filters w-full flex flex-col">
           <h1 className="text-[1.5em]">Filters</h1>
-          <div className="flex flex-col md:flex-row">
-            <div className="flex-col flex w-full">
-              <div
-                className="flex mb-8 cursor-pointer mr-0 sm:mb-0 sm:mr-8 justify-between p-2 w-3/4 items-center border rounded-lg bg-[#57545431]"
-                onClick={toggleCategoryDropdown}
-              >
-                <Image src={category} alt="b" className="w-[1.4em]" />
-                <span className="ml-1 text-[#05050585]">
-                  {selectedCategory || "Category"}
-                </span>
-                <Image
-                  src={isCategoryDropdownOpen ? undroped : droped}
-                  className="w-4 ml-auto"
-                  alt="kk"
-                />
-              </div>
-              {isCategoryDropdownOpen && (
-                <div className="flex cursor-pointer h-[7em] text-left flex-col overflow-y-scroll justify-between w-3/4 border rounded-lg bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
-                  {categories.sort().map((category) => (
-                    <div
-                      key={category}
-                      className={`cursor-pointer text-black p-4 hover:bg-gray-200 ${
-                        selectedCategory === category ? " bg-gray-200" : ""
-                      }`}
-                      onClick={() => handleCategoryChange(category)}
-                    >
-                      {category}
-                    </div>
-                  ))}
+          <div className="flex flex-col md:flex-row w-full justify-between gap-5 ">
+            <div className="block w-full">
+              <div className="w-full">
+                <div
+                  className="flex mb-8 cursor-pointer mr-0 sm:mb-0 sm:mr-8 justify-between p-2 w-full items-center border rounded-xl bg-[#57545431]"
+                  onClick={toggleCategoryDropdown}
+                >
+                  <Image src={category} alt="b" className="w-[1.4em]" />
+                  <span className="ml-1 text-[#05050585]">{"Category"}</span>
+                  <Image
+                    src={isCategoryDropdownOpen ? undroped : droped}
+                    className="w-4 ml-auto"
+                    alt="kk"
+                  />
                 </div>
-              )}
+                {isCategoryDropdownOpen && (
+                  <div className="flex cursor-pointer h-[7em] text-left flex-col overflow-y-scroll justify-between w-full border rounded-xl bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
+                    {categories.sort().map((category) => (
+                      <div
+                        key={category}
+                        className={`cursor-pointer text-black p-4 hover:bg-gray-200 ${
+                          selectedCategory === category ? " bg-gray-200" : ""
+                        }`}
+                        onClick={() => handleCategoryChange(category)}
+                      >
+                        {category}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
-            <div className="flex-col flex w-full md:w-1/2 mt-4 md:mt-0">
+            <div className="flex-col flex w-[70%]">
               <div
-                className="flex cursor-pointer w-full justify-between p-2 items-center border rounded-lg bg-[#57545431]"
+                className="flex cursor-pointer w-full justify-between p-2 items-center border rounded-xl bg-[#57545431]"
                 onClick={toggleSizeDropdown}
               >
                 <Image src={category} alt="b" className="w-[1.4em]" />
-                <span className="ml-1 text-[#05050585]">
-                  {selectedSize || "Size"}
-                </span>
+                <span className="ml-1 text-[#05050585]">{"Size"}</span>
                 <Image
                   src={isSizeDropdownOpen ? undroped : droped}
                   className="w-4 ml-auto"
@@ -299,7 +349,7 @@ const Filters = () => {
                 />
               </div>
               {isSizeDropdownOpen && (
-                <div className="flex cursor-pointer h-[7em] mt-4 md:mt-0 text-left flex-col overflow-y-scroll justify-between w-full border rounded-lg bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
+                <div className="flex cursor-pointer h-[7em] mt-4 md:mt-0 text-left flex-col overflow-y-scroll justify-between w-full border rounded-xl bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
                   {sizes
                     .sort((a, b) => a - b)
                     .map((size) => (
@@ -316,23 +366,34 @@ const Filters = () => {
                 </div>
               )}
             </div>
-          </div>
-          <div className="brand border bg-[#57545431] rounded-lg flex m-auto w-2/4 p-2 mt-3">
-            <div className="relative flex-grow">
-              <Image
-                src={brand}
-                alt="b"
-                className="absolute left-2 top-1/2 transform -translate-y-1/2"
-              />
-              <input
-                type="text"
-                className="pl-8 bg-transparent outline-none text-[#0a0a0a83] w-full"
-                placeholder="Brand"
-                value={brandSearch}
-                onChange={handleBrandSearchChange}
-              />
+
+            <div className="block w-[70%]">
+              <div className="border bg-[#57545431] rounded-xl w-full p-2 ">
+                <div className="relative">
+                  <Image
+                    src={brand}
+                    alt="b"
+                    className="absolute left-2 top-1/2 transform -translate-y-1/2"
+                  />
+                  <input
+                    type="text"
+                    className="pl-8 bg-transparent outline-none text-[#0a0a0a83] w-full"
+                    placeholder="Brand"
+                    value={brandvalue}
+                    onChange={handleBrandSearchChange}
+                  />
+                </div>
+              </div>
             </div>
           </div>
+
+          <SelectedFilters
+            selectedCategory={selectedCategory}
+            selectedSize={selectedSize}
+            brandSearch={brandSearch}
+            removeItem={handleRemoveItem}
+            apply ={applyFilters}
+          />
 
           <div className="price w-full">
             <PriceRange range={range} handlePriceChanges={handlePriceChanges} />
@@ -341,7 +402,7 @@ const Filters = () => {
           <div className="m-auto flex items-center justify-center mt-4">
             <button
               type="submit"
-              className="bg-[#7F56D9] m-auto p-2 pl-4 pr-4 rounded-lg text-white"
+              className="bg-[#7F56D9] m-auto p-2 pl-4 pr-4 rounded-xl text-white"
               onClick={applyFilters}
             >
               Apply filters
@@ -353,21 +414,22 @@ const Filters = () => {
       {showCompset && (
         <div
           ref={compsetRef}
-          className="absolute top-0 right-0 bg-white w-80 mt-12 rounded-lg shadow-md"
+          className="absolute top-0 right-0 bg-white w-80 mt-12 rounded-xl shadow-md"
         >
           <Compsetprop closeFunction={handlecompset} />
         </div>
       )}
-      <div>
-        <Results
-          storesData={storesData}
-          allstores={allstores}
-          selectedFilters={selectedFilters}
-          selectedstores={selectedStore}
-          isfetching={productLoading}
-          page={page}
-          itemsPerPage={itemsPerPage}
-        />
+
+<div>
+      <Results
+        storesData={storesData}
+        allstores={allstores}
+        selectedFilters={selectedFilters}
+        selectedstores={selectedStore}
+        isfetching={productLoading}
+        page={page}
+        itemsPerPage={itemsPerPage}
+      />
       </div>
     </div>
   );

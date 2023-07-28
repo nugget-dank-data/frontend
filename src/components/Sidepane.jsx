@@ -114,7 +114,7 @@ const Sidepane = ({
       {isMenuOpen ? (
         <div
           id="sidepane"
-          className="bg-[#232529] overflow-y-scroll scrollbar-hide h-screen fixed  text-white flex flex-col z-50 p-5 md:relative "
+          className="bg-[#232529] overflow-y-scroll scrollbar-hide h-screen   text-white flex flex-col z-50 p-5 md:relative "
         >
           <div className="top-0 right-2 absolute text-white flex md:hidden ">
             <button className="" onClick={toggleMenu}>
@@ -138,7 +138,7 @@ const Sidepane = ({
             <Image src={nugget} alt="" className="w-16" />
             <p className="p-2">Nugget</p>
           </div>
-          <p className="text-[#b3b2b25e] text-[1em]">menu</p>
+          
           <ul className="list-none font-semibold">
             <li
               onClick={() => handleTabClick("compare")}
@@ -307,7 +307,7 @@ const Sidepane = ({
                       <p className="font-medium ml-2">My Account</p>
                     </div>
                   </Link>
-                  <Link href="/settings/billing" passHref>
+                  {/* <Link href="/settings/billing" passHref>
                     <div
                       className="flex p-2 cursor-pointer items-center"
                       onClick={() => handleSubTabClick("billing")}
@@ -323,12 +323,12 @@ const Sidepane = ({
                       />
                       <p className="font-medium ml-2">Billing</p>
                     </div>
-                  </Link>
+                  </Link> */}
                 </div>
               )}
             </li>
           </ul>
-          <p className="text-[#b3b2b25e] text-[1em]">Profile</p>
+          
           <div className="justify-between flex text-[0.9em] mt-6">
             <a href="privacy_policy">Privacy policy</a>
             <a href="terms_of_use">Terms of Use</a>

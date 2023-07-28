@@ -3,7 +3,7 @@ import Filters from './filters'
 
 const Compare = () => {
   return (
-    <div className='w-full'>
+    <div className='inline-block'>
       <Filters />
 
       

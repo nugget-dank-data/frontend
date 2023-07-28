@@ -80,14 +80,14 @@ const Navbar = ({ getTeams, getAcct, getBill }) => {
                 My Account
               
             </Link>
-            <Link href='/settings/billing' passHref
+            {/* <Link href='/settings/billing' passHref
               
                 className={`cursor-pointer ${currentRoute === '/settings/billing' ? 'underline text-[#7F56D9]' : ''}`}
                 onClick={() => setbillHandler('billing')}>
               
                 Billing
               
-            </Link>
+            </Link> */}
           </div>
         )}
       </div>

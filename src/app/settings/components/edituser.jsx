@@ -57,7 +57,7 @@ const EditUser = ({ handleclose, user }) => {
         </div>
 
         <div className="heading text-[1.5em] font-bold text-center">
-          <h1>Add User</h1>
+          <h1>Edit User</h1>
         </div>
 
         <div className="form flex flex-col p-4">
@@ -94,29 +94,12 @@ const EditUser = ({ handleclose, user }) => {
               value={stores}
               onChange={(e) => setStores(e.target.value)}
             />
-            <div className="stores flex flex-col">
-              <label
-                htmlFor="text"
-                className="text-[1.2em] font-bold mb-2 mt-2"
-              >
-                Permmissions
-              </label>
-              <div className="flex gap-4 w-full">
-                
-                <select
-                  name=""
-                  id=""
-                  className="p-3 w-full bg-white border rounded-lg focus:outline-none focus:border-[#7F56D9]"
-                >
-                  <option value="">Member</option>
-                </select>
-              </div>
-            </div>
-            <button
+           
+           <button
               type="submit"
               className="bg-[#7F56D9] text-white text-[1.4em] w-full p-2 hover:bg-[#5c35af] rounded-xl m-auto mt-6"
             >
-              Add User
+              Save Changes
             </button>
           </form>
         </div>

@@ -3,19 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import useOutsideClickHandler from "@/components/clickoutside";
 
-const OptionsComponent = ({ user, showeditUser, handleclose }) => {
+const OptionsComponent = ({ user, showeditUser, handleclose, showconfirmpassword, showconfirmdelete, showchangepermissions }) => {
   const [isOpen, setIsOpen] = useState(false);
   const userid = user?.id;
   
   const optionsRef = useRef(null);
 
-  const handleActivateUser = () => {
-    handleclose()
-  };
+ 
 
-  const handleBlacklistUser = () => {
-    handleclose()
-  };
 
   const handleEditUser = () => {
     showeditUser(true);
@@ -37,18 +32,18 @@ const OptionsComponent = ({ user, showeditUser, handleclose }) => {
         </div>
        
         <div className="flex flex-row mt-3 cursor-pointer ">
-          <li onClick={handleActivateUser} className="ml-3 options-comp">
-            Reset Passwords
+          <li onClick={showconfirmpassword} className="ml-3 options-comp">
+            Reset Password
           </li>
         </div>
         <div className="flex flex-row mt-3 options-comp cursor-pointer ">
-          <li onClick={handleActivateUser} className="ml-3 options-comp">
+          <li onClick={showchangepermissions} className="ml-3 options-comp">
             Permissions
           </li>
         </div>
       
              <div className="flex flex-row mt-3 cursor-pointer options-comp">
-          <li onClick={handleActivateUser} className="ml-3 options-comp">
+          <li onClick={showconfirmdelete} className="ml-3 options-comp">
             Delete Account
           </li>
         </div>

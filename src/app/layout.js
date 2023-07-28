@@ -80,9 +80,9 @@ useEffect(()=>{
       <div className="w-full h-full p-0 overflow-hidden">
         <div className="flex flex-row  m-auto relative ">
 
-        <div className="flex sticky top-0 lg:w-[30%] z-50">
+        <div className="flex sticky top-0  z-50">
           {!issettingsPage && (
-            <div className="flex lg:fixed lg:w-[23%] ">
+            <div className="flex">
               <Sidepane activeTab={activeTab} handleTabClick={handleTabClick} onSettingsTabChange={handleSettingsTabChange} newtabname={settingstab} />
             </div>
           )}
@@ -96,12 +96,10 @@ useEffect(()=>{
               )}
               
             </div>
-            <div className="w-full flex flex-col">{children}</div>
+            <div className="">{children}</div>
           </div>
         </div>
-        <div className="w-full bottom-0">
-          
-        </div>
+        
         
 
 

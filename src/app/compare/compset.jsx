@@ -30,7 +30,7 @@ const Compsetprop = ({ closeFunction }) => {
         </svg>
       </button>
       <div className="flex flex-col justify-center items-center">
-      <select name="" id="" placeholder="comp-set" className="p-3 w-full active:border-none after:border-none rounded-lg m-4">
+      <select name="" id="" placeholder="comp-set" className="p-3 w-full active:border-none after:border-none rounded-xl m-4">
         <option value="">{'' || 'compset1'}</option>
         
       </select>
@@ -38,7 +38,7 @@ const Compsetprop = ({ closeFunction }) => {
       <button
         type="submit"
         onClick={handleSubmit}
-        className="bg-[#7F56D9] text-white w-full rounded-lg p-2 m-auto"
+        className="bg-[#7F56D9] text-white w-full rounded-xl p-2 m-auto"
       >
         Select comp-set
       </button>
