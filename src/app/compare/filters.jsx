@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import store from "../../images/stores.svg";
+import Store from "../../images/stores.svg";
 import Image from "next/image";
 import droped from "../../images/g.svg";
 import undroped from "../../images/2.svg";
@@ -13,6 +13,8 @@ import Axios from "../api/axios";
 import SelectedFilters from "./selecedfilters";
 import { Dots } from "react-activity";
 import "react-activity/dist/Dots.css";
+import { FaTimes } from 'react-icons/fa';
+
 
 const Filters = () => {
   const [range, setRange] = useState([0, 300]);
@@ -171,7 +173,7 @@ const Filters = () => {
   const isStoreSelected = selectedStore.length > 0;
 
   const resetFilters = () => {
-    setSelectedStore([]);
+    
     setSelectedCategory([]);
     setSelectedSize([]);
     setRange([0, 300]);
@@ -242,25 +244,28 @@ const Filters = () => {
             {selectedStore.map((store) => (
               <div
                 key={store.id}
-                className="flex items-center w-3/4 justify-between p-2 bg-gray-200 mb-2 rounded-[0.7em]"
+                className="flex items-center w-3/4 justify-between text-[0.955em] p-2 border mb-2 rounded-[0.7em]"
               >
+                <div className="flex gap-4">
+                <Image src={Store} alt="b" className="w-[1.4em]" />
                 <span>{store.name}</span>
-                <button
-                  className="text-red-500"
+                </div>
+                <FaTimes
+            
+            className="w-[1.5em] mr-2 mt-2 text-red-500 float-right cursor-pointer"
                   onClick={() => handleStoreChange(store)}
-                >
-                  Remove
-                </button>
+          />
+             
               </div>
             ))}
           </div>
 
           <div
-            className="flex cursor-pointer justify-between w-3/4 p-2 items-center border rounded-[0.7em] bg-[#57545411] "
+            className="flex cursor-pointer justify-between w-3/4 p-2 items-center border rounded-[0.7em]  "
             onClick={toggleStoreDropdown}
           >
-            <Image src={store} alt="b" className="w-[1.4em]" />
-            <span className="ml-6 text-[#05050585]">Search store ...</span>
+            <Image src={Store} alt="b" className="w-[1.4em]" />
+            <span className="ml-6 text-[#05050585] text-[0.9em]">Search store ...</span>
             <Image
               src={isStoreDropdownOpen ? undroped : droped}
               className="w-4 ml-auto"
@@ -277,7 +282,7 @@ const Filters = () => {
                 allstores.map((store) => (
                   <div
                     key={store.id}
-                    className={`cursor-pointer  text-left justify-start text-black py-4 px-1 hover:bg-gray-200 ${
+                    className={`cursor-pointer text-[1em]  text-left justify-start text-black py-4 px-1 hover:bg-gray-200 ${
                       selectedStore.some(
                         (selectedStore) => selectedStore.id === store.id
                       )
@@ -311,7 +316,7 @@ const Filters = () => {
             <div className="block w-full">
               <div className="w-full">
               <div
-                className={`flex mb-8 cursor-pointer mr-0 sm:mb-0 sm:mr-8 justify-between p-2 w-full items-center border rounded-[0.7em] bg-[#57545431] ${
+                className={`flex mb-8 cursor-pointer mr-0 sm:mb-0 sm:mr-8 justify-between p-2 w-full items-center border rounded-[0.7em] text-[0.9555em] ${
                   isStoreSelected ? "" : "cursor-not-allowed opacity-50"
                 }`}
                 onClick={toggleCategoryDropdown}
@@ -343,7 +348,7 @@ const Filters = () => {
             </div>
             <div className="flex-col flex w-[70%]">
             <div
-              className={`flex cursor-pointer w-full justify-between p-2 items-center border rounded-[0.7em] bg-[#57545431] ${
+              className={`flex cursor-pointer w-full text-[0.9em] justify-between p-2 items-center border rounded-[0.7em] ${
                 isStoreSelected ? "" : "cursor-not-allowed opacity-50"
               }`}
               onClick={toggleSizeDropdown}
@@ -377,7 +382,7 @@ const Filters = () => {
 
             <div className="block w-[70%]">
             <div
-              className={`border bg-[#57545431] rounded-[0.7em] w-full p-2 ${
+              className={`border rounded-[0.7em] text-[0.9em] w-full p-2 ${
                 isStoreSelected ? "" : "cursor-not-allowed opacity-50"
               }`}
             >
@@ -409,20 +414,36 @@ const Filters = () => {
             removeItem={handleRemoveItem}
             apply ={applyFilters}
           />
-
-          <div className="price w-full">
+         
+          <div className="price ">
             <PriceRange range={range} handlePriceChanges={handlePriceChanges} disabled={!isStoreSelected} />
           </div>
+          
+          <div className="flex w-full justify-center gap-8 items-center">
+  {/* Reset Button */}
+  {selectedCategory.length || brandSearch.length || selectedSize.length || range[0] !== 0 || range[1] !== 300 ? (
+  <div className="flex items-center justify-center mt-4">
+  <button
+        type="button"
+        className="bg-[#7F56D9] text-white p-2 px-4 rounded-lg w-full"
+        onClick={resetFilters}
+      >
+        Reset
+      </button>
+    </div>
+  ) : null}
 
-          <div className="m-auto flex items-center justify-center mt-4">
-            <button
-              type="submit"
-              className={`bg-[#7F56D9] m-auto p-2 pl-4 pr-4 rounded-[0.7em] text-white ${isStoreSelected ? '' : 'cursor-not-allowed opacity-50'}`}
-              onClick={applyFilters}
-              disabled={!isStoreSelected}
-            >
-              Apply filters
-            </button>
+  <div className="flex items-center justify-center mt-4">
+    <button
+      type="submit"
+      className={`bg-[#7F56D9] m-auto w-full p-2 pl-4 pr-4 rounded-[0.7em] text-white ${isStoreSelected ? '' : 'cursor-not-allowed opacity-50'}`}
+      onClick={applyFilters}
+      disabled={!isStoreSelected}
+    >
+      Apply filters
+    </button>
+  </div>
+
           </div>
         </div>
       </div>
