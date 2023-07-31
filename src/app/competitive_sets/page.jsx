@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Newcompset from "./components/newcompset";
 import Image from "next/image";
-
+import Download from "./components/downloadall";
 import plus from "../../images/pluswhite.svg";
 import axios from "axios";
 import Compsets from "./components/compsets";
@@ -12,6 +12,7 @@ const Competitivesets = () => {
   const [editingIndex, setEditingIndex] = useState(-1);
   const [compsetName, setCompsetName] = useState("");
   const [showAddNew, setShowAddNew] = useState(false);
+  const [showdownload, setShowdownload] =useState(false)
 
   const url = "https://64a301f3b45881cc0ae5ff1e.mockapi.io/compsets";
   const endpoint = 'http://34.75.96.129:420/users/organization-compset-store/';
@@ -44,6 +45,9 @@ const fetchUserCompsets = async () => {
 };
 
 
+const handleshowdownload =() =>{
+  setShowdownload(!showdownload)
+}
 
   const handleAddNew = () => {
     setShowAddNew(!showAddNew);
@@ -88,6 +92,8 @@ const fetchUserCompsets = async () => {
           className="animate-slide-down transition-opacity ease-in duration-700"
         />
       )}
+
+      {showdownload && <Download handleclose={handleshowdownload} compsetlength={compsets.length} />}
       <div className="crud">
         <div>
           <div className="w-full flex justify-between p-6">
@@ -96,7 +102,7 @@ const fetchUserCompsets = async () => {
               <p className="h-10 min-w-[2em] ml-3 flex items-center text-[1.4em] justify-center text-center border rounded-lg">
                 {compsets.length || 0}
               </p>
-              <button className="flex ml-3 text-white items-center p-2 rounded-lg text-center bg-[#7F56D9]">
+              <button className="flex ml-3 text-white items-center p-2 rounded-lg text-center bg-[#7F56D9]" onClick={handleshowdownload}>
                 Download All
               </button>
             </div>

@@ -182,7 +182,7 @@ const Results = ({
         />
       )}
       <div className="flex flex-col md:flex-row w-full px-8 justify-between p-4 mx-auto">
-        <div className="flex md:mb-0 mb-4">
+        <div className="flex md:mb-0 mb-4 w-[40%]">
           <h2 className="text-[1.4em] font-bold">Results</h2>
           <p className="h-10 min-w-[2em] ml-3 flex items-center text-[1.4em] justify-center text-center border shadow-lg rounded-lg">
             {isfetching ? (
@@ -194,8 +194,8 @@ const Results = ({
             )}
           </p>
         </div>
-        <div className="flex flex-col md:flex-row md:space-x-4 items-center">
-          <div className="flex md:flex-grow-0 flex-grow justify-center md:mb-0 mb-3 md:mr-3 md:items-center bg-white p-0 rounded-lg">
+        <div className="flex flex-col md:flex-row md:space-x-4 justify-between items-center w-full">
+          <div className="flex md:flex-grow-0 flex-grow justify-center border md:mb-0 mb-3 md:mr-3 md:items-center bg-white p-0 rounded-lg">
             <Image src={search} alt="search" className="ml-4" />
             <input
               type="search"
@@ -219,7 +219,7 @@ const Results = ({
               <select
                 name="az-selection"
                 id="az-selection"
-                className="pl-10 pr-4 py-1 bg-white border rounded-lg"
+                className="pl-10 pr-8 py-3 bg-white border rounded-lg"
                 value={sortOption}
                 onChange={handleSortChange}
               >

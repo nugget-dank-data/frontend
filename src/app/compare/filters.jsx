@@ -168,7 +168,7 @@ const Filters = () => {
     }
   };
   
-    
+  const isStoreSelected = selectedStore.length > 0;
 
   const resetFilters = () => {
     setSelectedStore([]);
@@ -242,7 +242,7 @@ const Filters = () => {
             {selectedStore.map((store) => (
               <div
                 key={store.id}
-                className="flex items-center w-3/4 justify-between p-2 bg-gray-200 mb-2 rounded-xl"
+                className="flex items-center w-3/4 justify-between p-2 bg-gray-200 mb-2 rounded-[0.7em]"
               >
                 <span>{store.name}</span>
                 <button
@@ -256,7 +256,7 @@ const Filters = () => {
           </div>
 
           <div
-            className="flex cursor-pointer justify-between w-3/4 p-2 items-center border rounded-xl bg-[#57545411] "
+            className="flex cursor-pointer justify-between w-3/4 p-2 items-center border rounded-[0.7em] bg-[#57545411] "
             onClick={toggleStoreDropdown}
           >
             <Image src={store} alt="b" className="w-[1.4em]" />
@@ -268,7 +268,7 @@ const Filters = () => {
             />
           </div>
           {isStoreDropdownOpen && (
-            <div className="flex cursor-pointer h-[7em] text-left flex-col overflow-y-scroll justify-between w-3/4 border rounded-xl bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
+            <div className="flex cursor-pointer h-[7em] text-left flex-col overflow-y-scroll justify-between w-3/4 border rounded-[0.7em] bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
               {storeLoading ? (
                 <div className="flex justify-center items-center h-16">
                   <Dots size={32} color="#7F56D9" />
@@ -292,10 +292,14 @@ const Filters = () => {
               )}
             </div>
           )}
-          <div className="compset mt-5">
-            <button onClick={handlecompset} className="text-[#7F56D9]">
+          <div className="compset mt-5 flex">
+            <button onClick={handlecompset} className="text-[#7F56D9] cursor-pointer">
               populate with comp-set
             </button>
+
+            {selectedStore.length > 0 && <button onClick={handlecompset} className=" ml-8 cursor-pointer text-[#7F56D9]">
+              download
+            </button>}
           </div>
         </div>
 
@@ -306,10 +310,12 @@ const Filters = () => {
           <div className="flex flex-col md:flex-row w-full justify-between gap-5 ">
             <div className="block w-full">
               <div className="w-full">
-                <div
-                  className="flex mb-8 cursor-pointer mr-0 sm:mb-0 sm:mr-8 justify-between p-2 w-full items-center border rounded-xl bg-[#57545431]"
-                  onClick={toggleCategoryDropdown}
-                >
+              <div
+                className={`flex mb-8 cursor-pointer mr-0 sm:mb-0 sm:mr-8 justify-between p-2 w-full items-center border rounded-[0.7em] bg-[#57545431] ${
+                  isStoreSelected ? "" : "cursor-not-allowed opacity-50"
+                }`}
+                onClick={toggleCategoryDropdown}
+              >
                   <Image src={category} alt="b" className="w-[1.4em]" />
                   <span className="ml-1 text-[#05050585]">{"Category"}</span>
                   <Image
@@ -318,8 +324,8 @@ const Filters = () => {
                     alt="kk"
                   />
                 </div>
-                {isCategoryDropdownOpen && (
-                  <div className="flex cursor-pointer h-[7em] text-left flex-col overflow-y-scroll justify-between w-full border rounded-xl bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
+                {isStoreSelected && isCategoryDropdownOpen && (
+                  <div className="flex cursor-pointer h-[7em] text-left flex-col overflow-y-scroll justify-between w-full border rounded-[0.7em] bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
                     {categories.sort().map((category) => (
                       <div
                         key={category}
@@ -336,10 +342,12 @@ const Filters = () => {
               </div>
             </div>
             <div className="flex-col flex w-[70%]">
-              <div
-                className="flex cursor-pointer w-full justify-between p-2 items-center border rounded-xl bg-[#57545431]"
-                onClick={toggleSizeDropdown}
-              >
+            <div
+              className={`flex cursor-pointer w-full justify-between p-2 items-center border rounded-[0.7em] bg-[#57545431] ${
+                isStoreSelected ? "" : "cursor-not-allowed opacity-50"
+              }`}
+              onClick={toggleSizeDropdown}
+            >
                 <Image src={category} alt="b" className="w-[1.4em]" />
                 <span className="ml-1 text-[#05050585]">{"Size"}</span>
                 <Image
@@ -348,8 +356,8 @@ const Filters = () => {
                   alt="kk"
                 />
               </div>
-              {isSizeDropdownOpen && (
-                <div className="flex cursor-pointer h-[7em] mt-4 md:mt-0 text-left flex-col overflow-y-scroll justify-between w-full border rounded-xl bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
+              {isStoreSelected && isSizeDropdownOpen && (
+                <div className="flex cursor-pointer h-[7em] mt-4 md:mt-0 text-left flex-col overflow-y-scroll justify-between w-full border rounded-[0.7em] bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
                   {sizes
                     .sort((a, b) => a - b)
                     .map((size) => (
@@ -368,20 +376,27 @@ const Filters = () => {
             </div>
 
             <div className="block w-[70%]">
-              <div className="border bg-[#57545431] rounded-xl w-full p-2 ">
+            <div
+              className={`border bg-[#57545431] rounded-[0.7em] w-full p-2 ${
+                isStoreSelected ? "" : "cursor-not-allowed opacity-50"
+              }`}
+            >
                 <div className="relative">
                   <Image
                     src={brand}
                     alt="b"
                     className="absolute left-2 top-1/2 transform -translate-y-1/2"
                   />
-                  <input
-                    type="text"
-                    className="pl-8 bg-transparent outline-none text-[#0a0a0a83] w-full"
-                    placeholder="Brand"
-                    value={brandvalue}
-                    onChange={handleBrandSearchChange}
-                  />
+                 <input
+                  type="text"
+                  className={`pl-8 bg-transparent outline-none text-[#0a0a0a83] w-full ${
+                    isStoreSelected ? "" : "cursor-not-allowed"
+                  }`}
+                  placeholder="Brand"
+                  value={brandvalue}
+                  onChange={handleBrandSearchChange}
+                  readOnly={!isStoreSelected}
+                />
                 </div>
               </div>
             </div>
@@ -396,14 +411,15 @@ const Filters = () => {
           />
 
           <div className="price w-full">
-            <PriceRange range={range} handlePriceChanges={handlePriceChanges} />
+            <PriceRange range={range} handlePriceChanges={handlePriceChanges} disabled={!isStoreSelected} />
           </div>
 
           <div className="m-auto flex items-center justify-center mt-4">
             <button
               type="submit"
-              className="bg-[#7F56D9] m-auto p-2 pl-4 pr-4 rounded-xl text-white"
+              className={`bg-[#7F56D9] m-auto p-2 pl-4 pr-4 rounded-[0.7em] text-white ${isStoreSelected ? '' : 'cursor-not-allowed opacity-50'}`}
               onClick={applyFilters}
+              disabled={!isStoreSelected}
             >
               Apply filters
             </button>
@@ -414,7 +430,7 @@ const Filters = () => {
       {showCompset && (
         <div
           ref={compsetRef}
-          className="absolute top-0 right-0 bg-white w-80 mt-12 rounded-xl shadow-md"
+          className="absolute top-0 right-0 bg-white w-80 mt-12 rounded-[0.7em] shadow-md"
         >
           <Compsetprop closeFunction={handlecompset} />
         </div>
