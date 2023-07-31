@@ -425,7 +425,7 @@ const Filters = () => {
   <div className="flex items-center justify-center mt-4">
   <button
         type="button"
-        className="bg-[#7F56D9] text-white p-2 px-4 rounded-lg w-full"
+        className="border-[#7F56D9] border hover:bg-[#7F56D9] hover:text-white p-2 px-4 rounded-lg w-full"
         onClick={resetFilters}
       >
         Reset
