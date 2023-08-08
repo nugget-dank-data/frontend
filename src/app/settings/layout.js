@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Teams from "./manage_team/page";
 import Billing from "./billing/page";
+import '../globals.css'
 import Accounts from "./account/page";
 import Navbar from "@/components/Navbar";
 import Sidepane from "@/components/Sidepane";

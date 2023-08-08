@@ -16,6 +16,7 @@
     "axios": "^1.4.0",
     "chart.js": "^4.3.0",
     "debug": "^4.3.4",
+    "framer-motion": "^10.15.1",
     "next": "13.4.4",
     "postcss": "8.4.24",
     "react": "18.2.0",
@@ -27,8 +28,10 @@
     "recharts": "^2.6.2",
     "tailwind-scrollbar": "^3.0.4",
     "tailwind-scrollbar-hide": "^1.1.7",
-    "tailwindcss": "3.3.2",
     "taos": "^1.0.3",
     "tw-elements": "^1.0.0-beta2"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.3.3"
   }
 }

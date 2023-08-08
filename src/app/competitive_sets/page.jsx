@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Newcompset from "./components/newcompset";
 import Image from "next/image";
+import '../globals.css'
 import Download from "./components/downloadall";
 import plus from "../../images/pluswhite.svg";
 import axios from "axios";

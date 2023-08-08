@@ -1,111 +1,113 @@
 "use client"
-import Sidepane from "@/components/Sidepane";
-import './globals.css';
-
 import { useEffect, useState } from 'react';
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
-
-
-
+import Sidepane from '@/components/Sidepane';
+import Footer from '@/components/Footer';
+import Navbar from '@/components/Navbar';
+import './globals.css'
 
 export default function RootLayout({ children }) {
   const [activeTab, setActiveTab] = useState('');
   const [settingstab, setSettingstab] = useState('manage_team');
-  const [manageteam, setmanageteam] = useState(false)
-  const [accounts, setaccounts] = useState(false)
-  const [billing, setbilling] = useState(false)
+  const [menustate, setMenustate] = useState(false);
+  const [isLoginPage, setIsLoginPage] = useState(false);
+  const [issettingsPage, setIsSettingsPage] = useState(false);
 
-  console.log('test tab',settingstab)
-  const tabname = localStorage.getItem('settingstab')
-  console.log('',tabname);
-
-  const handleTabClick = (tabName) => {
-    if (activeTab === tabName) {
-      setActiveTab('');
-    } else {
-      setActiveTab(tabName);
-    }
-
-    
-    
-  };
- 
-  
-  const handleSettingsTabChange = (tabName) => {
-    setSettingstab(tabName);
-    console.log('test tab',settingstab)
-  };
-
-
-useEffect(()=>{
-  setSettingstab(settingstab)
-  console.log('test tab',settingstab)
-})
-  
   useEffect(() => {
-    const pathName = window.location.pathname;
-    // Extract the active tab from the URL path
-    const tabName = pathName.substring(1); 
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setMenustate(true); // Open menu on desktop
+      } else {
+        setMenustate(false); // Close menu on mobile
+      }
+    };
 
-    setActiveTab(tabName);
-    
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Initial check on component mount
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
+  useEffect(() => {
+    const pathName = window.location.pathname;
+    const tabName = pathName.substring(1);
+    setActiveTab(tabName);
 
-  const getTeamsHandler = () =>{
-    setSettingstab(settingstab);
+    // Check if the current page is a login page
+    setIsLoginPage(
+      pathName.includes('/accounts') ||
+        pathName.includes('/verify-email/') ||
+        pathName.includes('/settings') ||
+        pathName.includes('/admin') ||
+        pathName.includes('/privacy_policy') ||
+        pathName.includes('/terms_of_use')
+    );
 
+    // Check if the current page is a settings page
+    setIsSettingsPage(
+      pathName.includes('/accounts') ||
+        pathName.includes('/verify-email/') ||
+        pathName.includes('/admin')
+    );
+  }, []);
 
-  }
-  const getaccHandler = () =>{
+  const handleTabClick = (tabName) => {
+    setActiveTab(tabName);
+  };
 
-    setSettingstab(settingstab);
-  
+  const handleSettingsTabChange = (tabName) => {
+    setSettingstab(tabName);
+  };
 
-  }
-  const getbillHandler = () =>{
+  const setMenu = () => {
+    setMenustate(!menustate);
+  };
 
- 
-    setSettingstab(settingstab);
-  
-  }
-  
-  const isLoginPage = window.location.pathname.includes('/accounts') || window.location.pathname.includes('/verify-email/') || window.location.pathname.includes('/settings') ||window.location.pathname.includes('/admin')||window.location.pathname.includes('/privacy_policy')||window.location.pathname.includes('/terms_of_use') ;
-  const issettingsPage = window.location.pathname.includes('/accounts') || window.location.pathname.includes('/verify-email/')||window.location.pathname.includes('/admin') ;
+  const getTeamsHandler = () => {
+    // Implement your logic here
+  };
+
+  const getAccHandler = () => {
+    // Implement your logic here
+  };
+
+  const getBillHandler = () => {
+    // Implement your logic here
+  };
 
   return (
     <html className="relative">
       <body className="h-[100%] flex">
-        <div className="sticky bottom-0 w-[25%] top-0 flex h-full">
+        <div className="md:sticky bottom-0 md:w-[27%] top-0 flex md:h-full bg-white fixed z-50 h-screen">
           {!issettingsPage && (
-            
-              <Sidepane activeTab={activeTab} handleTabClick={handleTabClick} onSettingsTabChange={handleSettingsTabChange} newtabname={settingstab} />
-            
+            <Sidepane
+              activeTab={activeTab}
+              handleTabClick={handleTabClick}
+              onSettingsTabChange={handleSettingsTabChange}
+              isMenuOpen={menustate}
+              togglemenu={setMenu}
+            />
           )}
-          </div>
-      <div className="w-full h-full p-0 overflow-hidden">
-        <div className="flex w-full h-[100%]  ">
-
-
-          <div className="w-full flex flex-col ">
-            <div className=" w-full">
-              {!isLoginPage && (
-                <Navbar  getTeams={getTeamsHandler} getAcct={getaccHandler}  getBill={getbillHandler} />
-                
-              )}
-              
+        </div>
+        <div className="w-full h-full p-0 overflow-hidden">
+          <div className="flex w-full h-[100%] ">
+            <div className="w-full flex flex-col ">
+              <div className="w-full">
+                {!isLoginPage && (
+                  <Navbar
+                    getTeams={getTeamsHandler}
+                    getAcc={getAccHandler}
+                    getBill={getBillHandler}
+                    isMenuOpen={menustate}
+                    togglemenu={setMenu}
+                  />
+                )}
+              </div>
+              <div className="">{children}</div>
             </div>
-            <div className="">{children}</div>
           </div>
         </div>
-        
-        
-
-
-
-      
-      </div>
       </body>
     </html>
   );

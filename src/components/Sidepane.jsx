@@ -12,16 +12,18 @@ import radioactive from "../images/radioactive.svg";
 import radioinactive from "../images/radioinactive.svg";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaBars, FaTimes } from "react-icons/fa";
 
 const Sidepane = ({
   activeTab,
   handleTabClick,
   onSettingsTabChange,
-  newtabname,
+  isMenuOpen,
+  togglemenu,
 }) => {
   const currentRoute = usePathname();
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isManageStoresDropdownOpen, setIsManageStoresDropdownOpen] =
     useState(false);
   const [isSettingsDropdownOpen, setIsSettingsDropdownOpen] = useState(false);
@@ -55,7 +57,7 @@ const Sidepane = ({
 
   const handleSubTabClick = (subTabName) => {};
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    
   };
 
   const toggleManageStoresDropdown = () => {
@@ -69,22 +71,13 @@ const Sidepane = ({
   };
 
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth > 850) {
-        setIsMenuOpen(true); // Open menu on desktop
-      } else {
-        setIsMenuOpen(false); // Close menu on mobile
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-    handleResize(); // Initial check on component mount
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
+    if (currentRoute.includes("/settings")) {
+      setIsSettingsDropdownOpen(true);
+    } else {
+      setIsSettingsDropdownOpen(false);
+    }
+  }, [currentRoute]);
+  
   const handleLogout = async () => {
     try {
       const token = localStorage.getItem("login_key");
@@ -92,53 +85,52 @@ const Sidepane = ({
         Authorization: `Token ${token}`,
       };
 
-      
       const response = await axios.post(
         "http://34.75.96.129:420/users/logout/",
         null,
         { headers }
       );
 
-      
       localStorage.clear();
 
-      
       setLogoutMessage(response.data.message);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
+
+  console.log(isMenuOpen);
 
   return (
-    <div className="flex overflow-scroll sticky bottom-0 scrollbar-hide w-full z-50">
-      {isMenuOpen ? (
-        <div
-          id="sidepane"
-          className="bg-[#232529] overflow-y-scroll scrollbar-hide h-screen w-full  text-white flex flex-col z-50 p-5 md:relative "
-        >
-          <div className="top-0 right-2 absolute text-white flex md:hidden ">
-            <button className="" onClick={toggleMenu}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </div>
-          <div className="flex flex-row p-0 text-[2rem] align-middle items-center justify-center">
-            <Image src={nugget} alt="" className="w-16" />
+    <div className="flex overflow-scroll bottom-0 scrollbar-hide w-full z-50 h-screen">
+      <AnimatePresence>
+      {isMenuOpen && (
+    <motion.div
+    id="sidepane"
+    className={`bg-[#232529] overflow-y-scroll scrollbar-hide h-screen text-white flex flex-col z-50 p-5 md:relative`}
+    initial={{ x: '-100%' }} // Initial position (off-screen)
+    animate={{ x: 0 }} // Target position (on-screen)
+    exit={{ x: '-100%' }} // Exit position (off-screen)
+    transition={{ duration: 0.5, ease: 'easeInOut' }} // Animation duration and easing
+  >
+          {window.innerWidth <= 768 && (
+ <motion.button
+ className={`shadow-2xl border absolute top-0 right-0 border-[#3d3b3ba2] rounded-lg w-[2.5em] h-[2.5em] flex items-center justify-center text-white p-2 z-50 menu-toggle-button transition-rotate`}
+ onClick={togglemenu}
+ initial={{ rotate: 0 }}
+ animate={{ rotate: isMenuOpen ? 90 : 0 }}
+ transition={{ duration: 0.7, ease: 'easeInOut' }}
+>
+ <FaTimes className="h-6 w-6" />
+</motion.button>
+
+     
+          )}
+          <div className={`flex flex-row p-0 text-[2rem] align-middle items-center justify-center ${window.innerWidth <= 768 ? 'mt-8': ''}`}>
+            <Image src={nugget} alt="icon" className="w-16" />
             <p className="p-2">Nugget</p>
           </div>
-          
+
           <ul className="list-none font-semibold">
             <li
               onClick={() => handleTabClick("compare")}
@@ -157,7 +149,7 @@ const Sidepane = ({
                 Compare
               </a>
             </li>
-           
+
             <li
               className={`mb-4 p-4 font-medium rounded-lg shadow-xl ${
                 currentRoute.includes("/competitive_sets")
@@ -190,11 +182,12 @@ const Sidepane = ({
                 <Image
                   src={isManageStoresDropdownOpen ? droped : notdroped}
                   className="ml-auto "
+                  alt="icon"
                 />
               </a>
-              {renderSubMenu(
+              {isManageStoresDropdownOpen && (
                 "manage-stores",
-                <div className="flex flex-col">
+                <div className="flex flex-col ml-8">
                   <div
                     className="flex p-2 cursor-pointer items-center "
                     onClick={() => handleSubTabClick("my_stores")}
@@ -252,26 +245,27 @@ const Sidepane = ({
                   : ""
               }`}
             >
-              <Link href="/settings/manage_team" passHref>
                 <div
                   className="flex cursor-pointer"
                   onClick={toggleSettingsDropdown}
                 >
+              <a href="/settings/manage_team" className="w-full flex" >
                   {getIcon("settings")}
                   <span className="ml-2">Settings</span>
+                  </a>
                   <Image
                     src={isSettingsDropdownOpen ? droped : notdroped}
                     alt="icon"
                     className="ml-auto"
+                    onClick={toggleSettingsDropdown}
                   />
                 </div>
-              </Link>
-              {renderSubMenu(
-                "settings",
-                <div className="flex flex-col">
+              {isSettingsDropdownOpen && 
+                // "settings",
+                <div className="flex flex-col ml-8">
                   <Link
                     href="/settings/manage_team"
-                    passHref
+                    
                     className={currentRoute == "/settings/manage_team"}
                   >
                     <div
@@ -290,7 +284,7 @@ const Sidepane = ({
                       <p className="font-medium ml-2">Manage Team</p>
                     </div>
                   </Link>
-                  <Link href="/settings/account" passHref>
+                  <Link href="/settings/account" >
                     <div
                       className="flex p-2 cursor-pointer items-center"
                       onClick={() => handleSubTabClick("my_account")}
@@ -307,28 +301,11 @@ const Sidepane = ({
                       <p className="font-medium ml-2">My Account</p>
                     </div>
                   </Link>
-                  {/* <Link href="/settings/billing" passHref>
-                    <div
-                      className="flex p-2 cursor-pointer items-center"
-                      onClick={() => handleSubTabClick("billing")}
-                    >
-                      <Image
-                        src={
-                          currentRoute === "/settings/billing"
-                            ? radioactive
-                            : radioinactive
-                        }
-                        className="w-[1em]"
-                        alt="icon"
-                      />
-                      <p className="font-medium ml-2">Billing</p>
-                    </div>
-                  </Link> */}
                 </div>
-              )}
+              }
             </li>
           </ul>
-          
+
           <div className="justify-between flex text-[0.9em] mt-6">
             <a href="privacy_policy">Privacy policy</a>
             <a href="terms_of_use">Terms of Use</a>
@@ -339,32 +316,13 @@ const Sidepane = ({
               className="flex w-full align-middle items-center text-center justify-center"
               onClick={handleLogout}
             >
-              <Image src={logout} alt="" />
+              <Image src={logout} alt="icon" />
               <p className="p-2 text-[1em]"> Logout</p>
             </a>
           </div>
-        </div>
-      ) : (
-        <button
-          className="mr-4 bg-[#131212] w-[1.3em] shadow-2xl text-white text-[2em] p-2 rounded justify-center items-center absolute"
-          onClick={toggleMenu}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 8h16M4 12h16M4 16h16M4 20h16"
-            />
-          </svg>
-        </button>
+        </motion.div>
       )}
+      </AnimatePresence>
     </div>
   );
 };
