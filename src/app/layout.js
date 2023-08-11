@@ -83,8 +83,8 @@ export default function RootLayout({ children }) {
       <link rel="icon" type="image/svg+xml" sizes="32x32" href="/logo2.svg" />
       </head>
       <body className="h-[100%] flex">
-        <div className="md:sticky bottom-0 md:w-[27%] top-0 flex md:h-full bg-white fixed z-50 h-screen">
           {!issettingsPage && (
+        <div className="md:sticky bottom-0 md:w-[27%] top-0 flex md:h-full bg-white fixed z-50 h-screen">
             <Sidepane
               activeTab={activeTab}
               handleTabClick={handleTabClick}
@@ -92,8 +92,8 @@ export default function RootLayout({ children }) {
               isMenuOpen={menustate}
               togglemenu={setMenu}
             />
-          )}
         </div>
+          )}
         <div className="w-full h-full p-0 overflow-hidden">
           <div className="flex w-full h-[100%] ">
             <div className="w-full flex flex-col ">
