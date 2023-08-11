@@ -4,6 +4,7 @@ import Sidepane from '@/components/Sidepane';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import './globals.css'
+import Head from 'next/head';
 
 export default function RootLayout({ children }) {
   const [activeTab, setActiveTab] = useState('');
@@ -78,6 +79,9 @@ export default function RootLayout({ children }) {
 
   return (
     <html className="relative">
+      <head>
+      <link rel="icon" type="image/svg+xml" sizes="32x32" href="/logo2.svg" />
+      </head>
       <body className="h-[100%] flex">
         <div className="md:sticky bottom-0 md:w-[27%] top-0 flex md:h-full bg-white fixed z-50 h-screen">
           {!issettingsPage && (
