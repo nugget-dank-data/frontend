@@ -21,7 +21,7 @@ const Login = () => {
     setMessage("");
 
     try {
-      console.log('logging in ..')
+      // console.log('logging in ..')
       const response = await axios.post(url, {
         email,
         password,
@@ -29,7 +29,9 @@ const Login = () => {
       });
 
    
-      localStorage.setItem("login_key", response.data.key)
+      // localStorage.setItem("login_key", response.data.key)
+      sessionStorage.setItem("login_key", response.data.key);
+      sessioStorage.setItem('org_id',response.data.organization)
       console.log(response.data)
 
 

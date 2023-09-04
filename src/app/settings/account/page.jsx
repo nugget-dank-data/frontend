@@ -15,33 +15,33 @@ const Accounts = () => {
   const [isEditingFirstName, setIsEditingFirstName] = useState(false);
   const [isEditingLastName, setIsEditingLastName] = useState(false);
 
-  // useEffect(() => {
-  //   const fetchUserDetails = async () => {
-  //     try {
-  //       const token = localStorage.getItem("login_key");
-  //       const headers = {
-  //         Authorization: `Token ${token}`,
-  //       };
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const token = sessionStorage.getItem("login_key");
+        const headers = {
+          Authorization: `Token ${token}`,
+        };
 
-  //       const response = await axios.get(
-  //         "http://34.75.96.129:420/users/user/",
-  //         { headers }
-  //       );
-  //       console.log(response);
-  //       const { first_name, last_name, email, pk, phonenumber } = response.data;
+        const response = await axios.get(
+          "http://34.75.96.129:420/users/user/",
+          { headers }
+        );
+        console.log(response);
+        const { first_name, last_name, email, pk, phonenumber } = response.data;
 
-  //       setFirstName(first_name);
-  //       setLastName(last_name);
-  //       setEmail(email);
-  //       setPhonenumber(phonenumber);
-  //       localStorage.setItem("user_id", pk);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
+        setFirstName(first_name);
+        setLastName(last_name);
+        setEmail(email);
+        setPhonenumber(phonenumber);
+        localStorage.setItem("user_id", pk);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-  //   fetchUserDetails();
-  // }, []);
+    fetchUserDetails();
+  }, []);
 
   const handlePasswordReset = async () => {
     try {
@@ -91,7 +91,7 @@ const Accounts = () => {
   };
 
   const handleUpdateUser = () => {
-    const token = localStorage.getItem("login_key");
+    const token = sessionStorage.getItem("login_key");
     const userToUpdate = {
       first_name: firstName,
       last_name: lastName,
@@ -194,7 +194,7 @@ const Accounts = () => {
             <span className="edit text-[0.9em] text-[#999797]">
               Phone number
             </span>
-            <span className={`text-[1.2em] ${phonenumber.trim() === "" ? "py-3" : ""}`}>{phonenumber}</span>
+            <span className={`text-[1.2em] ${phonenumber ?.trim() === "" ? "py-3" : ""}`}>{phonenumber}</span>
           </div>
         </div>
       </div>

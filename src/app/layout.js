@@ -4,31 +4,57 @@ import Sidepane from '@/components/Sidepane';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import './globals.css'
-import Head from 'next/head';
+
+import { useRouter } from 'next/navigation'
 
 export default function RootLayout({ children }) {
   const [activeTab, setActiveTab] = useState('');
   const [settingstab, setSettingstab] = useState('manage_team');
-  const [menustate, setMenustate] = useState(false);
+  const [menustate, setMenustate] = useState(true);
   const [isLoginPage, setIsLoginPage] = useState(false);
   const [issettingsPage, setIsSettingsPage] = useState(false);
+  const [is404Route, setIs404Route] = useState(false);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    // Check session token here
+    const token = sessionStorage.getItem("login_key");
+    const isUserInSession = !!token;
+    
+    
+    if (!isUserInSession && !isLoginPage) {
+      router.push('/accounts/login');
+    }
+  }, [router]);
+
+  useEffect(() => {
+    async function checkIf404Route() {
+      const response = await fetch(window.location.href);
+      
+      if (response.status === 404) {
+        setIs404Route(true);
+      }
+    }
+
+    checkIf404Route();
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth > 768) {
-        setMenustate(true); // Open menu on desktop
+        setMenustate(true); 
       } else {
-        setMenustate(false); // Close menu on mobile
+        setMenustate(false);
       }
     };
 
     window.addEventListener('resize', handleResize);
     handleResize(); // Initial check on component mount
 
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+ 
   }, []);
+  
 
   useEffect(() => {
     const pathName = window.location.pathname;
@@ -83,8 +109,8 @@ export default function RootLayout({ children }) {
       <link rel="icon" type="image/svg+xml" sizes="32x32" href="/logo2.svg" />
       </head>
       <body className="h-[100%] flex">
-          {!issettingsPage && (
-        <div className="md:sticky bottom-0 md:w-[27%] top-0 flex md:h-full bg-white fixed z-50 h-screen">
+          {!issettingsPage && !is404Route && (
+        <div className="md:sticky bottom-0 md:w-[27%] top-0 flex md:h-full  fixed z-50 h-screen">
             <Sidepane
               activeTab={activeTab}
               handleTabClick={handleTabClick}
@@ -98,7 +124,7 @@ export default function RootLayout({ children }) {
           <div className="flex w-full h-[100%] ">
             <div className="w-full flex flex-col ">
               <div className="w-full">
-                {!isLoginPage && (
+                {!isLoginPage && !is404Route && (
                   <Navbar
                     getTeams={getTeamsHandler}
                     getAcc={getAccHandler}

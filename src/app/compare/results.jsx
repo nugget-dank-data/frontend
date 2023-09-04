@@ -214,7 +214,7 @@ const Results = ({
               <Image
                 src={category}
                 alt="category"
-                className="absolute w-5 h-5 left-2 top-1/2 transform -translate-y-1/2"
+                className="absolute w-5 h-5 left-2 top-1/2  -translate-y-1/2"
               />
               <select
                 name="az-selection"

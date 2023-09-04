@@ -6,6 +6,7 @@ import droped from "../../../images/dropdown2.svg";
 import notdroped from "../../../images/dropdown1.svg";
 import radioactivive from "../../../images/radioactive.svg";
 import radioinactive from "../../../images/radioinactive.svg";
+import { Link } from "react-router-dom";
 
 const AdminSidepane = ({ activeTab, activeSubTab, handleTabClick}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -195,8 +196,8 @@ const AdminSidepane = ({ activeTab, activeSubTab, handleTabClick}) => {
           </ul>
           <p className="text-[#b3b2b25e] text-[1em]">Profile</p>
           <div className="justify-between flex text-[0.9em] mt-6">
-            <a href="privacy_policy">Privacy policy</a>
-            <a href="terms_of_use">Terms of Use</a>
+            <Link href="privacy_policy">Privacy policy</Link>
+            <Link href="terms_of_use">Terms of Use</Link>
           </div>
           <div className="m-auto w-3/4 flex flex-row bg-[#1a181863] rounded-lg mt-8">
             <a

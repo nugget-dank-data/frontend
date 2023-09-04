@@ -1,4 +1,6 @@
 import React from "react";
+import Link from "next/link";
+
 
 const TermsOfUse = () => {
   return (
@@ -13,85 +15,85 @@ const TermsOfUse = () => {
   <h1 class="text-2xl font-bold mb-4">TABLE OF CONTENTS</h1>
   <ol class="list-decimal list-inside p-4 text-lg gap-3">
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section1">AGREEMENT TO TERMS</a>
+      <Link href="#section1">AGREEMENT TO TERMS</Link>
     </li>
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section2">INTELLECTUAL PROPERTY RIGHTS</a>
+      <Link href="#section2">INTELLECTUAL PROPERTY RIGHTS</Link>
     </li>
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section3">USER REPRESENTATIONS</a>
+      <Link href="#section3">USER REPRESENTATIONS</Link>
     </li>
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section4">USER REGISTRATION</a>
+      <Link href="#section4">USER REGISTRATION</Link>
     </li>
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section5">FEES AND PAYMENT</a>
+      <Link href="#section5">FEES AND PAYMENT</Link>
     </li>
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section6">CANCELLATION</a>
+      <Link href="#section6">CANCELLATION</Link>
     </li>
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section7">PROHIBITED ACTIVITIES</a>
+      <Link href="#section7">PROHIBITED ACTIVITIES</Link>
     </li>
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section8">USER GENERATED CONTRIBUTIONS</a>
+      <Link href="#section8">USER GENERATED CONTRIBUTIONS</Link>
     </li>
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section9">CONTRIBUTION LICENSE</a>
+      <Link href="#section9">CONTRIBUTION LICENSE</Link>
     </li>
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section10">SUBMISSIONS</a>
+      <Link href="#section10">SUBMISSIONS</Link>
     </li>
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section11">THIRD-PARTY WEBSITES AND CONTENT</a>
+      <Link href="#section11">THIRD-PARTY WEBSITES AND CONTENT</Link>
     </li>
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section12">U.S. GOVERNMENT RIGHTS</a>
+      <Link href="#section12">U.S. GOVERNMENT RIGHTS</Link>
     </li>
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section13">SITE MANAGEMENT</a>
+      <Link href="#section13">SITE MANAGEMENT</Link>
     </li>
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section14">PRIVACY POLICY</a>
+      <Link href="#section14">PRIVACY POLICY</Link>
     </li>
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section15">TERM AND TERMINATION</a>
+      <Link href="#section15">TERM AND TERMINATION</Link>
     </li>
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section16">MODIFICATIONS AND INTERRUPTIONS</a>
+      <Link href="#section16">MODIFICATIONS AND INTERRUPTIONS</Link>
     </li>
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section17">GOVERNING LAW</a>
+      <Link href="#section17">GOVERNING LAW</Link>
     </li>
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section18">DISPUTE RESOLUTION</a>
+      <Link href="#section18">DISPUTE RESOLUTION</Link>
     </li>
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section19">CORRECTIONS</a>
+      <Link href="#section19">CORRECTIONS</Link>
     </li>
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section20">DISCLAIMER</a>
+      <Link href="#section20">DISCLAIMER</Link>
     </li>
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section21">LIMITATIONS OF LIABILITY</a>
+      <Link href="#section21">LIMITATIONS OF LIABILITY</Link>
     </li>
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section22">INDEMNIFICATION</a>
+      <Link href="#section22">INDEMNIFICATION</Link>
     </li>
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section23">USER DATA</a>
+      <Link href="#section23">USER DATA</Link>
     </li>
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section24">ELECTRONIC COMMUNICATIONS, TRANSACTIONS, AND SIGNATURES</a>
+      <Link href="#section24">ELECTRONIC COMMUNICATIONS, TRANSACTIONS, AND SIGNATURES</Link>
     </li>
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section25">CALIFORNIA USERS AND RESIDENTS</a>
+      <Link href="#section25">CALIFORNIA USERS AND RESIDENTS</Link>
     </li>
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section26">MISCELLANEOUS</a>
+      <Link href="#section26">MISCELLANEOUS</Link>
     </li>
     <li class="cursor-pointer m-3 hover:text-[#7F56D9]">
-      <a href="#section27">CONTACT US</a>
+      <Link href="#section27">CONTACT US</Link>
     </li>
   </ol>
 </div>
@@ -111,13 +113,13 @@ const TermsOfUse = () => {
               and Leslieville Development Group LTD, doing business as Nugget
               ("Nugget", “we”, “us”, or “our”), concerning your access to and
               use of the{" "}
-              <a
+              <Link
                 href="https://www.nuggetdata.net"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 Nugget website
-              </a>{" "}
+              </Link>{" "}
               as well as any other media form, media channel, mobile website, or
               mobile application related, linked, or otherwise connected thereto
               (collectively, the “Site”).
@@ -783,9 +785,9 @@ const TermsOfUse = () => {
 
             <p className="mb-4">
               We care about data privacy and security. Please review our{" "}
-              <a href="/privacy_policy" className="text-blue-500 underline">
+              <Link href="/privacy_policy" className="text-blue-500 underline">
                 Privacy Policy
-              </a>
+              </Link>
               . By using the Site, you agree to be bound by our Privacy Policy,
               which is incorporated into these Terms of Use. Please be advised
               the Site is hosted in the United States. If you access the Site
@@ -1231,9 +1233,9 @@ const TermsOfUse = () => {
               <p class="text-lg leading-7">Phone: __________</p>
               <p class="text-lg leading-7">
                 Email:{" "}
-                <a href="mailto:support@nuggetdata.net" class="text-blue-600">
+                <Link href="mailto:support@nuggetdata.net" class="text-blue-600">
                   support@nuggetdata.net
-                </a>
+                </Link>
               </p>
             </div>
           </div>

@@ -28,12 +28,24 @@ const Sidepane = ({
     useState(false);
   const [isSettingsDropdownOpen, setIsSettingsDropdownOpen] = useState(false);
 
-  const renderSubMenu = (parentTab, content) => {
-    if (activeTab === parentTab) {
-      return <div className="ml-10">{content}</div>;
+  const [mobile, setMobile] = useState(false);
+
+  useEffect(() => {
+    if (window.innerWidth <= 768) {
+      setMobile(true);
+      const handleResize = () => {
+        if (window.innerWidth > 768) {
+          setMobile(false);
+        }
+      };
+      window.addEventListener('resize', handleResize);
+
+      // Clean up the event listener when the component unmounts
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
     }
-    return null;
-  };
+  }, []);
 
   const getIcon = (tabName) => {
     // Map the tab names to their respective icons
@@ -80,7 +92,7 @@ const Sidepane = ({
   
   const handleLogout = async () => {
     try {
-      const token = localStorage.getItem("login_key");
+      const token = sessionStorage.getItem("login_key");
       const headers = {
         Authorization: `Token ${token}`,
       };
@@ -99,10 +111,11 @@ const Sidepane = ({
     }
   };
 
-  console.log(isMenuOpen);
+  console.log(isMenuOpen)
+  
 
   return (
-    <div className="flex overflow-scroll bottom-0 scrollbar-hide w-full z-50 h-screen">
+    <div className="flex  overflow-scroll bottom-0 scrollbar-hide w-full z-50 h-screen">
       <AnimatePresence>
       {isMenuOpen && (
     <motion.div
@@ -113,7 +126,7 @@ const Sidepane = ({
     exit={{ x: '-100%' }} // Exit position (off-screen)
     transition={{ duration: 0.5, ease: 'easeInOut' }} // Animation duration and easing
   >
-          {window.innerWidth <= 768 && (
+          {mobile && (
  <motion.button
  className={`shadow-2xl border absolute top-0 right-0 border-[#3d3b3ba2] rounded-lg w-[2.5em] h-[2.5em] flex items-center justify-center text-white p-2 z-50 menu-toggle-button transition-rotate`}
  onClick={togglemenu}
@@ -126,7 +139,7 @@ const Sidepane = ({
 
      
           )}
-          <div className={`flex flex-row p-0 text-[2rem] align-middle items-center justify-center ${window.innerWidth <= 768 ? 'mt-8': ''}`}>
+          <div className={`flex flex-row p-0 text-[2rem] align-middle items-center justify-center ${mobile ? 'mt-8': ''}`}>
             <Image src={nugget} alt="icon" className="w-16" />
             <p className="p-2">Nugget</p>
           </div>
@@ -140,14 +153,14 @@ const Sidepane = ({
                   : ""
               }`}
             >
-              <a
+              <Link
                 href="/compare"
                 onClick={() => handleTabClick("compare")}
                 className="flex items-center"
               >
                 {getIcon("compare")}
                 Compare
-              </a>
+              </Link>
             </li>
 
             <li
@@ -157,14 +170,14 @@ const Sidepane = ({
                   : ""
               }`}
             >
-              <a
+              <Link
                 href="/competitive_sets"
                 onClick={() => handleTabClick("competitive_sets")}
                 className="flex items-center"
               >
                 {getIcon("comp-sets")}
                 Comp Sets
-              </a>
+              </Link>
             </li>
             <li
               className={`mb-4 p-4 font-medium rounded-lg shadow-xl ${
@@ -173,9 +186,10 @@ const Sidepane = ({
                   : ""
               }`}
             >
-              <a
+              <Link
                 className="flex cursor-pointer"
                 onClick={toggleManageStoresDropdown}
+                href="manage_stores"
               >
                 {getIcon("manage-stores")}
                 <span className="ml-2">Manage Stores</span>
@@ -184,7 +198,7 @@ const Sidepane = ({
                   className="ml-auto "
                   alt="icon"
                 />
-              </a>
+              </Link>
               {isManageStoresDropdownOpen && (
                 "manage-stores",
                 <div className="flex flex-col ml-8">
@@ -249,10 +263,10 @@ const Sidepane = ({
                   className="flex cursor-pointer"
                   onClick={toggleSettingsDropdown}
                 >
-              <a href="/settings/manage_team" className="w-full flex" >
+              <Link href="/settings/manage_team" className="w-full flex" >
                   {getIcon("settings")}
                   <span className="ml-2">Settings</span>
-                  </a>
+                  </Link>
                   <Image
                     src={isSettingsDropdownOpen ? droped : notdroped}
                     alt="icon"
@@ -307,18 +321,18 @@ const Sidepane = ({
           </ul>
 
           <div className="justify-between flex text-[0.9em] mt-6">
-            <a href="privacy_policy">Privacy policy</a>
-            <a href="terms_of_use">Terms of Use</a>
+            <Link href="privacy_policy">Privacy policy</Link>
+            <Link href="terms_of_use">Terms of Use</Link>
           </div>
           <div className="m-auto w-3/4 flex flex-row bg-[#1a181863] rounded-lg mt-8">
-            <a
+            <Link
               href="/accounts/login"
               className="flex w-full align-middle items-center text-center justify-center"
               onClick={handleLogout}
             >
               <Image src={logout} alt="icon" />
               <p className="p-2 text-[1em]"> Logout</p>
-            </a>
+            </Link>
           </div>
         </motion.div>
       )}

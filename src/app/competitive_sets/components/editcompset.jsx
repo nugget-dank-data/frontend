@@ -22,7 +22,7 @@ const EditCompset = (prop) => {
     // Fetch stores for a specific organization from the API endpoint
     const fetchStores = async () => {
       try {
-        const token = localStorage.getItem("login_key");
+        const token = sessionStorage.getItem("login_key");
         const headers = {
           Authorization: `Token ${token}`,
         };
@@ -49,7 +49,7 @@ const EditCompset = (prop) => {
     e.preventDefault();
 
     try {
-      const token = localStorage.getItem("login_key");
+      const token = sessionStorage.getItem("login_key");
       const headers = {
         Authorization: `Token ${token}`,
       };

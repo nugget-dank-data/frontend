@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 const PrivacyPolicy = () => {
   return (
@@ -16,9 +17,9 @@ const PrivacyPolicy = () => {
           <ul class="list-disc list-inside mb-4">
             <li>
               Visit our website at{" "}
-              <a href="https://www.nuggetdata.net" target="_blank" class="link">
+              <Link href="https://www.nuggetdata.net" target="_blank" class="link">
                 https://www.nuggetdata.net
-              </a>
+              </Link>
               , or any website of ours that links to this privacy notice
             </li>
             <li>
@@ -31,12 +32,12 @@ const PrivacyPolicy = () => {
           choices. If you do not agree with our policies and practices, please
           do not use our Services. If you still have any questions or concerns,
           please contact us at{" "}
-          <a
+          <Link
             href="mailto:support@nuggetdata.net"
             className="link text-[#7F56D9]"
           >
             support@nuggetdata.net
-          </a>
+          </Link>
           .
         </p>
         {/* Table of Contents */}
@@ -44,61 +45,61 @@ const PrivacyPolicy = () => {
           <h1 className="text-2xl font-bold mb-4">TABLE OF CONTENTS</h1>
           <ol className="list-decimal list-inside p-4 text-[1em] gap-3">
             <li className="cursor-pointer m-3 hover:text-[#7F56D9]">
-              <a href="#section1">WHAT INFORMATION DO WE COLLECT?</a>
+              <Link href="#section1">WHAT INFORMATION DO WE COLLECT?</Link>
             </li>
             <li className="cursor-pointer m-3 hover:text-[#7F56D9]">
-              <a href="#section2">HOW DO WE PROCESS YOUR INFORMATION?</a>
+              <Link href="#section2">HOW DO WE PROCESS YOUR INFORMATION?</Link>
             </li>
 
             <li className="cursor-pointer m-3 hover:text-[#7F56D9]">
-              <a href="#section3">
+              <Link href="#section3">
                 WHAT LEGAL BASES DO WE RELY ON TO PROCESS YOUR PERSONAL
                 INFORMATION?
-              </a>
+              </Link>
             </li>
             <li className="cursor-pointer m-3 hover:text-[#7F56D9]">
-              <a href="#section4">
+              <Link href="#section4">
                 {" "}
                 WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?
-              </a>
+              </Link>
             </li>
             <li className="cursor-pointer m-3 hover:text-[#7F56D9]">
-              <a href="#section5">
+              <Link href="#section5">
                 {" "}
                 DO WE USE COOKIES AND OTHER TRACKING TECHNOLOGIES?
-              </a>
+              </Link>
             </li>
             <li className="cursor-pointer m-3 hover:text-[#7F56D9]">
-              <a href="#section6">HOW LONG DO WE KEEP YOUR INFORMATION?</a>
+              <Link href="#section6">HOW LONG DO WE KEEP YOUR INFORMATION?</Link>
             </li>
             <li className="cursor-pointer m-3 hover:text-[#7F56D9]">
-              <a href="#section7">HOW DO WE KEEP YOUR INFORMATION SAFE?</a>
+              <Link href="#section7">HOW DO WE KEEP YOUR INFORMATION SAFE?</Link>
             </li>
             <li className="cursor-pointer m-3 hover:text-[#7F56D9]">
-              <a href="#section8">DO WE COLLECT INFORMATION FROM MINORS?</a>
+              <Link href="#section8">DO WE COLLECT INFORMATION FROM MINORS?</Link>
             </li>
             <li className="cursor-pointer m-3 hover:text-[#7F56D9]">
-              <a href="#section9">WHAT ARE YOUR PRIVACY RIGHTS?</a>
+              <Link href="#section9">WHAT ARE YOUR PRIVACY RIGHTS?</Link>
             </li>
             <li className="cursor-pointer m-3 hover:text-[#7F56D9]">
-              <a href="#section9">CONTROLS FOR DO-NOT-TRACK FEATURES</a>
+              <Link href="#section9">CONTROLS FOR DO-NOT-TRACK FEATURES</Link>
             </li>
             <li className="cursor-pointer m-3 hover:text-[#7F56D9]">
-              <a href="#section9">
+              <Link href="#section9">
                 DO CALIFORNIA RESIDENTS HAVE SPECIFIC PRIVACY RIGHTS?
-              </a>
+              </Link>
             </li>
             <li className="cursor-pointer m-3 hover:text-[#7F56D9]">
-              <a href="#section9">DO WE MAKE UPDATES TO THIS NOTICE?</a>
+              <Link href="#section9">DO WE MAKE UPDATES TO THIS NOTICE?</Link>
             </li>
             <li className="cursor-pointer m-3 hover:text-[#7F56D9]">
-              <a href="#section9">HOW CAN YOU CONTACT US ABOUT THIS NOTICE?</a>
+              <Link href="#section9">HOW CAN YOU CONTACT US ABOUT THIS NOTICE?</Link>
             </li>
             <li className="cursor-pointer m-3 hover:text-[#7F56D9]">
-              <a href="#section9">
+              <Link href="#section9">
                 HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM
                 YOU?
-              </a>
+              </Link>
             </li>
           </ol>
         </div>
@@ -122,9 +123,9 @@ const PrivacyPolicy = () => {
               personal information depending on how you interact with Nugget and
               the Services, the choices you make, and the products and features
               you use. Click{" "}
-              <a href="#section1" className="text-blue-500">
+              <Link href="#section1" className="text-blue-500">
                 here{" "}
-              </a>
+              </Link>
               to learn more.
             </p>
           </div>
@@ -157,9 +158,9 @@ const PrivacyPolicy = () => {
               prevention, and to comply with law. We may also process your
               information for other purposes with your consent. We process your
               information only when we have a valid legal reason to do so. Click{" "}
-              <a href="#section2" className="text-blue-500">
+              <Link href="#section2" className="text-blue-500">
                 here
-              </a>{" "}
+              </Link>{" "}
               to learn more.
             </p>
           </div>
@@ -172,9 +173,9 @@ const PrivacyPolicy = () => {
             <p className="text-gray-600">
               We may share information in specific situations and with specific
               categories of third parties. Click{" "}
-              <a href="#section4" className="text-blue-500">
+              <Link href="#section4" className="text-blue-500">
                 here
-              </a>{" "}
+              </Link>{" "}
               to learn more.
             </p>
           </div>
@@ -192,9 +193,9 @@ const PrivacyPolicy = () => {
               third parties will not be able to defeat our security and
               improperly collect, access, steal, or modify your information.
               Click{" "}
-              <a href="#section7" className="text-blue-500">
+              <Link href="#section7" className="text-blue-500">
                 here{" "}
-              </a>
+              </Link>
               to learn more.
             </p>
           </div>
@@ -207,9 +208,9 @@ const PrivacyPolicy = () => {
               Depending on where you are located geographically, the applicable
               privacy law may mean you have certain rights regarding your
               personal information. Click{" "}
-              <a href="#section9" className="text-blue-500">
+              <Link href="#section9" className="text-blue-500">
                 here
-              </a>{" "}
+              </Link>{" "}
               to learn more.
             </p>
           </div>
@@ -221,18 +222,18 @@ const PrivacyPolicy = () => {
             <p className="text-gray-600">
               The easiest way to exercise your rights is by filling out our data
               subject request form available{" "}
-              <a
+              <Link
                 href="https://app.termly.io/notify/74b870e4-f07c-43f6-aab8-c2ef377bbaa8"
                 className="text-blue-500"
               >
                 here
-              </a>
+              </Link>
               , or by contacting us. We will consider and act upon any request
               in accordance with applicable data protection laws. Want to learn
               more about what Nugget does with any information we collect? Click{" "}
-              <a href="#sections" className="text-blue-500">
+              <Link href="#sections" className="text-blue-500">
                 here
-              </a>{" "}
+              </Link>{" "}
               to review the notice in full.
             </p>
           </div>
@@ -465,9 +466,9 @@ const PrivacyPolicy = () => {
               information for a specific purpose, or in situations where your
               permission can be inferred (i.e., implied consent). You can
               withdraw your consent at any time. Click{" "}
-              <a href="#section3-consent" className="text-blue-500">
+              <Link href="#section3-consent" className="text-blue-500">
                 here
-              </a>{" "}
+              </Link>{" "}
               to learn more.
             </p>
 
@@ -585,12 +586,12 @@ const PrivacyPolicy = () => {
                 We may share your information with certain Google Maps Platform
                 APIs (e.g., Google Maps API, Places API). To find out more about
                 Google’s Privacy Policy, please refer to this{" "}
-                <a
+                <Link
                   href="https://policies.google.com/privacy"
                   className="text-blue-500"
                 >
                   link
-                </a>
+                </Link>
                 . We obtain and store on your device ("cache") your location.
                 You may revoke your consent anytime by contacting us at the
                 contact details provided at the end of this document.
@@ -626,9 +627,9 @@ const PrivacyPolicy = () => {
               beacons and pixels) to access or store information. Specific
               information about how we use such technologies and how you can
               refuse certain cookies is set out in our{" "}
-              <a href="#section5-cookie-notice" className="text-blue-500">
+              <Link href="#section5-cookie-notice" className="text-blue-500">
                 Cookie Notice
-              </a>
+              </Link>
               .
             </p>
           </div>
@@ -744,24 +745,24 @@ const PrivacyPolicy = () => {
               information, you also have the right to complain to your local
               data protection supervisory authority. You can find their contact
               details here:{" "}
-              <a
+              <Link
                 href="https://ec.europa.eu/justice/data-protection/bodies/authorities/index_en.htm"
                 className="text-blue-500"
               >
                 https://ec.europa.eu/justice/data-protection/bodies/authorities/index_en.htm
-              </a>
+              </Link>
               .
             </p>
 
             <p className="text-gray-600 mt-4">
               If you are located in Switzerland, the contact details for the
               data protection authorities are available here:{" "}
-              <a
+              <Link
                 href="https://www.edoeb.admin.ch/edoeb/en/home.html"
                 className="text-blue-500"
               >
                 https://www.edoeb.admin.ch/edoeb/en/home.html
-              </a>
+              </Link>
               .
             </p>
 
@@ -826,12 +827,12 @@ const PrivacyPolicy = () => {
               reject cookies, this could affect certain features or services of
               our Services. To opt out of interest-based advertising by
               advertisers on our Services visit{" "}
-              <a
+              <Link
                 href="http://www.aboutads.info/choices/"
                 className="text-blue-500"
               >
                 http://www.aboutads.info/choices/
-              </a>
+              </Link>
               .
             </p>
 
@@ -1107,10 +1108,10 @@ const PrivacyPolicy = () => {
               The categories of third parties to whom we disclosed personal
               information for a business or commercial purpose can be found
               under{" "}
-              <a href="#section4" className="text-[#7F56D9]">
+              <Link href="#section4" className="text-[#7F56D9]">
                 {" "}
                 "WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?"
-              </a>
+              </Link>
             </p>
 
             <div className=" justify-evenly">
@@ -1279,12 +1280,12 @@ const PrivacyPolicy = () => {
             <p className="text-gray-600">
               If you have questions or comments about this notice, you may email
               us at{" "}
-              <a
+              <Link
                 href="mailto:support@nuggetdata.net"
                 className="text-blue-600 underline"
               >
                 support@nuggetdata.net
-              </a>{" "}
+              </Link>{" "}
               or by post to:
             </p>
             <p className="text-gray-600 mt-2">
@@ -1309,12 +1310,12 @@ const PrivacyPolicy = () => {
               from you, change that information, or delete it in some
               circumstances. To request to review, update, or delete your
               personal information, please submit a request form by clicking{" "}
-              <a
+              <Link
                 href="https://app.termly.io/notify/74b870e4-f07c-43f6-aab8-c2ef377bbaa8"
                 className="text-blue-600 underline"
               >
                 here
-              </a>
+              </Link>
               .
             </p>
           </div>

@@ -1,18 +1,21 @@
 "use client"
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import nugget from "../../../images/logo.png";
 import axios from "axios";
-import { useRouter } from "next/router";
+import { usePathname } from 'next/navigation';
+
 
 const ResetPassword = () => {
   const [newPassword1, setNewPassword1] = useState("");
   const [newPassword2, setNewPassword2] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-  const router = useRouter();
-  const { uid, token } = router.query;
-
+  const pathname = usePathname();
+  
+  
+  const uid = pathname.split('/')[3];
+  const token = pathname.split('/')[4];
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");

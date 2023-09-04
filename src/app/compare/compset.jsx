@@ -1,12 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 
-const Compsetprop = ({ closeFunction }) => {
+const Compsetprop = ({ closeFunction, selectcompset }) => {
+  const [selectedCompset, setSelectedCompset] = useState(0);
 
-    const handleSubmit = () => {
-        closeFunction();
-        //to-do
-        //implement submit logic
-    }
+  const handleCompsetChange = (e) => {
+    setSelectedCompset(Number(e.target.value));
+     
+  };
+
+  const handleSubmit = () => {
+    closeFunction();
+    selectcompset(selectedCompset);
+    closeFunction()
+    
+  };
   return (
     <div className="flex w-full items-center justify-center h-screen left-0 right-0 top-0 z-50 bg-[#bbbabaeb] fixed">
       <div className="rounded-xl bg-[#ffff] relative  flex flex-col p-4 w-[35%] ">
@@ -35,14 +42,15 @@ const Compsetprop = ({ closeFunction }) => {
       <h2 className="font-bold text-[1.4em] text-center p-4">Select a Comp-set</h2>
       <div className="flex flex-col justify-center items-center m-4 ">
       <div className="relative w-full">
-  <p className="z-50 absolute top-0 text-[#8f8d8d] ml-4 left-2">comp-set</p>
+  <p className="z-50 absolute top-0 text-[#8f8d8d] ml-4 left-2" >comp-set</p>
   <select
-    name=""
-    id=""
-    placeholder="comp-set"
-    className="w-full py-4 pt-8 bg-transparent border focus:outline-none px-4 text-[1.2em] rounded-xl mb-11"
-  >
-    <option value="" className="" >{'' || 'compset1'}</option>
+            name="compset"
+            id="compset"
+            value={selectedCompset}
+            onChange={handleCompsetChange}
+            className="w-full py-4 pt-8 bg-transparent border focus:outline-none px-4 text-[1.2em] rounded-xl mb-11"
+          >
+    <option value='' className="" >{'' || 'compset1'}</option>
     
   </select>
 </div>

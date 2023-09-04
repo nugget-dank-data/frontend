@@ -35,7 +35,7 @@ const Compsets = ({ compsets, update, handledelete, handleEditCompset }) => {
 
   const fetchUserCompsetsStores = async () => {
     try {
-      const token = localStorage.getItem("login_key");
+      const token = sessionStorage.getItem("login_key");
       const headers = {
         Authorization: `Token ${token}`,
       };
