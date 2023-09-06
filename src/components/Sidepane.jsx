@@ -98,7 +98,7 @@ const Sidepane = ({
       };
 
       const response = await axios.post(
-        "http://34.75.96.129:420/users/logout/",
+        "http://35.229.42.75:420/users/logout/",
         null,
         { headers }
       );

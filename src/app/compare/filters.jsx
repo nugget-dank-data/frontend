@@ -39,7 +39,7 @@ const Filters = () => {
   const [brandvalue, setbrandvalue] = useState('')
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
-  const allstoresurl = "http://34.75.96.129:420/scraper/get-all-stores";
+  const allstoresurl = "http://35.229.42.75:420/scraper/get-all-stores";
 
   useEffect(() => {
     setIsStoreLoading(true);
@@ -59,7 +59,7 @@ const Filters = () => {
   useEffect(() => {
     if (selectedStore.length > 0) {
       const storeIds = selectedStore.map((store) => store.bb_id).join(",");
-      const url = `http://34.75.96.129:420/scraper/unique-products?bb_store_ids=${storeIds}`;
+      const url = `http://35.229.42.75:420/scraper/unique-products?bb_store_ids=${storeIds}`;
       setIsProductLoading(true);
       Axios.get(url)
         .then(({ data }) => {
@@ -83,26 +83,7 @@ const Filters = () => {
     }
   }, [selectedStore]);
 
-  const compsetfetch = async (id) => {
-    console.log('fetching based on compset')
-    try {
-      const url = `http://34.75.96.129:420/scraper/feapi-compset-inventory?organization_compset_id=${id}`;
-      setIsFetching(true);
-  
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-  
-      const compsetData = await response.json();
-      setStoresData(compsetData);
-      console.log('compsetData:', compsetData);
-    } catch (error) {
-      console.error('Error fetching compset data:', error);
-    } finally {
-      setIsFetching(false);
-    }
-  };
+
   
 
   const applyFilters = () => {
@@ -177,6 +158,13 @@ const Filters = () => {
     
 
   };
+
+  const handlesetstoredata = (data)=>{
+    setStoresData(data)
+    console.log('data:::::::',data)
+    
+    console.log('products',storesData)
+  }
 
   const add = () => {
     
@@ -479,7 +467,7 @@ const Filters = () => {
           ref={compsetRef}
           className="absolute top-0 right-0 bg-white w-80 mt-12 rounded-[0.7em] shadow-md"
         >
-          <Compsetprop closeFunction={handlecompset} selectcompset={handlecompsetselect} />
+          <Compsetprop closeFunction={handlecompset} selectcompset={handlecompsetselect} setdata={handlesetstoredata} />
         </div>
       )}
 

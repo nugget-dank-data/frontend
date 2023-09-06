@@ -7,30 +7,30 @@ import { FaBars, FaTimes } from 'react-icons/fa';
 import Image from 'next/image';
 
 
-const Navbar = ({ getTeams, getAcct, getBill, isMenuOpen, togglemenu }) => {
+const Navbar = ({ isMenuOpen, togglemenu }) => {
   const currentRoute = usePathname();
 
   const [settingsTab, setSettingsTab] = useState('manage_team');
   const [issettings, setissettings] = useState(false);
   const [pageTitle, setPageTitle] = useState('');
 
-  const setTeamsHandler = (data) => {
-    setSettingsTab(data);
-    localStorage.setItem('settingstab', data);
-    getTeams(true);
-  };
+  // const setTeamsHandler = (data) => {
+  //   setSettingsTab(data);
+  //   localStorage.setItem('settingstab', data);
+  //   getTeams(true);
+  // };
 
-  const setaccHandler = (data) => {
-    setSettingsTab(data);
-    localStorage.setItem('settingstab', data);
-    getAcct(true);
-  };
+  // const setaccHandler = (data) => {
+  //   setSettingsTab(data);
+  //   localStorage.setItem('settingstab', data);
+  //   getAcct(true);
+  // };
 
-  const setbillHandler = (data) => {
-    setSettingsTab(data);
-    localStorage.setItem('settingstab', data);
-    getBill(true);
-  };
+  // const setbillHandler = (data) => {
+  //   setSettingsTab(data);
+  //   localStorage.setItem('settingstab', data);
+  //   getBill(true);
+  // };
 
   useEffect(() => {
     setissettings(window.location.pathname.includes('/settings'));
@@ -81,14 +81,14 @@ const Navbar = ({ getTeams, getAcct, getBill, isMenuOpen, togglemenu }) => {
             <Link href='/settings/manage_team' 
               
                 className={`cursor-pointer ${ currentRoute === '/settings/manage_team' ? 'underline text-[#7F56D9]' : ''}`}
-                onClick={() => setTeamsHandler('manage_team')}
+                // onClick={() => setTeamsHandler('manage_team')}
               >
                 Manage Teams
               
             </Link>
             <Link href='/settings/account' 
                    className={`cursor-pointer ${currentRoute === '/settings/account' ? 'underline text-[#7F56D9]' : ''}`}
-                onClick={() => setaccHandler('my_account')}
+                // onClick={() => setaccHandler('my_account')}
               >
                 My Account
               

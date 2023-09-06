@@ -12,7 +12,20 @@ const Adminorganizations = () => {
 
   
 
+  useEffect(() => {
 
+    const token = sessionStorage.getItem("login_key");
+    
+    const isUserInSession = !!token;
+    console.log('userinsession',isUserInSession)
+    
+    if ( !isUserInSession) {
+      
+      
+      window.location.href = '/accounts/login';
+  console.log('reload Test fAILED')
+    }
+    }, [])
   useEffect(() => {
     const storedActiveTab = localStorage.getItem('activeTab');
     if (storedActiveTab) {

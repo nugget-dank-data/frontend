@@ -4,7 +4,7 @@ import Sidepane from '@/components/Sidepane';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import './globals.css'
-
+import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 
 export default function RootLayout({ children }) {
@@ -17,16 +17,8 @@ export default function RootLayout({ children }) {
 
   const router = useRouter();
 
-  useEffect(() => {
-    // Check session token here
-    const token = sessionStorage.getItem("login_key");
-    const isUserInSession = !!token;
-    
-    
-    if (!isUserInSession && !isLoginPage) {
-      router.push('/accounts/login');
-    }
-  }, [router]);
+  const pathName = usePathname() 
+  
 
   useEffect(() => {
     async function checkIf404Route() {
@@ -38,7 +30,7 @@ export default function RootLayout({ children }) {
     }
 
     checkIf404Route();
-  }, []);
+  }, [router.events]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -61,7 +53,7 @@ export default function RootLayout({ children }) {
     const tabName = pathName.substring(1);
     setActiveTab(tabName);
 
-    // Check if the current page is a login page
+    
     setIsLoginPage(
       pathName.includes('/accounts') ||
         pathName.includes('/verify-email/') ||
@@ -77,7 +69,7 @@ export default function RootLayout({ children }) {
         pathName.includes('/verify-email/') ||
         pathName.includes('/admin')
     );
-  }, []);
+  }, [router.events]);
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
@@ -91,17 +83,7 @@ export default function RootLayout({ children }) {
     setMenustate(!menustate);
   };
 
-  const getTeamsHandler = () => {
-    // Implement your logic here
-  };
 
-  const getAccHandler = () => {
-    // Implement your logic here
-  };
-
-  const getBillHandler = () => {
-    // Implement your logic here
-  };
 
   return (
     <html className="relative">
@@ -126,9 +108,7 @@ export default function RootLayout({ children }) {
               <div className="w-full">
                 {!isLoginPage && !is404Route && (
                   <Navbar
-                    getTeams={getTeamsHandler}
-                    getAcc={getAccHandler}
-                    getBill={getBillHandler}
+                  
                     isMenuOpen={menustate}
                     togglemenu={setMenu}
                   />

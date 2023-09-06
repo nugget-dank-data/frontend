@@ -13,7 +13,7 @@ const Login = () => {
   const [message, setMessage] = useState("");
   
 
-  const url = 'http://34.75.96.129:420/users/login/';
+  const url = 'http://35.229.42.75:420/users/login/';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,8 +30,8 @@ const Login = () => {
 
    
       // localStorage.setItem("login_key", response.data.key)
-      sessionStorage.setItem("login_key", response.data.key);
-      sessioStorage.setItem('org_id',response.data.organization)
+      sessionStorage.setItem("login_key", response.data.key)
+      sessionStorage.setItem('org_id',response.data.organization)
       console.log(response.data)
 
 

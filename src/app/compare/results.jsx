@@ -137,6 +137,7 @@ const Results = ({
   useEffect(() => {
     // Filter the storesData based on selected filters
     filterProducts(selectedFilters);
+    console.log(storesData)
   }, [selectedFilters, storesData]);
 
   // Function to load more data on scrolling

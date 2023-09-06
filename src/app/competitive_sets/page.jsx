@@ -16,13 +16,26 @@ const Competitivesets = () => {
   const [showdownload, setShowdownload] =useState(false)
 
   const url = "https://64a301f3b45881cc0ae5ff1e.mockapi.io/compsets";
-  const endpoint = 'http://34.75.96.129:420/users/organization-compset-store/';
+  const endpoint = 'http://35.229.42.75:420/users/organization-compset-store/';
 
 
   useEffect(() => {
     fetchUserCompsets();
   }, []);
+  useEffect(() => {
 
+    const token = sessionStorage.getItem("login_key");
+    
+    const isUserInSession = !!token;
+    console.log('userinsession',isUserInSession)
+    
+    if ( !isUserInSession) {
+      
+      
+      window.location.href = '/accounts/login';
+  console.log('reload Test fAILED')
+    }
+    }, [])
 const fetchUserCompsets = async () => {
   try {
     const token = sessionStorage.getItem("login_key");

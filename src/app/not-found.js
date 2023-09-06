@@ -1,7 +1,7 @@
-import Link from 'next/link';
 import Image from 'next/image';
 
 export default function Custom404() {
+  
   return (
     <div className="flex justify-center flex-col items-center h-screen bg-gray-800 text-white">
 
