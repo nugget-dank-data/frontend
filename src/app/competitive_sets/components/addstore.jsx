@@ -23,7 +23,7 @@ const AddStore = (prop) => {
         };
 
         const response = await axios.get(
-          "http://34.75.96.129:420/users/organization-store/",
+          "http://35.229.42.75:420/users/organization-store/",
           {
             params: { organization_id: organizationId },
             headers: headers,
@@ -58,7 +58,7 @@ const AddStore = (prop) => {
       };
 
       const endpoint =
-        "http://34.75.96.129:420/users/organization-compset-store/";
+        "http://35.229.42.75:420/users/organization-compset-store/";
       const response = await axios.post(endpoint, data, { headers: headers });
       console.log(response)
       

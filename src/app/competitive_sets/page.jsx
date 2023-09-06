@@ -16,7 +16,7 @@ const Competitivesets = () => {
   const [showdownload, setShowdownload] =useState(false)
 
   const url = "https://64a301f3b45881cc0ae5ff1e.mockapi.io/compsets";
-  const endpoint = 'http://34.75.96.129:420/users/organization-compset-store/';
+  const endpoint = 'http://35.229.42.75:420/users/organization-compset-store/';
 
 
   useEffect(() => {
