@@ -22,7 +22,7 @@ const ResetPassword = () => {
     setMessage("");
 
     try {
-      const response = await axios.post('http://35.229.42.75:420/users/password/reset/confirm/', {
+      const response = await axios.post('http://34.75.96.129:420/users/password/reset/confirm/', {
         new_password1: newPassword1,
         new_password2: newPassword2,
         uid,

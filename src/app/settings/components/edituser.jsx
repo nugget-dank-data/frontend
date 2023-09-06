@@ -9,7 +9,7 @@ const EditUser = ({ handleclose, user }) => {
   const [stores, setStores] = useState([]);
   const [success, setSuccess] = useState(false)
 
-  const endpoint = "http://35.229.42.75:420/users/organization-compset/";
+  const endpoint = "http://34.75.96.129:420/users/organization-compset/";
 
   const handleSubmit = async (e) => {
     e.preventDefault();

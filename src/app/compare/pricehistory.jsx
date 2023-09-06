@@ -37,7 +37,7 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
   const fetchPriceHistory = async (storeId, productId) => {
     try {
       const response = await axios.get(
-        `http://35.229.42.75:420/scraper/product-history-api?store_bb_id=${storeId}&product_id=${productId}`
+        `http://34.75.96.129:420/scraper/product-history-api?store_bb_id=${storeId}&product_id=${productId}`
       );
       setPriceHistory(response.data);
     } catch (error) {

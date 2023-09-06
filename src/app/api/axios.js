@@ -20,7 +20,7 @@ export default Axios.create({
   //       organization: organizationId,
   //     };
 
-  //     const endpoint = 'http://35.229.42.75:420/users/organization-store/';
+  //     const endpoint = 'http://34.75.96.129:420/users/organization-store/';
   //     const response = await axios.post(endpoint, data, { headers: headers });
 
   //     console.log('Added stores to organization with ID', organizationId);

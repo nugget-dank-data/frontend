@@ -31,7 +31,7 @@ const Compsets = ({ compsets, update, handledelete, handleEditCompset }) => {
     }
   };
 
-  const endpoint = "http://35.229.42.75:420/users/organization-compset-store/";
+  const endpoint = "http://34.75.96.129:420/users/organization-compset-store/";
 
   const fetchUserCompsetsStores = async () => {
     try {

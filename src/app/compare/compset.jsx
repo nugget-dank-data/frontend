@@ -17,7 +17,7 @@ const Compsetprop = ({ closeFunction, selectcompset, setdata }) => {
 
   const fetchCompsets = async () => {
     const endpoint =
-      "http://35.229.42.75:420/users/organization-compset?organization_id=1";
+      "http://34.75.96.129:420/users/organization-compset?organization_id=1";
     
     try {
       const response = await axios.get(endpoint);
@@ -31,7 +31,7 @@ const Compsetprop = ({ closeFunction, selectcompset, setdata }) => {
   const handleSubmit = async () => {
     closeFunction();
 
-    const apiUrl = `http://35.229.42.75:420/scraper/feapi-compset-inventory?organization_compset_id=${selectedCompset}`;
+    const apiUrl = `http://34.75.96.129:420/scraper/feapi-compset-inventory?organization_compset_id=${selectedCompset}`;
 
     try {
       const response = await axios.get(apiUrl);
