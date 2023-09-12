@@ -13,7 +13,7 @@ const Login = () => {
   const [message, setMessage] = useState("");
   
 
-  const url = 'http://35.229.42.75:420/users/login/';
+  const url = 'https://prod.nuggetdata.net/users/login/';
 
   const handleSubmit = async (e) => {
     e.preventDefault();

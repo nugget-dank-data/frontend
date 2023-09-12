@@ -24,7 +24,7 @@ const Accounts = () => {
         };
 
         const response = await axios.get(
-          "http://35.229.42.75:420/users/user/",
+          "https://prod.nuggetdata.net/users/user/",
           { headers }
         );
         console.log(response);
@@ -46,7 +46,7 @@ const Accounts = () => {
   const handlePasswordReset = async () => {
     try {
       const response = await axios.post(
-        "http://35.229.42.75:420/users/password/reset/",
+        "https://prod.nuggetdata.net/users/password/reset/",
         { email }
       );
       console.log(response);
@@ -103,7 +103,7 @@ const Accounts = () => {
     };
 
     axios
-      .put("http://35.229.42.75:420/users/user/", userToUpdate, { headers })
+      .put("https://prod.nuggetdata.net/users/user/", userToUpdate, { headers })
       .then((response) => {
         console.log("User updated successfully:", response.data);
       })

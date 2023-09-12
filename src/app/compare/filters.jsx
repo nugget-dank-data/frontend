@@ -39,7 +39,7 @@ const Filters = () => {
   const [brandvalue, setbrandvalue] = useState('')
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
-  const allstoresurl = "http://35.229.42.75:420/scraper/get-all-stores";
+  const allstoresurl = "https://prod.nuggetdata.net/scraper/get-all-stores";
 
   useEffect(() => {
     setIsStoreLoading(true);
@@ -59,7 +59,7 @@ const Filters = () => {
   useEffect(() => {
     if (selectedStore.length > 0) {
       const storeIds = selectedStore.map((store) => store.bb_id).join(",");
-      const url = `http://35.229.42.75:420/scraper/unique-products?bb_store_ids=${storeIds}`;
+      const url = `https://prod.nuggetdata.net/scraper/unique-products?bb_store_ids=${storeIds}`;
       setIsProductLoading(true);
       Axios.get(url)
         .then(({ data }) => {

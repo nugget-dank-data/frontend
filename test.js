@@ -1,4 +1,4 @@
-const apiUrl = "http://35.229.42.75:420/scraper/feapi-compset-inventory?organization_compset_id=1";
+const apiUrl = "https://prod.nuggetdata.net/scraper/feapi-compset-inventory?organization_compset_id=1";
 
 fetch(apiUrl)
   .then(response => {

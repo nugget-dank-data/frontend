@@ -17,12 +17,12 @@ const Compsetprop = ({ closeFunction, selectcompset, setdata }) => {
 
   const fetchCompsets = async () => {
     const endpoint =
-      "http://35.229.42.75:420/users/organization-compset?organization_id=1";
+      "https://prod.nuggetdata.net/users/organization-compset?organization_id=1";
     
     try {
       const response = await axios.get(endpoint);
       const compsetsData = response.data;
-      setCompsets(compsetsData); // Store the fetched compsets in state
+      setCompsets(compsetsData); 
     } catch (error) {
       console.error("Error fetching compsets:", error);
     }
@@ -31,7 +31,7 @@ const Compsetprop = ({ closeFunction, selectcompset, setdata }) => {
   const handleSubmit = async () => {
     closeFunction();
 
-    const apiUrl = `http://35.229.42.75:420/scraper/feapi-compset-inventory?organization_compset_id=${selectedCompset}`;
+    const apiUrl = `https://prod.nuggetdata.net/scraper/feapi-compset-inventory?organization_compset_id=${selectedCompset}`;
 
     try {
       const response = await axios.get(apiUrl);

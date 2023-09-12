@@ -14,7 +14,7 @@ const NewOrganization = ({ handleAddOrg, handleclose }) => {
   const [maxAccountId, setMaxAccountId] = useState(0);
   const roleOptions = ["Role 1", "Role 2", "Role 3"];
 
-  const url = "http://35.229.42.75:420/users/organization/";
+  const url = "https://prod.nuggetdata.net/users/organization/";
   const handleSubmit = async (e) => {
     e.preventDefault();
     const user_id = localStorage.getItem("user_id");

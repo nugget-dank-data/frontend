@@ -23,7 +23,7 @@ const AddStore = (prop) => {
         };
 
         const response = await axios.get(
-          "http://35.229.42.75:420/users/organization-store/",
+          "https://prod.nuggetdata.net/users/organization-store/",
           {
             params: { organization_id: organizationId },
             headers: headers,
@@ -58,7 +58,7 @@ const AddStore = (prop) => {
       };
 
       const endpoint =
-        "http://35.229.42.75:420/users/organization-compset-store/";
+        "https://prod.nuggetdata.net/users/organization-compset-store/";
       const response = await axios.post(endpoint, data, { headers: headers });
       console.log(response)
       

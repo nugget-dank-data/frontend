@@ -98,7 +98,7 @@ const Sidepane = ({
       };
 
       const response = await axios.post(
-        "http://35.229.42.75:420/users/logout/",
+        "https://prod.nuggetdata.net/users/logout/",
         null,
         { headers }
       );
