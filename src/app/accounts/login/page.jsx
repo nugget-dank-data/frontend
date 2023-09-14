@@ -40,8 +40,8 @@ const Login = () => {
       window.location.href = "/compare";
     } catch (error) {
       console.log(error)
-      if (error.response) {
-        setError(error.response.data.message);
+      if (error) {
+        setError(error.response.data.non_field_errors[0] || error.response.data.message);
       } else {
         setError("An error occurred. Please try again.");
       }
