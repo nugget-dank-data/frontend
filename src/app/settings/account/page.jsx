@@ -16,6 +16,21 @@ const Accounts = () => {
   const [isEditingLastName, setIsEditingLastName] = useState(false);
 
   useEffect(() => {
+
+    const token = sessionStorage.getItem("login_key");
+    
+    const isUserInSession = !!token;
+    console.log('userinsession',isUserInSession)
+    
+    if ( !isUserInSession) {
+      
+      
+      window.location.href = '/accounts/login';
+  
+    }
+    }, [])
+
+  useEffect(() => {
     const fetchUserDetails = async () => {
       try {
         const token = sessionStorage.getItem("login_key");

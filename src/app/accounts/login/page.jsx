@@ -39,6 +39,7 @@ const Login = () => {
       setMessage("Login successful!");
       window.location.href = "/compare";
     } catch (error) {
+      console.log(error)
       if (error.response) {
         setError(error.response.data.message);
       } else {

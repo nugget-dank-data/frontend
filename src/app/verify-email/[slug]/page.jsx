@@ -10,20 +10,7 @@ const Verifymail = () => {
   const [isSuccess, setIsSuccess] = useState(false); // State for success message styling
 
 
-  useEffect(() => {
 
-    const token = sessionStorage.getItem("login_key");
-    
-    const isUserInSession = !!token;
-    console.log('userinsession',isUserInSession)
-    
-    if ( !isUserInSession) {
-      
-      
-      window.location.href = '/accounts/login';
-  console.log('reload Test fAILED')
-    }
-    }, [])
   useEffect(() => {
     const path = window.location.pathname;
     const parts = path.split('/');
