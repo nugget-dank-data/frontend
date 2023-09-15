@@ -86,13 +86,13 @@ export default function RootLayout({ children }) {
 
 
   return (
-    <html className="relative">
+    <html className="relative text">
       <head>
       <link rel="icon" type="image/svg+xml" sizes="32x32" href="/logo2.svg" />
       </head>
       <body className="h-[100%] flex">
           {!issettingsPage && !is404Route && (
-        <div className="md:sticky bottom-0 md:w-[27%] top-0 flex md:h-full  fixed z-50 h-screen">
+        <div className="md:sticky bottom-0 md:w-fit w-fit top-0 flex md:h-full  fixed z-50 h-screen">
             <Sidepane
               activeTab={activeTab}
               handleTabClick={handleTabClick}

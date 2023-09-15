@@ -174,6 +174,8 @@ const Results = ({
   return (
     <div className="flex flex-col relatve m-2 w-full  p-4">
       {showHistory && selectedProduct && (
+      <div className="absolute flex top-0 w-full bottom-0 left-0 right-0">
+
         <Pricehistory
           priceData={selectedProduct}
           stores={allstores}
@@ -181,6 +183,7 @@ const Results = ({
           onClose={() => setShowHistory(false)}
           selectedStore={selectedProduct}
         />
+      </div>
       )}
       <div className="flex flex-col md:flex-row w-full px-8 justify-between p-4 mx-auto">
         <div className="flex md:mb-0 mb-4 w-[40%]">

@@ -2,25 +2,20 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const Verifymail = () => {
-  const verifyUrl = 'http://159.203.36.109:420/users/register/verify-email/';
-  const [verificationKey, setVerificationKey] = useState('');
+const Verifymail = ({params}) => {
+  const verifyUrl = 'https://prod.nuggetdata.net/users/register/verify-email/';
+  
   const [message, setMessage] = useState('');
   const [isError, setIsError] = useState(false); // State for error message styling
   const [isSuccess, setIsSuccess] = useState(false); // State for success message styling
 
 
 
-  useEffect(() => {
-    const path = window.location.pathname;
-    const parts = path.split('/');
-    const lastPart = parts[parts.length - 1];
-    if (lastPart) {
-      setVerificationKey(lastPart);
-    }
-  }, []);
+
 
   const handleVerify = async () => {
+    const verificationKey = decodeURIComponent(params.slug);
+    console.log(verificationKey)
     try {
       const response = await axios.post(verifyUrl, { key: verificationKey });
       setMessage(response.data.message);

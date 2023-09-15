@@ -33,7 +33,7 @@ const Register = () => {
       }
 
       const response = await axios.post(
-        "http://159.203.36.109:420/users/register/",
+        "https://prod.nuggetdata.net/users/register/",
         {
           email,
           password,

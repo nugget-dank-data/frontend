@@ -55,8 +55,8 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
   };
 
   return (
-    <div className="absolute z-50 flex left-0 right-0 top-0 p-10 bg-[#00000041] flex-col justify-center items-center scrollbar-thin bottom-0 w-full overflow-y-scroll scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
-      <div className="bg-white m-auto rounded-lg flex flex-col items-center w-[40%] justify-center relative p-7 ">
+    <div className="z-50 flex bg-[#00000041] flex-col justify-center items-center scrollbar-hide w-full">
+      <div className="bg-white m-auto rounded-lg flex flex-col items-center w-fit justify-center relative ">
         {/* Price History */}
         <div className="flex justify-between w-full">
           <h2 className="font-bold text-2xl">Price History</h2>
@@ -164,7 +164,7 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
             </div>
           </div>
         </div>
-        <PriceInventoryGraph priceData={priceHistory} />
+        {/* <PriceInventoryGraph priceData={priceHistory} /> */}
 
         {/* Inventory History */}
         <div className="flex relative cursor-pointer h-[15em] text-left flex-col overflow-y-scroll justify-between w-3/4 border rounded-lg bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
