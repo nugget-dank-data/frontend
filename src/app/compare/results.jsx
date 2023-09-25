@@ -7,7 +7,7 @@ import Pricehistory from "./pricehistory";
 import "tailwindcss/tailwind.css";
 import { Dots } from "react-activity";
 import "react-activity/dist/Dots.css";
-
+import Animatepulse from "@/components/animatepulse";
 
 const Results = ({
   storesData,
@@ -15,19 +15,15 @@ const Results = ({
   selectedFilters,
   selectedstores,
   isfetching,
-  Page,
-  itemsPerPage,
+  page,
+  totalitems,
 }) => {
-  const startIndex = (Page - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-
   const [sortOption, setSortOption] = useState("");
   const [showHistory, setShowHistory] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [filteredData, setFilteredData] = useState([]);
 
   const [isFetching, setIsFetching] = useState(false);
-  const [page, setPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
 
   const handleSortChange = (event) => {
@@ -69,51 +65,54 @@ const Results = ({
 
   const filterProducts = (filterData) => {
     const { selectedCategory, selectedSize, range, brandSearch } = filterData;
-  
+
     const filtered = storesData.filter((product) => {
       let isMatch = true;
-  
+
       if (selectedCategory?.length > 0) {
-        const categories = selectedCategory.map((category) => category.toLowerCase());
+        const categories = selectedCategory.map((category) =>
+          category.toLowerCase()
+        );
         if (!categories.includes(product.Category.toLowerCase())) {
           isMatch = false;
         }
       }
-  
+
       if (brandSearch?.length > 0) {
         const brands = brandSearch.map((brand) => brand.toLowerCase());
         if (!brands.includes(product.Brand.toLowerCase())) {
           isMatch = false;
         }
       }
-  
+
       if (selectedSize?.length > 0) {
         const productSizes = product.size || []; // Ensure productSizes is an array
-        if (!Array.isArray(productSizes) || !productSizes.some((size) => selectedSize.includes(size))) {
+        if (
+          !Array.isArray(productSizes) ||
+          !productSizes.some((size) => selectedSize.includes(size))
+        ) {
           isMatch = false;
         }
       }
-  
+
       if (range) {
         const priceMatch =
           product.inv &&
           product.inv.length > 0 &&
           product.inv[0]?.price >= range[0] &&
           product.inv[0]?.price <= range[1];
-  
+
         if (!priceMatch) {
           isMatch = false;
         }
       }
-  
+
       return isMatch;
     });
-  
+
     setFilteredData(filtered);
     console.log("mydata::", filteredData);
   };
-  
-  
 
   // Function to sort the data based on the selected sort option
   const sortData = (data, sortOption) => {
@@ -137,7 +136,7 @@ const Results = ({
   useEffect(() => {
     // Filter the storesData based on selected filters
     filterProducts(selectedFilters);
-    console.log(storesData)
+    console.log(storesData);
   }, [selectedFilters, storesData]);
 
   // Function to load more data on scrolling
@@ -172,18 +171,17 @@ const Results = ({
   };
 
   return (
-    <div className="flex flex-col relatve m-2 w-full  p-4">
+    <div className="flex flex-col  m-2 w-full r p-4 ">
       {showHistory && selectedProduct && (
-      <div className="absolute flex top-0 w-full bottom-0 left-0 right-0">
-
-        <Pricehistory
-          priceData={selectedProduct}
-          stores={allstores}
-          handleclose={() => setShowHistory(false)}
-          onClose={() => setShowHistory(false)}
-          selectedStore={selectedProduct}
-        />
-      </div>
+        <div className=" flex top-0 w-full bottom-0 left-0 right-0">
+          <Pricehistory
+            priceData={selectedProduct}
+            stores={allstores}
+            handleclose={() => setShowHistory(false)}
+            onClose={() => setShowHistory(false)}
+            selectedStore={selectedProduct}
+          />
+        </div>
       )}
       <div className="flex flex-col md:flex-row w-full px-8 justify-between p-4 mx-auto">
         <div className="flex md:mb-0 mb-4 w-[40%]">
@@ -194,7 +192,7 @@ const Results = ({
                 <Dots size={20} color="#7F56D9" />
               </div>
             ) : (
-              filteredData.length
+              totalitems
             )}
           </p>
         </div>
@@ -239,10 +237,8 @@ const Results = ({
         </div>
       </div>
       <div className="flex w-full">
-        <div className="overflow-scroll scrollbar-thin scrollbar-thumb-[#7F56D9] mb-72 w-full scrollbar-track-gray-100 h-[80vh]">
-
-
-          {selectedstores.length>0 ? (
+        <div className="overflow-scroll scrollbar-thin scrollbar-thumb-[#7F56D9] w-full scrollbar-track-gray-100 h-[80vh]">
+          {selectedstores.length > 0 ? (
             <div className="flex gap-8 sticky m-0 right-0 shadow-md top-0 rounded-xl items-center min-w-full w-fit bg-[#ffff] ">
               <div className="w-[18em] bg-[#ECF0F1] ml-1  shadow-xl rounded-tl-[5px] rounded-tr-[5px] p-2 ">
                 <h1 className="ml-4">Product</h1>
@@ -262,87 +258,107 @@ const Results = ({
             ""
           )}
 
-
-          {filteredData.map((product) => {
-            return (
-              <div
-                key={product.id}
-                className="flex border-b gap-8 w-fit  scroll:animate-pulse  duration-[1000ms] taos:opacity-0"
-              >
-                <div className="w-[18em]  px-3 mt-6">
-                  <div className="text-[0.9em]">
-                    <p className="pb-[2%]">{product.Name}</p>
-                    <p className="pb-[2%]">
-                      <span className="font-bold">Producer: </span>
-                      {product.lowercase_brand}
-                    </p>
-                  </div>
-                  <div className="flex justify-between w-[85%]">
-                    <p>
-                      <span className="font-bold">Category: </span>
-                      {product.Category}
-                    </p>
-                    <p>
-                      <span className="font-bold">Size: </span>
-                      {product.size || 0}{product.size_unit}
-                    </p>
-                  </div>
-                </div>
-                {Array.isArray(selectedstores) &&
-                  selectedstores.map((selectedStore) => (
-                    <div key={selectedStore.id} className="w-[15em] ">
-                      {product.inv[0].store_id == selectedStore.bb_id ? (
-                        <div className="flex w-full flex-col m-auto ">
-                          <div className="p-3">
-                            <div className="w-full justify-between align-middle items-center flex">
-                            <span className={`w-2 rounded-full h-2 block ${isWithin24Hours(product.inv[0].created_at) ? 'bg-green-500' : 'bg-orange-400'}`}></span>
-                              <a
-                                href={product.inv[0].url}
-                                className="items-end text-right"
-                              >
-                                <Image
-                                  src={expand}
-                                  alt="ee"
-                                  className="w-[1.3em] float-right"
-                                />
-                              </a>
-                            </div>
-                            <div
-                              className="hover:bg-[#ECF0F1] w-full justify-between flex flex-col p-[0.5em]"
-                              onClick={() => {
-                                handleSelectProduct(product);
-                                handleToggleHistory();
-                              }}
-                            >
-                              <p className="mb-4">${product.inv[0].price}</p>
-                              <p className="mt-8">
-                                {product.inv[0].raw_stock ?? 0} in stock
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="flex w-full flex-col m-3 min-w-[12em]">
-                          <div className="p-3">
-                            <div className="w-full justify-between align-middle items-center flex">
-                              <span className="w-2 rounded-full h-2 block bg-red-600"></span>
-                              <a
-                                // href={product.inv[0].url}
-                                className="items-end text-right"
-                              ></a>
-                            </div>
-                            <div className="hover:bg-[#ECF0F1] w-full justify-between flex flex-col p-[0.5em]">
-                              <p className="mb-4"></p>
-                              <p className="mt-8"></p>
-                            </div>
-                          </div>
-                        </div>
-                      )}
+          {filteredData.length > 0 ? (
+            filteredData.map((product) => {
+              return (
+                <div
+                  key={product.id}
+                  className="flex border-b gap-8 w-fit  scroll:animate-pulse  duration-[1000ms] taos:opacity-0"
+                >
+                  <div className="w-[18em]  px-3 mt-6">
+                    <div className="text-[0.9em]">
+                      <p className="pb-[2%]">{product.Name}</p>
+                      <p className="pb-[2%]">
+                        <span className="font-bold">Producer: </span>
+                        {product.lowercase_brand}
+                      </p>
                     </div>
-                  ))}
-              </div>
-            );
-          })}
+                    <div className="flex justify-between w-[85%]">
+                      <p>
+                        <span className="font-bold">Category: </span>
+                        {product.Category}
+                      </p>
+                      <p>
+                        <span className="font-bold">Size: </span>
+                        {product.size || 0}
+                        {product.size_unit}
+                      </p>
+                    </div>
+                  </div>
+                  {Array.isArray(selectedstores) &&
+                    selectedstores.map((selectedStore) => (
+                      <div key={selectedStore.id} className="w-[15em] ">
+                        {product.inv[0].store_id == selectedStore.bb_id ? (
+                          <div className="flex w-full flex-col m-auto ">
+                            <div className="p-3">
+                              <div className="w-full justify-between align-middle items-center flex">
+                                <span
+                                  className={`w-2 rounded-full h-2 block ${
+                                    isWithin24Hours(product.inv[0].created_at)
+                                      ? "bg-green-500"
+                                      : "bg-orange-400"
+                                  }`}
+                                ></span>
+                                <a
+                                  href={product.inv[0].url}
+                                  className="items-end text-right"
+                                >
+                                  <Image
+                                    src={expand}
+                                    alt="ee"
+                                    className="w-[1.3em] float-right"
+                                  />
+                                </a>
+                              </div>
+                              <div
+                                className="hover:bg-[#ECF0F1] w-full justify-between flex flex-col p-[0.5em]"
+                                onClick={() => {
+                                  handleSelectProduct(product);
+                                  handleToggleHistory();
+                                }}
+                              >
+                                <p className="mb-4">${product.inv[0].price}</p>
+                                <p className="mt-8">
+                                  {product.inv[0].raw_stock ?? 0} in stock
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="flex w-full flex-col m-3 min-w-[12em]">
+                            <div className="p-3">
+                              <div className="w-full justify-between align-middle items-center flex">
+                                <span className="w-2 rounded-full h-2 block bg-red-600"></span>
+                                <a
+                                  // href={product.inv[0].url}
+                                  className="items-end text-right"
+                                ></a>
+                              </div>
+                              <div className="hover:bg-[#ECF0F1] w-full justify-between flex flex-col p-[0.5em]">
+                                <p className="mb-4"></p>
+                                <p className="mt-8"></p>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                </div>
+              );
+            })
+          ) : (
+            <div className="flex text-red text-xl text-center justify-center m-auto">
+              {selectedstores.length > 0 ? (
+                isfetching ? (
+                  <Animatepulse />
+                ) : (
+                  "No store data available. Please try different stores or clear filters"
+                )
+              ) : (
+                ""
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

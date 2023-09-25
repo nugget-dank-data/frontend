@@ -5,12 +5,11 @@ import Invite from "./invite";
 import managerrole from "../../../images/userrole.svg";
 import dot from "../../../images/dot.svg";
 import OptionsComponent from "../components/options";
-import { RiUserSettingsLine } from "react-icons/ri";
 import EditUser from "../components/edituser";
 import ConfirmDelete from "./confirmdelete";
 import ConfirmReset from "./confirmreset";
 import Permissions from "./editpermissions";
-// import useOutsideClickHandler from "@/components/clickoutside";
+import { RiUserSettingsLine, RiUserSharedLine, RiUserLine } from 'react-icons/ri';
 
 const useOutsideClickHandler = (ref, callback) => {
   const handleClick = (event) => {
@@ -138,9 +137,32 @@ const Teams = () => {
   //   ];
   // }
 
+  
   const closeOptions = () => {
     setshowOptions(!showOptions)
   };
+
+  const PermissionComponent = (permission) => {
+    let IconComponent;
+    let iconColor;
+    
+    switch (permission) {
+      case 'OWNER':
+        IconComponent = RiUserSettingsLine;
+        iconColor = 'red';
+        break;
+      case 'MANAGER':
+        IconComponent = RiUserSharedLine;
+        iconColor = 'blue';
+        break;
+      case 'USER':
+        IconComponent = RiUserLine;
+        iconColor = 'green';
+        break;
+      default:
+        IconComponent = RiUserSettingsLine; 
+        iconColor = 'red';
+    }}
 
   // useOutsideClickHandler(optionsRef, setSelectedUserId(undefined));
 
@@ -286,11 +308,8 @@ const Teams = () => {
                   <td className="p-4 text-left text-sm">{user.email}</td>
                   <td className="text-left text-sm ">
                     <div className="flex gap-1 w-fit px-1 rounded-2xl bg-[#ede5e5] py-1 text-red-500 ">
-                      <RiUserSettingsLine
-                        style={{ fontWeight: "12px", color: "red" }}
-                        size={"1.5em"}
-                      />
-                      {user.permissions}
+                    {PermissionComponent(
+                      user.permissions)}
                     </div>
                   </td>
                   <td className="p-4 text-left text-sm">{user.stores}</td>

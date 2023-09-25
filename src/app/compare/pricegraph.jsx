@@ -12,31 +12,30 @@ import {
 const PriceInventoryGraph = ({ priceData }) => {
   const [isWeeklyView, setIsWeeklyView] = useState(true);
 
-  // Filter data based on the view type (weekly/monthly)
-  const filteredData = isWeeklyView
-    ? priceData.filter((data, index) => index % 7 === 0) // Show one data point per week
-    : priceData.filter((data, index) => new Date(data.created_at).getDate() === 1); // Show one data point per month
-
-  // Function to toggle between weekly and monthly view
   const handleViewToggle = () => {
     setIsWeeklyView(!isWeeklyView);
   };
 
+  console.log('hereee:::',priceData)
+
+  // const priceData = isWeeklyView
+  //   ? priceData.filter((data, index) => index % 7 === 0)
+  //   : priceData.filter((data) => new Date(data.created_at).getDate() === 1);
+
   return (
     <div>
-      {/* Price Trends */}
       <button
         onClick={handleViewToggle}
-        className="py-2 rounded-lg px-1 m-auto justify-center align-middle text-white bg-[#7F56D9]"
+        className="py-2 px-4 rounded-lg m-auto text-white bg-[#7F56D9] hover:bg-[#5c3da7] focus:outline-none"
       >
         {isWeeklyView ? "Switch to Monthly View" : "Switch to Weekly View"}
       </button>
       <div className="price-trends">
         <h3>Price Trends</h3>
         <LineChart
-          width={500}
+          width="100%"
           height={300}
-          data={filteredData}
+          data={priceData}
           margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray="5 5" stroke="#000000" />
@@ -72,12 +71,10 @@ const PriceInventoryGraph = ({ priceData }) => {
           />
         </LineChart>
       </div>
-
-      {/* Inventory History */}
       <div className="inventory-history">
         <h3>Inventory History</h3>
         <LineChart
-          width={500}
+          width="100%"
           height={300}
           data={priceData}
           margin={{ top: 20, right: 30, left: 20, bottom: 5 }}

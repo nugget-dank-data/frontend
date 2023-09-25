@@ -1,11 +1,11 @@
 "use client"
-import { useEffect, useState } from 'react';
-import Sidepane from '@/components/Sidepane';
-import Footer from '@/components/Footer';
+import { useEffect, useState, lazy, Suspense } from 'react';
+import { usePathname } from 'next/navigation';
 import Navbar from '@/components/Navbar';
+import CustomLoading from '@/components/loading';
 import './globals.css'
-import { usePathname } from 'next/navigation'
-import { useRouter } from 'next/navigation'
+
+const LazySidepane = lazy(() => import('@/components/Sidepane'));
 
 export default function RootLayout({ children }) {
   const [activeTab, setActiveTab] = useState('');
@@ -15,22 +15,19 @@ export default function RootLayout({ children }) {
   const [issettingsPage, setIsSettingsPage] = useState(false);
   const [is404Route, setIs404Route] = useState(false);
 
-  const router = useRouter();
-
-  const pathName = usePathname() 
-  
+  const pathName = usePathname();
 
   useEffect(() => {
     async function checkIf404Route() {
       const response = await fetch(window.location.href);
-      
+
       if (response.status === 404) {
         setIs404Route(true);
       }
     }
 
     checkIf404Route();
-  }, [router.events]);
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -43,17 +40,13 @@ export default function RootLayout({ children }) {
 
     window.addEventListener('resize', handleResize);
     handleResize(); // Initial check on component mount
-
- 
   }, []);
-  
 
   useEffect(() => {
     const pathName = window.location.pathname;
     const tabName = pathName.substring(1);
     setActiveTab(tabName);
 
-    
     setIsLoginPage(
       pathName.includes('/accounts') ||
         pathName.includes('/verify-email/') ||
@@ -63,13 +56,12 @@ export default function RootLayout({ children }) {
         pathName.includes('/terms_of_use')
     );
 
-    // Check if the current page is a settings page
     setIsSettingsPage(
       pathName.includes('/accounts') ||
         pathName.includes('/verify-email/') ||
         pathName.includes('/admin')
     );
-  }, [router.events]);
+  }, []);
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
@@ -83,32 +75,31 @@ export default function RootLayout({ children }) {
     setMenustate(!menustate);
   };
 
-
-
   return (
     <html className="relative text">
       <head>
-      <link rel="icon" type="image/svg+xml" sizes="32x32" href="/logo2.svg" />
+        <link rel="icon" type="image/svg+xml" sizes="32x32" href="/logo2.svg" />
       </head>
-      <body className="h-[100%] flex">
-          {!issettingsPage && !is404Route && (
-        <div className="md:sticky bottom-0 md:w-fit w-fit top-0 flex md:h-full  fixed z-50 h-screen">
-            <Sidepane
-              activeTab={activeTab}
-              handleTabClick={handleTabClick}
-              onSettingsTabChange={handleSettingsTabChange}
-              isMenuOpen={menustate}
-              togglemenu={setMenu}
-            />
-        </div>
-          )}
+      <body className="h-[100%] flex w-full">
+      {/* <Suspense fallback={<CustomLoading />}> */}
+        {!issettingsPage && !is404Route && menustate && (
+            <div className="md:sticky bottom-0 flex-wrap w-fit sm:w-1/5 top-0 flex md:h-full fixed z-50 h-screen">
+              <LazySidepane
+                activeTab={activeTab}
+                handleTabClick={handleTabClick}
+                onSettingsTabChange={handleSettingsTabChange}
+                isMenuOpen={menustate}
+                togglemenu={setMenu}
+              />
+            </div>
+        )}
+                {/* </Suspense> */}
         <div className="w-full h-full p-0 overflow-hidden">
           <div className="flex w-full h-[100%] ">
             <div className="w-full flex flex-col ">
               <div className="w-full">
                 {!isLoginPage && !is404Route && (
                   <Navbar
-                  
                     isMenuOpen={menustate}
                     togglemenu={setMenu}
                   />

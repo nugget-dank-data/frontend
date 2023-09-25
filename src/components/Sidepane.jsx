@@ -61,7 +61,7 @@ const Sidepane = ({
           <Image src={managestores} alt="Manage Stores Icon" className="mr-2" />
         );
       case "settings":
-        return <Image src={settings} alt="Settings Icon" className="mr-2" />;
+        return <Image src={settings} alt="Settings Icon" className="" />;
       default:
         return null;
     }
@@ -115,12 +115,13 @@ const Sidepane = ({
   
 
   return (
-    <div className="flex  overflow-scroll bottom-0 scrollbar-hide w-full z-50 h-screen">
+    <div className=" w-full">
+      {mobile ? (
       <AnimatePresence>
       {isMenuOpen && (
     <motion.div
     id="sidepane"
-    className={`bg-[#232529] overflow-y-scroll scrollbar-hide h-screen text-white flex flex-col z-50 p-5 md:relative`}
+    className={`bg-[#232529] overflow-y-scroll scrollbar-hide h-screen gap-8 text-white flex flex-col z-50 p-5 md:relative`}
     initial={{ x: '-100%' }} // Initial position (off-screen)
     animate={{ x: 0 }} // Target position (on-screen)
     exit={{ x: '-100%' }} // Exit position (off-screen)
@@ -132,7 +133,7 @@ const Sidepane = ({
  onClick={togglemenu}
  initial={{ rotate: 0 }}
  animate={{ rotate: isMenuOpen ? 90 : 0 }}
- transition={{ duration: 0.7, ease: 'easeInOut' }}
+ transition={{ duration: 0, ease: 'easeInOut' }}
 >
  <FaTimes className="h-6 w-6" />
 </motion.button>
@@ -144,7 +145,7 @@ const Sidepane = ({
             <p className="p-2">Nugget</p>
           </div>
 
-          <ul className="list-none font-semibold">
+          <ul className="list-none font-semibold mt-8">
             <li
               onClick={() => handleTabClick("compare")}
               className={`mb-4 p-4 font-medium rounded-lg shadow-xl  ${
@@ -164,7 +165,7 @@ const Sidepane = ({
             </li>
 
             <li
-              className={`mb-4 p-4 font-medium rounded-lg shadow-xl ${
+              className={`mb-4 p-4 font-medium rounded-lg w-full flex-wrap shadow-xl gap-8  ${
                 currentRoute.includes("/competitive_sets")
                   ? "border-l-4 bg-[#08070753] border-[#7F56D9]"
                   : ""
@@ -179,81 +180,10 @@ const Sidepane = ({
                 Comp Sets
               </Link>
             </li>
-            <li
-              className={`mb-4 p-4 font-medium rounded-lg shadow-xl ${
-                currentRoute.includes("/manage_stores")
-                  ? "border-l-4 bg-[#08070753] border-[#7F56D9]"
-                  : ""
-              }`}
-            >
-              <Link
-                className="flex cursor-pointer"
-                onClick={toggleManageStoresDropdown}
-                href="manage_stores"
-              >
-                {getIcon("manage-stores")}
-                <span className="ml-2">Manage Stores</span>
-                <Image
-                  src={isManageStoresDropdownOpen ? droped : notdroped}
-                  className="ml-auto "
-                  alt="icon"
-                />
-              </Link>
-              {isManageStoresDropdownOpen && (
-                "manage-stores",
-                <div className="flex flex-col ml-8">
-                  <div
-                    className="flex p-2 cursor-pointer items-center "
-                    onClick={() => handleSubTabClick("my_stores")}
-                  >
-                    <Image
-                      src={
-                        currentRoute === "/manage_stores/my_stores"
-                          ? radioactive
-                          : radioinactive
-                      }
-                      className="w-[1em]"
-                      alt="icon"
-                    />
-                    <p className="font-medium ml-2">My Stores </p>
-                  </div>
-
-                  <div
-                    className="flex p-2 cursor-pointer items-center "
-                    onClick={() => handleSubTabClick("Stores_to_Monitor")}
-                  >
-                    <Image
-                      src={
-                        currentRoute === "/manage_stores/stores_to_monitor"
-                          ? radioactive
-                          : radioinactive
-                      }
-                      className="w-[1em]"
-                      alt="icon"
-                    />
-                    <p className="font-medium ml-2">Stores to Monitor</p>
-                  </div>
-                  <div
-                    className="flex p-2 cursor-pointer items-center "
-                    onClick={() => handleSubTabClick("organization_stores")}
-                  >
-                    <Image
-                      src={
-                        currentRoute === "/manage_stores/organization_stores"
-                          ? radioactive
-                          : radioinactive
-                      }
-                      className="w-[1em]"
-                      alt="icon"
-                    />
-                    <p className="font-medium ml-2">Organization Stores</p>
-                  </div>
-                </div>
-              )}
-            </li>
+         
 
             <li
-              className={`mb-4 p-4 font-medium rounded-lg shadow-xl ${
+              className={`mb-4 p-4 font-medium rounded-lg w-full flex-wrap shadow-xl gap-8  ${
                 currentRoute.includes("/settings")
                   ? "border-l-4 bg-[#1b1a1a98] border-[#7F56D9]"
                   : ""
@@ -320,8 +250,8 @@ const Sidepane = ({
             </li>
           </ul>
 
-          <div className="justify-between flex text-[0.9em] mt-6">
-            <Link href="privacy_policy">Privacy policy</Link>
+          <div className="justify-between flex text-[0.9em] mt-6 w-full ">
+            <Link href="privacy_policy" className="flex flex-wrap" >Privacy policy</Link>
             <Link href="terms_of_use">Terms of Use</Link>
           </div>
           <div className="m-auto w-3/4 flex flex-row bg-[#1a181863] rounded-lg mt-8">
@@ -337,6 +267,143 @@ const Sidepane = ({
         </motion.div>
       )}
       </AnimatePresence>
+
+): 
+
+  <div
+  id="sidepane"
+  className={`bg-[#232529] px-4 w-full scrollbar-hide h-screen text-white flex flex-col gap-8 z-50 md:relative`}
+
+>
+      
+   
+        
+        <div className={`flex flex-row p-0 text-[2rem] align-middle w-full mb-8 items-center justify-center ${mobile ? 'mt-8': ''}`}>
+          <Image src={nugget} alt="icon" className="w-16" />
+          <p className="p-2">Nugget</p>
+        </div>
+
+        <ul className="list-none font-semibold w-full">
+          <li
+            onClick={() => handleTabClick("compare")}
+            className={`mb-4 p-4 font-medium rounded-lg w-full flex-wrap shadow-xl  ${
+              currentRoute.includes("/compare")
+                ? "border-l-4 bg-[#08070753] border-[#7F56D9]"
+                : ""
+            }`}
+          >
+            <Link
+              href="/compare"
+              onClick={() => handleTabClick("compare")}
+              className="flex items-center"
+            >
+              {getIcon("compare")}
+              Compare
+            </Link>
+          </li>
+
+          <li
+            className={`mb-4 p-4 font-medium rounded-lg w-full flex-wrap shadow-xl  ${
+              currentRoute.includes("/competitive_sets")
+                ? "border-l-4 bg-[#08070753] border-[#7F56D9]"
+                : ""
+            }`}
+          >
+            <Link
+              href="/competitive_sets"
+              onClick={() => handleTabClick("competitive_sets")}
+              className="flex items-center"
+            >
+              {getIcon("comp-sets")}
+              Comp Sets
+            </Link>
+          </li>
+
+
+          <li
+            className={`mb-4 p-4 font-medium rounded-lg w-full flex-wrap shadow-xl gap-8  ${
+              currentRoute.includes("/settings")
+                ? "border-l-4 bg-[#1b1a1a98] border-[#7F56D9]"
+                : ""
+            }`}
+          >
+              <div
+                className="flex cursor-pointer gap-8 w-full"
+                onClick={toggleSettingsDropdown}
+              >
+            <Link href="/settings/manage_team" className="w-full m-auto flex gap-2" >
+                {getIcon("settings")}
+                <span className="">Settings</span>
+                </Link>
+                <Image
+                  src={isSettingsDropdownOpen ? droped : notdroped}
+                  alt="icon"
+                  className=""
+                  onClick={toggleSettingsDropdown}
+                />
+              </div>
+            {isSettingsDropdownOpen && 
+              // "settings",
+              <div className="flex flex-col ml-8">
+                <Link
+                  href="/settings/manage_team"
+                  
+                  className={currentRoute == "/settings/manage_team"}
+                >
+                  <div
+                    className="flex p-2 cursor-pointer items-center"
+                    onClick={() => handleSubTabClick("manage_team")}
+                  >
+                    <Image
+                      src={
+                        currentRoute === "/settings/manage_team"
+                          ? radioactive
+                          : radioinactive
+                      }
+                      className="w-[1em]"
+                      alt="icon"
+                    />
+                    <p className="font-medium ml-2">Manage Team</p>
+                  </div>
+                </Link>
+                <Link href="/settings/account" >
+                  <div
+                    className="flex p-2 cursor-pointer items-center"
+                    onClick={() => handleSubTabClick("my_account")}
+                  >
+                    <Image
+                      src={
+                        currentRoute === "/settings/account"
+                          ? radioactive
+                          : radioinactive
+                      }
+                      className="w-[1em]"
+                      alt="icon"
+                    />
+                    <p className="font-medium ml-2">My Account</p>
+                  </div>
+                </Link>
+              </div>
+            }
+          </li>
+        </ul>
+
+        <div className="justify-between flex text-[0.9em] mt-6 w-full flex-row ">
+          <Link href="privacy_policy" className="flex flex-wrap" >Privacy policy</Link>
+          <Link href="terms_of_use" className="flex flex-wrap">Terms of Use</Link>
+        </div>
+        <div className="m-auto w-3/4 flex flex-row bg-[#1a181863] rounded-lg mt-8">
+          <Link
+            href="/accounts/login"
+            className="flex w-full align-middle items-center text-center justify-center"
+            onClick={handleLogout}
+          >
+            <Image src={logout} alt="icon" />
+            <p className="p-2 text-[1em]"> Logout</p>
+          </Link>
+        </div>
+      </div>
+}
     </div>
   );
 };

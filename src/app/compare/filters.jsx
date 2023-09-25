@@ -13,7 +13,8 @@ import Axios from "../api/axios";
 import SelectedFilters from "./selecedfilters";
 import { Dots } from "react-activity";
 import "react-activity/dist/Dots.css";
-import { FaTimes } from 'react-icons/fa';
+import { FaArrowRight, FaArrowLeft, FaTimes } from 'react-icons/fa';
+
 
 
 const Filters = () => {
@@ -38,7 +39,7 @@ const Filters = () => {
   const [brandSearch, setBrandSearch] = useState([]);
   const [brandvalue, setbrandvalue] = useState('')
   const [page, setPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 100;
   const allstoresurl = "https://prod.nuggetdata.net/scraper/get-all-stores";
 
   useEffect(() => {
@@ -110,7 +111,7 @@ const Filters = () => {
     } else {
       setSelectedStore([...selectedStore, store]);
     }
-    setIsStoreDropdownOpen(!isStoreDropdownOpen);
+    setIsStoreDropdownOpen(false);
   };
 
   const handlecompset = () => {
@@ -248,10 +249,24 @@ const Filters = () => {
     };
   }, []);
 
+
+  const handlePageChange = (pageNumber) => {
+    setPage(pageNumber);
+  };
+
+  const startIndex = (page - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  var paginatedData;
+  var totalPages;
+  if (storesData) {
+    
+    paginatedData = storesData.slice(startIndex, endIndex);
+    totalPages = Math.ceil(storesData.length / itemsPerPage);
+  }
   return (
     <div className="flex flex-col border-l w-full ">
-      <div className="relative flex flex-col pr-9 gap-6  md:flex-row border-b w-full justify-between">
-        <div className="store p-4 w-[80%] ">
+      <div className="relative flex flex-col gap-6 lg:flex-row border-b w-full justify-between">
+        <div className="store p-4 sm:w-[80%] w-full ">
           <h1 className="text-[1.5em]">Stores</h1>
 
           <div className="selected-stores w-full">
@@ -287,7 +302,7 @@ const Filters = () => {
             />
           </div>
           {isStoreDropdownOpen && (
-            <div className="flex cursor-pointer h-[7em] text-left flex-col overflow-y-scroll justify-between w-3/4 border rounded-[0.7em] bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
+            <div className="flex cursor-pointer h-[12em] text-left flex-col overflow-y-scroll justify-between w-3/4 border rounded-[0.7em] bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
               {storeLoading ? (
                 <div className="flex justify-center items-center h-16">
                   <Dots size={32} color="#7F56D9" />
@@ -296,7 +311,7 @@ const Filters = () => {
                 allstores.map((store) => (
                   <div
                     key={store.id}
-                    className={`cursor-pointer text-[1em]  text-left justify-start text-black py-4 px-1 hover:bg-gray-200 ${
+                    className={`cursor-pointer text-[1em]  text-left justify-start text-black py-2 px-1 hover:bg-gray-200 ${
                       selectedStore.some(
                         (selectedStore) => selectedStore.id === store.id
                       )
@@ -313,24 +328,24 @@ const Filters = () => {
           )}
           <div className="compset mt-5 flex">
             <button onClick={handlecompset} className="text-[#7F56D9] cursor-pointer">
-              populate with comp-set
+              Populate with comp-set
             </button>
 
             {selectedStore.length > 0 && <button onClick={handlecompset} className=" ml-8 cursor-pointer text-[#7F56D9]">
-              download
+              Download
             </button>}
           </div>
         </div>
 
         {/* Display selected stores */}
 
-        <div className="filters w-full flex flex-col">
+        <div className="filters w-full p-4 flex flex-col">
           <h1 className="text-[1.5em]">Filters</h1>
           <div className="flex flex-col md:flex-row w-full justify-between gap-5 ">
             <div className="block w-full">
               <div className="w-full">
               <div
-                className={`flex mb-8 cursor-pointer mr-0 sm:mb-0 sm:mr-8 justify-between p-2 w-full items-center border rounded-[0.7em] text-[0.9555em] ${
+                className={`flex cursor-pointer mr-0 sm:mb-0 sm:mr-8 justify-between p-2 w-3/4 sm:w-full items-center border rounded-[0.7em] text-[0.9555em] ${
                   isStoreSelected ? "" : "cursor-not-allowed opacity-50"
                 }`}
                 onClick={toggleCategoryDropdown}
@@ -344,7 +359,7 @@ const Filters = () => {
                   />
                 </div>
                 {isStoreSelected && isCategoryDropdownOpen && (
-                  <div className="flex cursor-pointer h-[7em] text-left flex-col overflow-y-scroll justify-between w-full border rounded-[0.7em] bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
+                  <div className="flex cursor-pointer h-[12em] text-left flex-col overflow-y-scroll justify-between w-3/4 sm:w-full border rounded-[0.7em] bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
                     {categories.sort().map((category) => (
                       <div
                         key={category}
@@ -360,7 +375,7 @@ const Filters = () => {
                 )}
               </div>
             </div>
-            <div className="flex-col flex w-[70%]">
+            <div className="flex-col flex w-3/4 sm:w-[70%]">
             <div
               className={`flex cursor-pointer w-full text-[0.9em] justify-between p-2 items-center border rounded-[0.7em] ${
                 isStoreSelected ? "" : "cursor-not-allowed opacity-50"
@@ -376,7 +391,7 @@ const Filters = () => {
                 />
               </div>
               {isStoreSelected && isSizeDropdownOpen && (
-                <div className="flex cursor-pointer h-[7em] mt-4 md:mt-0 text-left flex-col overflow-y-scroll justify-between w-full border rounded-[0.7em] bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
+                <div className="flex cursor-pointer h-[7em] md:mt-0 text-left flex-col overflow-y-scroll justify-between w-full border rounded-[0.7em] bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
                   {sizes
                     .sort((a, b) => a - b)
                     .map((size) => (
@@ -394,9 +409,9 @@ const Filters = () => {
               )}
             </div>
 
-            <div className="block w-[70%]">
+            <div className="block w-full sm:w-[70%]">
             <div
-              className={`border rounded-[0.7em] text-[0.9em] w-full p-2 ${
+              className={`border rounded-[0.7em] text-[0.9em] w-3/4 sm:w-full p-2 ${
                 isStoreSelected ? "" : "cursor-not-allowed opacity-50"
               }`}
             >
@@ -460,6 +475,8 @@ const Filters = () => {
 
           </div>
         </div>
+
+
       </div>
 
       {showCompset && (
@@ -471,16 +488,83 @@ const Filters = () => {
         </div>
       )}
 
-<div>
+<div className="flex flex-col">
       <Results
-        storesData={storesData}
+        storesData={paginatedData}
         allstores={allstores}
         selectedFilters={selectedFilters}
         selectedstores={selectedStore}
         isfetching={productLoading}
         page={page}
-        itemsPerPage={itemsPerPage}
+        totalitems={storesData.length}
       />
+
+
+{storesData &&
+<div className=" mb-8 gap-2 text-[1.2em] flex items-center m-auto">
+  {/* Show Prev button when currentPage is greater than 1 */}
+  {page > 1 && (
+    <button
+      className="rounded-lg border px-4 flex gap-2 items-center justify-center "
+      onClick={() => handlePageChange(page - 1)}
+    >
+      <FaArrowLeft />
+      Prev
+
+    </button>
+  )}
+
+  {/* Show first page button */}
+  <button
+    className={`pagination-button button-custom text-[#7F56D9 rounded-[50%] h-[2em] w-[2em] ${
+      page === 1 ? "active text-[#7F56D9]" : ""
+    }`}
+    onClick={() => handlePageChange(1)}
+  >
+    1
+  </button>
+
+  {/* Show ellipsis (...) if there are more than 3 pages */}
+  {totalPages > 3 && page > 2 && page > totalPages/2 && <span className="mx-2">...</span>}
+
+  {/* Show the current page */}
+  {page !== 1 && page !== totalPages && (
+    <button
+      className={`pagination-button button-custom text-[#7F56D9] rounded-[50%] h-[2em] w-[2em] active`}
+      onClick={() => handlePageChange(page)}
+    >
+      {page}
+    </button>
+  )}
+
+  {/* Show ellipsis (...) if there are more than 3 pages */}
+  {totalPages > 3 && page < totalPages/2  && <span className="mx-2">...</span>}
+
+  {/* Show last page button */}
+  {totalPages > 1 && (
+    <button
+      className={`pagination-button button-custom rounded-[50%] h-[2em] w-[2em] ${
+        page === totalPages ? "active text-[#7F56D9]" : ""
+      }`}
+      onClick={() => handlePageChange(totalPages)}
+    >
+      {totalPages}
+    </button>
+  )}
+
+  {/* Show Next button when currentPage is less than totalPages */}
+  {page < totalPages && (
+    <button
+    className="rounded-lg border px-4 flex gap-2 items-center justify-center"
+      onClick={() => handlePageChange(page + 1)}
+    >
+      Next
+
+      <FaArrowRight />
+    </button>
+  )}
+</div>}
+
       </div>
     </div>
   );
