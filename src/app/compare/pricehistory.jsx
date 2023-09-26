@@ -13,7 +13,7 @@ import search from "../../images/brand.svg";
 const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const [selectedstore, setSelectedStore] = useState({});
+  const [selectedstore, setSelectedStore] = useState([]);
   const [isStoreDropdownOpen, setIsStoreDropdownOpen] = useState(false);
   const [priceHistory, setPriceHistory] = useState([]);
 
@@ -40,6 +40,10 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
         `https://prod.nuggetdata.net/scraper/product-history-api?store_bb_id=${storeId}&product_id=${productId}`
       );
       setPriceHistory(response.data);
+      setFilteredPriceHistory(response.data);
+      console.log(selectedstore)
+      console.log('original::',selectedStore)
+      console.log(response.data)
     } catch (error) {
       console.log(error);
     }
@@ -53,14 +57,14 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
     setSelectedStore(selectedstore);
     setIsStoreDropdownOpen(false);
   };
-
-  useEffect(() => {
-    const filteredData = priceHistory.filter((item) => {
-      const itemDate = new Date(item.created_at);
-      return itemDate >= startDate && itemDate <= endDate;
-    });
-    setFilteredPriceHistory(filteredData);
-  }, [startDate, endDate, priceHistory]);
+console.log(selectedstore)
+  // useEffect(() => {
+  //   const filteredData = priceHistory.filter((item) => {
+  //     const itemDate = new Date(item.created_at);
+  //     return itemDate >= startDate && itemDate <= endDate;
+  //   });
+  //   setFilteredPriceHistory(filteredData);
+  // }, [startDate, endDate, priceHistory]);
 
   return (
     <div className="z-50 flex bg-[#00000041] overflow-scroll h-fit py-8 absolute  top-0 bottom-0 right-0 left-0 flex-col justify-center items-center scrollbar-hide w-full">
