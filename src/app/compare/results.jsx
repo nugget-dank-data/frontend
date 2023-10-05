@@ -22,10 +22,54 @@ const Results = ({
   const [showHistory, setShowHistory] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [filteredData, setFilteredData] = useState([]);
-
+  const [selectedstore, setSelectedStore] = useState({});
   const [isFetching, setIsFetching] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [secondaryFilterData, setSecondaryFilterData] = useState({})
+ 
 
+
+
+  const secondaryfilter = () => {
+    const { onSale, storefilter } = secondaryFilterData;
+  
+    let filteredData = [...storesData];
+  
+    if (onSale) {
+      // Filter data for onSale
+      filteredData = filteredData.filter((product) =>
+        product.inv.some((invItem) => invItem.on_sale)
+      );
+    }
+  
+    if (storefilter) {
+      // Filter data for selected store
+      filteredData = filteredData.filter((product) =>
+        product.inv.some((invItem) => invItem.store_id === storefilter.bb_id)
+      );
+    }
+  
+    // Update the filtered data
+    setFilteredData(filteredData);
+  };
+  
+
+  const handleSecondaryFilter = (store) => {
+    setSecondaryFilterData((prevData) => ({
+      ...prevData,
+      storefilter: store,
+    }));
+    secondaryfilter(); // Call the secondaryfilter function
+  };
+  
+  const handleOnSaleChange = (event) => {
+    const { checked } = event.target;
+    setSecondaryFilterData((prevData) => ({
+      ...prevData,
+      onSale: checked,
+    }));
+    secondaryfilter(); // Call the secondaryfilter function
+  };
   const handleSortChange = (event) => {
     const newSortOption = event.target.value;
     setSortOption(newSortOption);
@@ -41,6 +85,9 @@ const Results = ({
     setSelectedProduct(product);
   };
 
+
+
+  
   const keywordsearch = (search) => {
     if (!search) {
       // If the search is empty, return the original array as it is
@@ -64,7 +111,8 @@ const Results = ({
   };
 
   const filterProducts = (filterData) => {
-    const { selectedCategory, selectedSize, range, brandSearch } = filterData;
+    const { selectedCategory, selectedSize, range, brandSearch } =
+      filterData;
 
     const filtered = storesData.filter((product) => {
       let isMatch = true;
@@ -77,6 +125,9 @@ const Results = ({
           isMatch = false;
         }
       }
+
+   
+
 
       if (brandSearch?.length > 0) {
         const brands = brandSearch.map((brand) => brand.toLowerCase());
@@ -167,24 +218,37 @@ const Results = ({
   const handleInputChange = (event) => {
     const { value } = event.target;
     setSearchValue(value);
-    keywordsearch(value);
+  
+    if (value === "") {
+      // If the search input is empty, reset the filtered data
+      setFilteredData(storesData);
+    } else {
+      // Otherwise, perform the search
+      keywordsearch(value);
+    }
+  };
+  
+  const handleStoreChange = (selectedstore) => {
+    setSelectedStore(selectedstore);
   };
 
   return (
-    <div className="flex flex-col  m-2 w-full r p-4 ">
+    <div className="flex flex-col  m-2 w-full p-4 h-full">
       {showHistory && selectedProduct && (
-        <div className=" flex top-0 w-full bottom-0 left-0 right-0">
+        <div className=" flex m-auto top-0 w-full h-full overflow-scroll items-center left-0 z-[10000] scrollbar-hide p-8 right-0 fixed overflow-y-scroll bg-[#00000041]">
           <Pricehistory
             priceData={selectedProduct}
             stores={allstores}
             handleclose={() => setShowHistory(false)}
             onClose={() => setShowHistory(false)}
-            selectedStore={selectedProduct}
+            selectedStore={selectedstore}
           />
         </div>
       )}
-      <div className="flex flex-col md:flex-row w-full px-8 justify-between p-4 mx-auto">
-        <div className="flex md:mb-0 mb-4 w-[40%]">
+
+
+      <div className="flex flex-col sm:flex-row w-full px-8 gap-4 justify-between p-4 m-auto">
+        <div className="flex md:mb-0 mb-4 items-center justify-center ">
           <h2 className="text-[1.4em] font-bold">Results</h2>
           <p className="h-10 min-w-[2em] ml-3 flex items-center text-[1.4em] justify-center text-center border shadow-lg rounded-lg">
             {isfetching ? (
@@ -197,7 +261,7 @@ const Results = ({
           </p>
         </div>
         <div className="flex flex-col md:flex-row md:space-x-4 justify-between items-center w-full">
-          <div className="flex md:flex-grow-0 flex-grow justify-center border md:mb-0 mb-3 md:mr-3 md:items-center bg-white p-0 rounded-lg">
+          <div className="flex md:flex-grow-0 flex-grow justify-center items-center align-middle m-auto border md:mb-0 mb-3 md:mr-3 md:items-center bg-white p-0 rounded-lg">
             <Image src={search} alt="search" className="ml-4" />
             <input
               type="search"
@@ -209,9 +273,15 @@ const Results = ({
               onChange={handleInputChange}
             />
           </div>
-          <div className="flex items-center space-x-1 md:space-x-4">
-            <input type="checkbox" id="checkbox" />
-            <label htmlFor="checkbox">On Sale</label>
+          <div className="flex flex-wrap-reverse justify-center  items-center space-x-1 ">
+          <input
+      type="checkbox"
+      id="checkbox"
+      // checked
+      checked={secondaryFilterData.onSale}
+      onChange={handleOnSaleChange}
+    />
+    <label htmlFor="checkbox" className="flex-wrap">On Sale</label>
             <div className="relative">
               <Image
                 src={category}
@@ -236,19 +306,22 @@ const Results = ({
           </div>
         </div>
       </div>
+
+
+
       <div className="flex w-full">
         <div className="overflow-scroll scrollbar-thin scrollbar-thumb-[#7F56D9] w-full scrollbar-track-gray-100 h-[80vh]">
           {selectedstores.length > 0 ? (
             <div className="flex gap-8 sticky m-0 right-0 shadow-md top-0 rounded-xl items-center min-w-full w-fit bg-[#ffff] ">
-              <div className="w-[18em] bg-[#ECF0F1] ml-1  shadow-xl rounded-tl-[5px] rounded-tr-[5px] p-2 ">
-                <h1 className="ml-4">Product</h1>
+              <div className="w-[18em] bg-[#ECF0F1] ml-1   rounded-tl-[5px] rounded-tr-[5px] p-2 ">
+                <h1 className="ml-4 text-[1.3em]">Product</h1>
               </div>
 
               {Array.isArray(selectedstores) &&
                 selectedstores.map((selectedStore) => (
                   <div
                     key={selectedStore.bb_id}
-                    className="w-[15em] top-0 flex border-r shadow-xl bg-white m-2 flex-col rounded-tl-[2em] rounded-tr-[5px] py-[0.5em] pl-[1em] "
+                    className="w-[15em] top-0 flex border-r bg-white m-2 flex-col rounded-tl-[2em] rounded-tr-[5px] py-[0.5em] pl-[1em] "
                   >
                     <h1>{selectedStore.name}</h1>
                   </div>
@@ -263,23 +336,23 @@ const Results = ({
               return (
                 <div
                   key={product.id}
-                  className="flex border-b gap-8 w-fit  scroll:animate-pulse  duration-[1000ms] taos:opacity-0"
+                  className="flex border-b gap-8 scroll:animate-pulse  duration-[1000ms] taos:opacity-0 w-full m-auto items-center"
                 >
-                  <div className="w-[18em]  px-3 mt-6">
-                    <div className="text-[0.9em]">
-                      <p className="pb-[2%]">{product.Name}</p>
-                      <p className="pb-[2%]">
-                        <span className="font-bold">Producer: </span>
+                  <div className="w-[18em] px-3 mt-6 gap-4">
+                    <div className="text-[1em] gap-6 flex flex-col">
+                      <p className="pb-[2%] text-[1em] leading-5">{product.Name}</p>
+                      <p className="pb-[2%] text-[1em]">
+                        <span className="font-bold text-[1em]">Producer: </span>
                         {product.lowercase_brand}
                       </p>
                     </div>
-                    <div className="flex justify-between w-[85%]">
+                    <div className="flex justify-between w-[85%] ">
                       <p>
-                        <span className="font-bold">Category: </span>
+                        <span className="font-bold text-[1em]">Category: </span>
                         {product.Category}
                       </p>
                       <p>
-                        <span className="font-bold">Size: </span>
+                        <span className="font-bold text-[1em]">Size: </span>
                         {product.size || 0}
                         {product.size_unit}
                       </p>
@@ -289,8 +362,8 @@ const Results = ({
                     selectedstores.map((selectedStore) => (
                       <div key={selectedStore.id} className="w-[15em] ">
                         {product.inv[0].store_id == selectedStore.bb_id ? (
-                          <div className="flex w-full flex-col m-auto ">
-                            <div className="p-3">
+                          <div className="flex w-full gap-4 flex-col m-auto ">
+                            <div className="p-3 gap-3">
                               <div className="w-full justify-between align-middle items-center flex">
                                 <span
                                   className={`w-2 rounded-full h-2 block ${
@@ -315,9 +388,37 @@ const Results = ({
                                 onClick={() => {
                                   handleSelectProduct(product);
                                   handleToggleHistory();
+                                  handleStoreChange(selectedStore);
                                 }}
                               >
-                                <p className="mb-4">${product.inv[0].price}</p>
+                                <p
+                                  className={`w-2 rounded-full flex h-2 gap-4 ${
+                                    parseFloat(product.inv[0].promo_price) >
+                                      0 &&
+                                    parseFloat(product.inv[0].promo_price) !==
+                                      parseFloat(product.inv[0].price)
+                                      ? "line-through text-red-600"
+                                      : ""
+                                  }`}
+                                >
+                                  {parseFloat(product.inv[0].promo_price) > 0 &&
+                                  parseFloat(product.inv[0].promo_price) !==
+                                    parseFloat(product.inv[0].price) ? (
+                                    <>
+                                      <span className="line-through">
+                                        {product.inv[0].price}$
+                                      </span>
+                                      <span className="no-underline text-black">
+                                        {product.inv[0].promo_price}$
+                                      </span>
+                                    </>
+                                  ) : (
+                                    <span className="no-underline text-black">
+                                      {product.inv[0].price}$
+                                    </span>
+                                  )}
+                                </p>
+
                                 <p className="mt-8">
                                   {product.inv[0].raw_stock ?? 0} in stock
                                 </p>

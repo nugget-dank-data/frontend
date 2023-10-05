@@ -273,7 +273,7 @@ const Filters = () => {
             {selectedStore.map((store) => (
               <div
                 key={store.id}
-                className="flex items-center w-3/4 justify-between text-[0.955em] p-2 border mb-2 rounded-[0.7em]"
+                className="flex items-center sm:w-3/4 w-full justify-between text-[0.955em] p-2 border mb-2 rounded-[0.7em]"
               >
                 <div className="flex gap-4">
                 <Image src={Store} alt="b" className="w-[1.4em]" />
@@ -290,7 +290,7 @@ const Filters = () => {
           </div>
 
           <div
-            className="flex cursor-pointer justify-between w-3/4 p-2 items-center border rounded-[0.7em]  "
+            className="flex cursor-pointer justify-between w-full sm:w-3/4 p-2 items-center border rounded-[0.7em]  "
             onClick={toggleStoreDropdown}
           >
             <Image src={Store} alt="b" className="w-[1.4em]" />
@@ -302,7 +302,7 @@ const Filters = () => {
             />
           </div>
           {isStoreDropdownOpen && (
-            <div className="flex cursor-pointer h-[12em] text-left flex-col overflow-y-scroll justify-between w-3/4 border rounded-[0.7em] bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
+            <div className="flex cursor-pointer h-[12em] text-left flex-col overflow-y-scroll justify-between w-full sm:w-3/4 border rounded-[0.7em] bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
               {storeLoading ? (
                 <div className="flex justify-center items-center h-16">
                   <Dots size={32} color="#7F56D9" />

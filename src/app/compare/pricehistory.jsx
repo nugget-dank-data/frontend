@@ -11,7 +11,7 @@ import PriceInventoryGraph from "./pricegraph";
 import search from "../../images/brand.svg";
 
 const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState(new Date());
   const [selectedstore, setSelectedStore] = useState([]);
   const [isStoreDropdownOpen, setIsStoreDropdownOpen] = useState(false);
@@ -20,10 +20,18 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
   const [filteredPriceHistory, setFilteredPriceHistory] = useState([]);
 
   useEffect(() => {
+    setSelectedStore(selectedStore)
+    
+  
+ 
+  }, [])
+  
+  useEffect(() => {
     setSelectedStore(selectedStore);
-    if (priceData && priceData.start_date) {
-      const startDateFormat = priceData.start_date.split("T")[0];
-      setStartDate(new Date(startDateFormat));
+    console.log('::::::',priceData)
+    if (priceData && priceData.inv[0].created_at) {
+      const startDateFormat = priceData.inv[0].created_at.split("T")[0];
+      // setStartDate(new Date(startDateFormat));
     }
     setEndDate(new Date());
 
@@ -32,22 +40,39 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
       const productId = priceData.inv[0].product_id;
       fetchPriceHistory(storeId, productId);
     }
-  }, [priceData]);
+  }, [priceData, selectedstore]);
 
   const fetchPriceHistory = async (storeId, productId) => {
     try {
+      if(storeId != undefined){
       const response = await axios.get(
         `https://prod.nuggetdata.net/scraper/product-history-api?store_bb_id=${storeId}&product_id=${productId}`
       );
       setPriceHistory(response.data);
       setFilteredPriceHistory(response.data);
-      console.log(selectedstore)
-      console.log('original::',selectedStore)
+      console.log('selectedstore',selectedstore)
+      
       console.log(response.data)
+      }
     } catch (error) {
       console.log(error);
     }
   };
+
+  const handleCheckboxChange = (event) => {
+    const isChecked = event.target.checked;
+    const filteredData = isChecked ? priceHistory : [];
+    setFilteredPriceHistory(filteredData);
+  };
+  
+  const handleSearch = (event) => {
+    const value = event.target.value.toLowerCase();
+    const filteredData = priceHistory.filter((item) =>
+      item.name.toLowerCase().includes(value)
+    );
+    setFilteredPriceHistory(filteredData);
+  };
+  
 
   const toggleStoreDropdown = () => {
     setIsStoreDropdownOpen(!isStoreDropdownOpen);
@@ -55,20 +80,25 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
 
   const handleStoreChange = (selectedstore) => {
     setSelectedStore(selectedstore);
-    setIsStoreDropdownOpen(false);
+    setIsStoreDropdownOpen(false)
+    
   };
-console.log(selectedstore)
-  // useEffect(() => {
-  //   const filteredData = priceHistory.filter((item) => {
-  //     const itemDate = new Date(item.created_at);
-  //     return itemDate >= startDate && itemDate <= endDate;
-  //   });
-  //   setFilteredPriceHistory(filteredData);
-  // }, [startDate, endDate, priceHistory]);
+
+useEffect(() => {
+  let date;
+  const filteredData = priceHistory.filter((item) => {
+    const itemDate = new Date(item.created_at);
+    console.log(itemDate);
+    
+    return date = itemDate >= startDate && itemDate <= endDate;
+  });
+  setStartDate(date);
+  setFilteredPriceHistory(filteredData);
+}, [startDate, endDate, priceHistory]);
 
   return (
-    <div className="z-50 flex bg-[#00000041] overflow-scroll h-fit py-8 absolute  top-0 bottom-0 right-0 left-0 flex-col justify-center items-center scrollbar-hide w-full">
-      <div className="bg-white m-auto rounded-lg flex flex-col items-center w-fit h-fit justify-center relative ">
+    <div className="z-50 flex w-full m-auto flex-col py-8 items-center  justify-center ">
+    <div className="bg-white md:w-2/3 w-[80%] lg:w-1/3 flex flex-col py-8 rounded-xl items-center gap-8 relative md:p-8 overflow-clip">
         {/* Price History */}
         <div className="flex justify-between w-full">
           <h2 className="font-bold text-2xl">Price History</h2>
@@ -80,15 +110,17 @@ console.log(selectedstore)
             />
           </button>
         </div>
-        <div className=" mt-4 w-full">
+        <div className="w-full gap-4">
           <div className="w-full border pr-2 rounded-lg bg-white flex  items-center">
             <Image src={search} alt="Search" className="w-6 h-6" />
             <input
-              type="search"
-              className="border-none rounded-lg bg-transparent p-2 w-full focus:outline-none text-sm"
-            />
+  type="search"
+  className="border-none rounded-lg bg-transparent p-2 w-full focus:outline-none text-sm"
+  onChange={handleSearch}
+/>
+
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col w-full">
             <div
               className="flex cursor-pointer w-full justify-between p-2 items-center border rounded-lg bg-[#57545411]"
               onClick={toggleStoreDropdown}
@@ -105,12 +137,14 @@ console.log(selectedstore)
                 alt="Dropdown"
               />
             </div>
+            <div className="w-full">
+
             {isStoreDropdownOpen && (
-              <div className="bg-white w-inherit text-black border flex flex-col max-h-[10em] rounded-lg overflow-y-scroll scrollbar-thin  scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100 ">
+              <div className="bg-white w-full h-[14em] text-black border flex flex-col rounded-lg overflow-y-scroll scrollbar-thin  scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100 ">
                 {stores.map((store) => (
                   <div
                     key={store.id}
-                    className={`cursor-pointer text-black p-4 hover:bg-gray-200${
+                    className={`cursor-pointer text-black p-3 w-full hover:bg-gray-200 ${
                       selectedstore && selectedstore.id === store.id
                         ? " bg-gray-200"
                         : ""
@@ -122,11 +156,12 @@ console.log(selectedstore)
                 ))}
               </div>
             )}
+            </div>
           </div>
         </div>
 
         {/* Filters */}
-        <div className="flex  w-full items-stretch my-4 gap-6">
+        <div className="flex w-full items-stretch my-4 gap-6">
           <div className="flex justify-center w-[40%] items-center float-left ">
             <label htmlFor="all-data-points" className="text-sm">
               All Data Points
@@ -136,24 +171,25 @@ console.log(selectedstore)
               name="all-data-points"
               id="all-data-points"
               className="mr-1"
+              onChange={handleCheckboxChange}
             />
           </div>
           <div className="dates flex w-[60%] justify-between ">
             <div className="w-full sm:w-auto my-2 sm:my-0">
               <p>Start Date</p>
               <DatePicker
-                selected={startDate}
-                onChange={(date) => setStartDate(date)}
-                dateFormat="dd MMMM yyyy"
-                className="text-center border rounded-lg w-[7em] px-4 py-2 text-sm "
-                startDate={startDate}
-                endDate={endDate}
-                selectsStart
-                maxDate={endDate}
-                minDate={new Date(priceData.start_date)}
-                showYearDropdown
-                scrollableYearDropdown
-                yearDropdownItemNumber={15}
+                 selected={startDate}
+                 onChange={(date) => set(date)}
+                 dateFormat="dd MMMM yyyy"
+                 className="text-center border rounded-lg w-[7em] px-4 py-2 text-sm "
+                 startDate={startDate}
+                 endDate={endDate}
+                 selectsStart
+                 maxDate={new Date()}
+                //  minDate={new Date(priceData.start_date)}
+                 showYearDropdown
+                 scrollableYearDropdown
+                 yearDropdownItemNumber={15}
               />
             </div>
 
@@ -176,11 +212,12 @@ console.log(selectedstore)
             </div>
           </div>
         </div>
+      <div className="w-full flex">
         <PriceInventoryGraph priceData={filteredPriceHistory} />
+        </div>  
 
         {/* Inventory History */}
-        <div className="flex relative cursor-pointer h-[15em] text-left flex-col overflow-y-scroll justify-between w-3/4 border rounded-lg bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
-          <h3 className="font-bold bg-[#999cb9] z-50 text-2xl sticky top-0">
+        <div className="flex relative cursor-pointer mb-0 pb-0 h-[15em] text-left flex-col overflow-y-scroll justify-between w-3/4 border rounded-lg bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">          <h3 className="font-bold bg-[#999cb9] z-50 text-2xl w-full sticky top-0">
             Inventory History
           </h3>
           {filteredPriceHistory.map((item) => (

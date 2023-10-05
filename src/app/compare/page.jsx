@@ -18,7 +18,7 @@ const Compare = () => {
     }
     }, [])
   return (
-    <div className='flex w-full relative flex-col'>
+    <div className='flex w-full flex-col h-full'>
       <Filters />
 
       
