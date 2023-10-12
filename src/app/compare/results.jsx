@@ -59,7 +59,7 @@ const Results = ({
       ...prevData,
       storefilter: store,
     }));
-    secondaryfilter(); // Call the secondaryfilter function
+    secondaryfilter(); 
   };
   
   const handleOnSaleChange = (event) => {
@@ -68,7 +68,16 @@ const Results = ({
       ...prevData,
       onSale: checked,
     }));
-    secondaryfilter(); // Call the secondaryfilter function
+    secondaryfilter(); 
+  };
+
+  const handleMatches = (event) => {
+    const { checked } = event.target;
+    setSecondaryFilterData((prevData) => ({
+      ...prevData,
+      onSale: checked,
+    }));
+    secondaryfilter(); 
   };
   const handleSortChange = (event) => {
     const newSortOption = event.target.value;
@@ -125,8 +134,6 @@ const Results = ({
           isMatch = false;
         }
       }
-
-   
 
 
       if (brandSearch?.length > 0) {
@@ -274,6 +281,7 @@ const Results = ({
             />
           </div>
           <div className="flex flex-wrap-reverse justify-center  items-center space-x-1 ">
+            <div className="flex gap-1 items-center justify-center align-middle">
           <input
       type="checkbox"
       id="checkbox"
@@ -282,6 +290,17 @@ const Results = ({
       onChange={handleOnSaleChange}
     />
     <label htmlFor="checkbox" className="flex-wrap">On Sale</label>
+            </div>
+            <div className="flex gap-1 items-center justify-center align-middle sm:ml-2">
+
+          <input
+      type="checkbox"
+      id="checkbox2"
+      onChange={handleMatches}
+     
+    />
+    <label htmlFor="checkbox2" className="flex-wrap">matches</label>
+            </div>
             <div className="relative">
               <Image
                 src={category}
@@ -295,6 +314,7 @@ const Results = ({
                 value={sortOption}
                 onChange={handleSortChange}
               >
+                <option value="">select an option</option>
                 <option value="name-asc">Name (A-Z)</option>
                 <option value="name-desc">Name (Z-A)</option>
                 <option value="category-asc">Category (A-Z)</option>
@@ -322,6 +342,7 @@ const Results = ({
                   <div
                     key={selectedStore.bb_id}
                     className="w-[15em] top-0 flex border-r bg-white m-2 flex-col rounded-tl-[2em] rounded-tr-[5px] py-[0.5em] pl-[1em] "
+                    onClick={()=>handleSecondaryFilter(selectedStore)}
                   >
                     <h1>{selectedStore.name}</h1>
                   </div>

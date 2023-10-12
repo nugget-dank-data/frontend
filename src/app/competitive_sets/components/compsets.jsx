@@ -81,13 +81,13 @@ const Compsets = ({ compsets, update, handledelete, handleEditCompset }) => {
         {compsets.map((compset, index) => (
           <div key={compset.id} className="compset-item border w-[94%] mb-3 rounded-lg m-auto p-4 flex flex-col">
             <div className="compsores flex sm:gap-4 items-start ">
-              <div className="rounded-lg flex bg-[#b7a4ce4f] p-2 cursor-pointer">
+              <div className="rounded-lg flex bg-[#b7a4ce21] p-2 px-4 gap-3 cursor-pointer">
                 <Image src={storesblue} alt="nn" />
-                <p className="ml-2 text-[0.9em]">{compset.stores ? compset.stores.length : 0} competitive stores</p>
+                <p className="text-[1.1em]">{compset.stores ? compset.stores.length : 0} competitive stores</p>
               </div>
-              <div className="rounded-lg flex bg-[#b7a4ce4f] p-2 cursor-pointer">
+              {/* <div className="rounded-lg flex bg-[#b7a4ce4f] p-2 cursor-pointer">
                 <p>Org-wide</p>
-              </div>
+              </div> */}
             </div>
 
             <div className="flex  md:flex-row md:items-center justify-between mt-3">
@@ -103,7 +103,7 @@ const Compsets = ({ compsets, update, handledelete, handleEditCompset }) => {
               </div>
 
               {expandedCompsets.includes(index) && (
-                <div className="flex flex-col sm:flex-row justify-end mt-3 w-full gap-3  md:mr-[5%]">
+                <div className="flex flex-col sm:flex-row justify-end mt-3 w-full gap-3 md:mr-[5%]">
                   <div>
                   <button
                     onClick={() => handleAddStore(compset.id)}
@@ -137,16 +137,19 @@ const Compsets = ({ compsets, update, handledelete, handleEditCompset }) => {
 
             </div>
             <div className="flex-col flex text-[#545454] px-4 mb-4">
-              <p className="">{compset.description}</p>
-              <p className="">{compset.address}</p>
+              <p className="text-[#868686] text-[1em]">{compset.description}</p>
+              <p className="text-[#868686] text-[1em]">{compset.address}</p>
             </div>
 
             {expandedCompsets.includes(index) && (
               <div>
                 {compset.stores.map((store, storeIndex) => (
-                  <div key={storeIndex} className="store-item border w-[94%] mb-3 rounded-lg m-auto p-4 flex flex-col">
-                    <div className="flex flex-col ">
-                      <p>{store.name}</p>
+                  <div key={storeIndex} className="store-item border bg-[#c7c7c717]  w-[94%] mb-3 rounded-lg m-auto p-4 flex flex-col">
+                    <div className="flex flex-col gap-4 ">
+                      <p className="font-bold text-[1.3em]">{store.name}</p>
+                      <p className="text-[#868686] text-[1em]">{store.address}</p>
+                      
+                      <p className="text-[#868686] text-[1em]">{store.distance|| 'distance ' + storeIndex}</p>
                       <button className="flex items-center w-[5em] p-2 rounded-lg text-center bg-[#f2c2c23f] text-[#ff0000bb]">
                     Remove
                   </button>

@@ -1,5 +1,20 @@
 import React from "react";
 import Slider from "@mui/material/Slider";
+import { styled } from "@mui/material/styles";
+
+const CustomSlider = styled(Slider)(({ theme }) => ({
+  color: "#7F56D9",
+  "& .MuiSlider-thumb": {
+    backgroundColor: "white",
+    border: "2px solid #7F56D9",
+  },
+  "& .MuiSlider-thumb.MuiSlider-active": {
+    border: `2px solid ${theme.palette.primary.main}`,
+  },
+  "& .MuiSlider-thumb.Mui-disabled": {
+    border: `2px solid ${theme.palette.action.disabled}`,
+  },
+}));
 
 const PriceRange = ({ range, handlePriceChanges, disabled }) => {
   const formatPrice = (value) => {
@@ -7,9 +22,9 @@ const PriceRange = ({ range, handlePriceChanges, disabled }) => {
   };
 
   return (
-    <div className="price">
+    <div className="price z-[20]">
       <p>Price</p>
-      <Slider
+      <CustomSlider
         value={range}
         onChange={handlePriceChanges}
         valueLabelDisplay="auto"

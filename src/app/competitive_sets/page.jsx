@@ -14,6 +14,71 @@ const Competitivesets = () => {
   const [compsetName, setCompsetName] = useState("");
   const [showAddNew, setShowAddNew] = useState(false);
   const [showdownload, setShowdownload] =useState(false)
+  const [activeTab, setActiveTab] = useState('');
+  const [settingstab, setSettingstab] = useState('manage_team');
+  const [menustate, setMenustate] = useState(true);
+  const [isLoginPage, setIsLoginPage] = useState(false);
+  const [issettingsPage, setIsSettingsPage] = useState(false);
+  const [is404Route, setIs404Route] = useState(false);
+
+
+  useEffect(() => {
+    async function checkIf404Route() {
+      const response = await fetch(window.location.href);
+
+      if (response.status === 404) {
+        setIs404Route(true);
+      }
+    }
+
+    checkIf404Route();
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setMenustate(true); 
+      } else {
+        setMenustate(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Initial check on component mount
+  }, []);
+
+  useEffect(() => {
+    const pathName = window.location.pathname;
+    const tabName = pathName.substring(1);
+    setActiveTab(tabName);
+
+    setIsLoginPage(
+      pathName.includes('/accounts') ||
+        pathName.includes('/verify-email/') ||
+        pathName.includes('/settings') ||
+        pathName.includes('/admin') ||
+        pathName.includes('/privacy_policy') ||
+        pathName.includes('/terms_of_use')
+    );
+
+    setIsSettingsPage(
+      pathName.includes('/accounts') ||
+        pathName.includes('/verify-email/') ||
+        pathName.includes('/admin')
+    );
+  }, []);
+
+  const handleTabClick = (tabName) => {
+    setActiveTab(tabName);
+  };
+
+  const handleSettingsTabChange = (tabName) => {
+    setSettingstab(tabName);
+  };
+
+  const setMenu = () => {
+    setMenustate(!menustate);
+  };
 
   const url = "https://64a301f3b45881cc0ae5ff1e.mockapi.io/compsets";
   const endpoint = 'https://prod.nuggetdata.net/users/organization-compset-store/';

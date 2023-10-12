@@ -83,7 +83,7 @@ export default function RootLayout({ children }) {
       <body className="h-[100%] flex w-full">
       {/* <Suspense fallback={<CustomLoading />}> */}
         {!issettingsPage && !is404Route && menustate && (
-            <div className="md:sticky bottom-0 flex-wrap w-fit sm:w-1/5 top-0 flex md:h-full fixed z-50 h-screen">
+            <div className="md:sticky bottom-0 flex-wrap w-fit sm:w-1/5 top-0 flex md:h-screen fixed z-50 h-screen">
               <LazySidepane
                 activeTab={activeTab}
                 handleTabClick={handleTabClick}

@@ -14,7 +14,72 @@ const Accounts = () => {
   const [showupdatemail, setshowupdatemail] = useState(false);
   const [isEditingFirstName, setIsEditingFirstName] = useState(false);
   const [isEditingLastName, setIsEditingLastName] = useState(false);
+  const [activeTab, setActiveTab] = useState('');
+  const [settingstab, setSettingstab] = useState('manage_team');
+  const [menustate, setMenustate] = useState(true);
+  const [isLoginPage, setIsLoginPage] = useState(false);
+  const [issettingsPage, setIsSettingsPage] = useState(false);
+  const [is404Route, setIs404Route] = useState(false);
 
+  const pathName = usePathname();
+
+  useEffect(() => {
+    async function checkIf404Route() {
+      const response = await fetch(window.location.href);
+
+      if (response.status === 404) {
+        setIs404Route(true);
+      }
+    }
+
+    checkIf404Route();
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setMenustate(true); 
+      } else {
+        setMenustate(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Initial check on component mount
+  }, []);
+
+  useEffect(() => {
+    const pathName = window.location.pathname;
+    const tabName = pathName.substring(1);
+    setActiveTab(tabName);
+
+    setIsLoginPage(
+      pathName.includes('/accounts') ||
+        pathName.includes('/verify-email/') ||
+        pathName.includes('/settings') ||
+        pathName.includes('/admin') ||
+        pathName.includes('/privacy_policy') ||
+        pathName.includes('/terms_of_use')
+    );
+
+    setIsSettingsPage(
+      pathName.includes('/accounts') ||
+        pathName.includes('/verify-email/') ||
+        pathName.includes('/admin')
+    );
+  }, []);
+
+  const handleTabClick = (tabName) => {
+    setActiveTab(tabName);
+  };
+
+  const handleSettingsTabChange = (tabName) => {
+    setSettingstab(tabName);
+  };
+
+  const setMenu = () => {
+    setMenustate(!menustate);
+  };
   useEffect(() => {
 
     const token = sessionStorage.getItem("login_key");

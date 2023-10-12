@@ -67,7 +67,11 @@ const Sidepane = ({
     }
   };
 
-  const handleSubTabClick = (subTabName) => {};
+  const handleSettingsSubTabClick = () => {
+    setIsSettingsDropdownOpen(false);
+    
+  };
+
   const toggleMenu = () => {
     
   };
@@ -82,13 +86,13 @@ const Sidepane = ({
     handleTabClick("settings");
   };
 
-  useEffect(() => {
-    if (currentRoute.includes("/settings")) {
-      setIsSettingsDropdownOpen(true);
-    } else {
-      setIsSettingsDropdownOpen(false);
-    }
-  }, [currentRoute]);
+  // useEffect(() => {
+  //   if (currentRoute.includes("/settings")) {
+  //     setIsSettingsDropdownOpen(true);
+  //   } else {
+  //     setIsSettingsDropdownOpen(false);
+  //   }
+  // }, [currentRoute]);
   
   const handleLogout = async () => {
     try {
@@ -115,7 +119,7 @@ const Sidepane = ({
   
 
   return (
-    <div className=" w-full">
+    <div className=" w-full p-2 bg-[#232529]">
       {mobile ? (
       <AnimatePresence>
       {isMenuOpen && (
@@ -211,10 +215,10 @@ const Sidepane = ({
                     href="/settings/manage_team"
                     
                     className={currentRoute == "/settings/manage_team"}
+                    onClick={handleSettingsSubTabClick}
                   >
                     <div
                       className="flex p-2 cursor-pointer items-center"
-                      onClick={() => handleSubTabClick("manage_team")}
                     >
                       <Image
                         src={
@@ -228,10 +232,12 @@ const Sidepane = ({
                       <p className="font-medium ml-2">Manage Team</p>
                     </div>
                   </Link>
-                  <Link href="/settings/account" >
+                  <Link href="/settings/account"
+                  onClick={handleSettingsSubTabClick}
+                  
+                  >
                     <div
                       className="flex p-2 cursor-pointer items-center"
-                      onClick={() => handleSubTabClick("my_account")}
                     >
                       <Image
                         src={
@@ -272,7 +278,7 @@ const Sidepane = ({
 
   <div
   id="sidepane"
-  className={`bg-[#232529] px-4 w-full scrollbar-hide h-screen text-white flex flex-col gap-8 z-50 md:relative`}
+  className={`bg-[#232529] px-4 w-full scrollbar-hide h-full text-white flex flex-col gap-8 z-50 md:relative`}
 
 >
       
@@ -351,8 +357,8 @@ const Sidepane = ({
                   className={currentRoute == "/settings/manage_team"}
                 >
                   <div
-                    className="flex p-2 cursor-pointer items-center"
-                    onClick={() => handleSubTabClick("manage_team")}
+                    className="flex py-2 w-full flex-row align-middle cursor-pointer items-center"
+                    onClick={handleSettingsSubTabClick}
                   >
                     <Image
                       src={
@@ -363,13 +369,13 @@ const Sidepane = ({
                       className="w-[1em]"
                       alt="icon"
                     />
-                    <p className="font-medium ml-2">Manage Team</p>
+                    <p className="font-medium flex flex-wrap ml-2">Manage Team</p>
                   </div>
                 </Link>
                 <Link href="/settings/account" >
                   <div
-                    className="flex p-2 cursor-pointer items-center"
-                    onClick={() => handleSubTabClick("my_account")}
+                    className="flex flex-row py-2 cursor-pointer items-center"
+                    onClick={handleSettingsSubTabClick}
                   >
                     <Image
                       src={

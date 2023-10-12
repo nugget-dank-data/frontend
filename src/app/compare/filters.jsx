@@ -343,9 +343,9 @@ const Filters = () => {
           <h1 className="text-[1.5em]">Filters</h1>
           <div className="flex flex-col md:flex-row w-full justify-between gap-5 ">
             <div className="block w-full">
-              <div className="w-full">
+              <div className="w-full relative">
               <div
-                className={`flex cursor-pointer mr-0 sm:mb-0 sm:mr-8 justify-between p-2 w-3/4 sm:w-full items-center border rounded-[0.7em] text-[0.9555em] ${
+                className={`flex cursor-pointer  mr-0 sm:mb-0 sm:mr-8 justify-between p-2 w-3/4 sm:w-full items-center border rounded-[0.7em] text-[0.9555em] ${
                   isStoreSelected ? "" : "cursor-not-allowed opacity-50"
                 }`}
                 onClick={toggleCategoryDropdown}
@@ -359,7 +359,7 @@ const Filters = () => {
                   />
                 </div>
                 {isStoreSelected && isCategoryDropdownOpen && (
-                  <div className="flex cursor-pointer h-[12em] text-left flex-col overflow-y-scroll justify-between w-3/4 sm:w-full border rounded-[0.7em] bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
+                  <div className="flex cursor-pointer h-[12em] absolute z-[1000] text-left flex-col overflow-y-scroll justify-between w-3/4 sm:w-full border rounded-[0.7em] bg-[#f0f0f0] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
                     {categories.sort().map((category) => (
                       <div
                         key={category}
@@ -375,9 +375,9 @@ const Filters = () => {
                 )}
               </div>
             </div>
-            <div className="flex-col flex w-3/4 sm:w-[70%]">
+            <div className="w-full relative">
             <div
-              className={`flex cursor-pointer w-full text-[0.9em] justify-between p-2 items-center border rounded-[0.7em] ${
+              className={`flex cursor-pointer w-full text-[0.9em] justify-between p-2 relative items-center border rounded-[0.7em] ${
                 isStoreSelected ? "" : "cursor-not-allowed opacity-50"
               }`}
               onClick={toggleSizeDropdown}
@@ -391,7 +391,7 @@ const Filters = () => {
                 />
               </div>
               {isStoreSelected && isSizeDropdownOpen && (
-                <div className="flex cursor-pointer h-[7em] md:mt-0 text-left flex-col overflow-y-scroll justify-between w-full border rounded-[0.7em] bg-[#57545411] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
+                <div className="flex cursor-pointer h-[12em] absolute md:mt-0 text-left z-[200] flex-col overflow-y-scroll justify-between w-full border rounded-[0.7em] bg-[#f0f0f0] scrollbar-thin scrollbar-thumb-[#7F56D9] scrollbar-track-gray-100">
                   {sizes
                     .sort((a, b) => a - b)
                     .map((size) => (
@@ -420,6 +420,7 @@ const Filters = () => {
                     src={brand}
                     alt="b"
                     className="absolute left-2 top-1/2 transform -translate-y-1/2"
+                    onClick={applyFilters}
                   />
                  <input
                   type="text"
@@ -435,6 +436,7 @@ const Filters = () => {
               </div>
             </div>
           </div>
+<div className="w-full">
 
           <SelectedFilters
             selectedCategory={selectedCategory}
@@ -444,6 +446,7 @@ const Filters = () => {
             apply ={applyFilters}
           />
          
+</div>
           <div className="price ">
             <PriceRange range={range} handlePriceChanges={handlePriceChanges} disabled={!isStoreSelected} />
           </div>
