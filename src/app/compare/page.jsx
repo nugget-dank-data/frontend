@@ -69,17 +69,17 @@ const Compare = () => {
   const setMenu = () => {
     setMenustate(!menustate);
   };
-  useEffect(() => {
-    const token = sessionStorage.getItem("login_key");
+  // useEffect(() => {
+  //   const token = sessionStorage.getItem("login_key");
 
-    const isUserInSession = !!token;
-    console.log("userinsession", isUserInSession);
+  //   const isUserInSession = !!token;
+  //   console.log("userinsession", isUserInSession);
 
-    if (!isUserInSession) {
-      window.location.href = "/accounts/login";
-      console.log("reload Test fAILED");
-    }
-  }, []);
+  //   if (!isUserInSession) {
+  //     window.location.href = "/accounts/login";
+  //     console.log("reload Test fAILED");
+  //   }
+  // }, []);
   return (
     <div>
 <div className="flex w-full relative">

@@ -28,19 +28,21 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
   
   useEffect(() => {
     setSelectedStore(selectedStore);
-    console.log('::::::',priceData)
+  
     if (priceData && priceData.inv[0].created_at) {
       const startDateFormat = priceData.inv[0].created_at.split("T")[0];
       // setStartDate(new Date(startDateFormat));
     }
+  
     setEndDate(new Date());
-
+  
     if (priceData.inv && priceData.inv.length > 0) {
       const storeId = selectedstore.bb_id;
       const productId = priceData.inv[0].product_id;
       fetchPriceHistory(storeId, productId);
     }
   }, [priceData, selectedstore]);
+  
 
   const fetchPriceHistory = async (storeId, productId) => {
     try {
@@ -58,6 +60,17 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    // Find the earliest date
+    const earliestDate = priceHistory.reduce((minDate, item) => {
+      const itemDate = new Date(item.created_at);
+      return itemDate < minDate ? itemDate : minDate;
+    }, new Date());
+  
+    setStartDate(earliestDate);
+  }, [priceHistory]);
+  
 
   const handleCheckboxChange = (event) => {
     const isChecked = event.target.checked;
@@ -84,17 +97,17 @@ const Pricehistory = ({ priceData, handleclose, stores, selectedStore }) => {
     
   };
 
-useEffect(() => {
-  let date;
-  const filteredData = priceHistory.filter((item) => {
-    const itemDate = new Date(item.created_at);
-    console.log(itemDate);
-    
-    return date = itemDate >= startDate && itemDate <= endDate;
-  });
-  setStartDate(date);
-  setFilteredPriceHistory(filteredData);
-}, [startDate, endDate, priceHistory]);
+  useEffect(() => {
+    const filteredData = priceHistory.filter((item) => {
+      const itemDate = new Date(item.created_at);
+      console.log(itemDate);
+      
+      const isInRange = itemDate >= startDate && itemDate <= endDate;
+      return isInRange;
+    });
+    setFilteredPriceHistory(filteredData);
+  }, [startDate, endDate, priceHistory]);
+  
 
   return (
     <div className="z-50 flex w-full m-auto flex-col py-8 items-center  justify-center ">
@@ -179,7 +192,7 @@ useEffect(() => {
               <p>Start Date</p>
               <DatePicker
                  selected={startDate}
-                 onChange={(date) => set(date)}
+                 onChange={(date) => setStartDate(date)}
                  dateFormat="dd MMMM yyyy"
                  className="text-center border rounded-lg w-[7em] px-4 py-2 text-sm "
                  startDate={startDate}

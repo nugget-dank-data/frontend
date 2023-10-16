@@ -31,14 +31,26 @@ const Results = ({
 
 
   const secondaryfilter = () => {
-    const { onSale, storefilter } = secondaryFilterData;
-  
+    const { onSale, matches, storefilter } = secondaryFilterData;
     let filteredData = [...storesData];
   
     if (onSale) {
       // Filter data for onSale
       filteredData = filteredData.filter((product) =>
-        product.inv.some((invItem) => invItem.on_sale)
+        product.inv.some((invItem) => invItem.raw_stock > 0)
+      );
+    }
+  
+    if (matches) {
+      // Filter data for matching products (same ID)
+      filteredData = filteredData.filter((product) =>
+        product.inv.some((invItem) =>
+          filteredData.some(
+            (otherProduct) =>
+              otherProduct !== product &&
+              otherProduct.inv.some((otherInvItem) => otherInvItem.id === invItem.id)
+          )
+        )
       );
     }
   
@@ -52,6 +64,11 @@ const Results = ({
     // Update the filtered data
     setFilteredData(filteredData);
   };
+  
+  useEffect(() => {
+    secondaryfilter();
+  }, [secondaryFilterData, storesData]);
+  
   
 
   const handleSecondaryFilter = (store) => {
@@ -68,17 +85,16 @@ const Results = ({
       ...prevData,
       onSale: checked,
     }));
-    secondaryfilter(); 
   };
-
+  
   const handleMatches = (event) => {
     const { checked } = event.target;
     setSecondaryFilterData((prevData) => ({
       ...prevData,
-      onSale: checked,
+      matches: checked,
     }));
-    secondaryfilter(); 
   };
+  
   const handleSortChange = (event) => {
     const newSortOption = event.target.value;
     setSortOption(newSortOption);
@@ -138,10 +154,11 @@ const Results = ({
 
       if (brandSearch?.length > 0) {
         const brands = brandSearch.map((brand) => brand.toLowerCase());
-        if (!brands.includes(product.Brand.toLowerCase())) {
+        if (!brands.some((searchTerm) => product.Brand.toLowerCase().includes(searchTerm))) {
           isMatch = false;
         }
       }
+      
 
       if (selectedSize?.length > 0) {
         const productSizes = product.size || []; // Ensure productSizes is an array
@@ -284,12 +301,12 @@ const Results = ({
             <div className="flex gap-1 items-center justify-center align-middle">
           <input
       type="checkbox"
-      id="checkbox"
+      id="checkbox1"
       // checked
       checked={secondaryFilterData.onSale}
       onChange={handleOnSaleChange}
     />
-    <label htmlFor="checkbox" className="flex-wrap">On Sale</label>
+    <label htmlFor="checkbox1" className="flex-wrap">On Sale</label>
             </div>
             <div className="flex gap-1 items-center justify-center align-middle sm:ml-2">
 
@@ -342,7 +359,10 @@ const Results = ({
                   <div
                     key={selectedStore.bb_id}
                     className="w-[15em] top-0 flex border-r bg-white m-2 flex-col rounded-tl-[2em] rounded-tr-[5px] py-[0.5em] pl-[1em] "
-                    onClick={()=>handleSecondaryFilter(selectedStore)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSecondaryFilter(selectedStore);
+                    }}
                   >
                     <h1>{selectedStore.name}</h1>
                   </div>

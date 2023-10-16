@@ -94,6 +94,7 @@ const Filters = () => {
       range,
       brandSearch,
     });
+    console.log(selectedFilters)
     add()
     setbrandvalue('')
   };
