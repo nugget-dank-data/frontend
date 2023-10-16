@@ -42,26 +42,26 @@ export default function RootLayout({ children }) {
     handleResize(); // Initial check on component mount
   }, []);
 
-  useEffect(() => {
-    const pathName = window.location.pathname;
-    const tabName = pathName.substring(1);
-    setActiveTab(tabName);
+    // const pathName = window.location.pathname;
+  // useEffect(() => {
+  //   const tabName = pathName.substring(1);
+  //   setActiveTab(tabName);
 
-    setIsLoginPage(
-      pathName.includes('/accounts') ||
-        pathName.includes('/verify-email/') ||
-        pathName.includes('/settings') ||
-        pathName.includes('/admin') ||
-        pathName.includes('/privacy_policy') ||
-        pathName.includes('/terms_of_use')
-    );
+  //   setIsLoginPage(
+  //     pathName.includes('/accounts') ||
+  //       pathName.includes('/verify-email/') ||
+  //       pathName.includes('/settings') ||
+  //       pathName.includes('/admin') ||
+  //       pathName.includes('/privacy_policy') ||
+  //       pathName.includes('/terms_of_use')
+  //   );
 
-    setIsSettingsPage(
-      pathName.includes('/accounts') ||
-        pathName.includes('/verify-email/') ||
-        pathName.includes('/admin')
-    );
-  }, []);
+  //   setIsSettingsPage(
+  //     pathName.includes('/accounts') ||
+  //       pathName.includes('/verify-email/') ||
+  //       pathName.includes('/admin')
+  //   );
+  // }, []);
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
@@ -81,24 +81,22 @@ export default function RootLayout({ children }) {
         <link rel="icon" type="image/svg+xml" sizes="32x32" href="/logo2.svg" />
       </head>
       <body className="h-[100%] flex w-full">
-      {/* <Suspense fallback={<CustomLoading />}> */}
-        {!issettingsPage && !is404Route && menustate && (
-            <div className="md:sticky bottom-0 flex-wrap w-fit sm:w-1/5 top-0 flex md:h-screen fixed z-50 h-screen">
-              <LazySidepane
-                activeTab={activeTab}
-                handleTabClick={handleTabClick}
-                onSettingsTabChange={handleSettingsTabChange}
-                isMenuOpen={menustate}
-                togglemenu={setMenu}
-              />
-            </div>
+        {!pathName.includes('/accounts'|| '/verify-email/' || '/privacy_policy'||'/terms_of_use') && menustate && (
+          <div className="md:sticky bottom-0 flex-wrap w-fit sm:w-1/5 top-0 flex md:h-screen fixed z-50 h-screen">
+            <LazySidepane
+              activeTab={activeTab}
+              handleTabClick={handleTabClick}
+              onSettingsTabChange={handleSettingsTabChange}
+              isMenuOpen={menustate}
+              togglemenu={setMenu}
+            />
+          </div>
         )}
-                {/* </Suspense> */}
         <div className="w-full h-full p-0 overflow-hidden">
           <div className="flex w-full h-[100%] ">
             <div className="w-full flex flex-col ">
               <div className="w-full">
-                {!isLoginPage && !is404Route && (
+                {!pathName.includes('/accounts'|| '/verify-email/')&& (
                   <Navbar
                     isMenuOpen={menustate}
                     togglemenu={setMenu}
